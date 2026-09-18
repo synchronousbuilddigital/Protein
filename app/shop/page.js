@@ -121,7 +121,7 @@ function ProductRow({ product, index }) {
     <div
       ref={ref}
       id={product.id}
-      className={`py-16 sm:py-24 border-b border-[#E6E1D8] last:border-b-0 transition-all duration-700 ${
+      className={`py-6 sm:py-10 first:pt-2 sm:first:pt-4 border-b border-[#E6E1D8] last:border-b-0 transition-all duration-700 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
       }`}
     >
@@ -394,7 +394,7 @@ export default function ShopPage() {
       <Navbar />
 
       {/* ALTERNATING PRODUCT SHOWCASE SLIDES */}
-      <section className="relative py-8">
+      <section className="relative py-2 sm:py-4">
         {PRODUCTS_DATA.map((product, idx) => (
           <ProductRow key={product.id} product={product} index={idx} />
         ))}
