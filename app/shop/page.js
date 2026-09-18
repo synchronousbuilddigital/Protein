@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import Image from 'next/image';
 
 import proteinImg from '../../public/protein.png';
-import kulfiImg from '../../public/kulfi-mate.png';
+import kulfiImg from '../../public/badamkhulfi.png';
 import shakerImg from '../../public/steel-shaker.png';
 
 /* ── SVG Icon Components ─────────────────────────────────────── */

@@ -15,7 +15,7 @@ function FireIcon() {
 
 function CheckSmIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true" className="shrink-0">
       <path d="M2 6.5L4.8 9.5L10 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
@@ -55,7 +55,7 @@ function BagIcon() {
     </svg>
   );
 }
-import kulfiImg from "../../public/kulfi-mate.png";
+import kulfiImg from "../../public/badamkhulfi.png";
 import shakerImg from "../../public/steel-shaker.png";
 
 const PRODUCTS = [
@@ -111,7 +111,7 @@ const PRODUCTS = [
     image: kulfiImg.src,
     bgGradient: "from-amber-200/20 via-orange-100/10 to-transparent",
     isFeatured: false,
-    highlights: ["24g Plant Isolate", "Real Saffron & Pistachio", "Easy Digestion"],
+    highlights: ["24g Plant Isolate", "Saffron & Pistachio", "Easy Digestion"],
     sizes: [
       { label: "1 KG (30 Servings)", price: 1499, oldPrice: null },
       { label: "2 KG (60 Servings)", price: 2799, oldPrice: 2999 },
@@ -148,7 +148,7 @@ const PRODUCTS = [
     image: shakerImg.src,
     bgGradient: "from-slate-300/20 via-slate-100/10 to-transparent",
     isFeatured: false,
-    highlights: ["750 ml Capacity", "24h Cold Insulation", "100% Leak-Proof"],
+    highlights: ["750ml Capacity", "24h Cold Insulation", "100% Leak-Proof"],
     sizes: [
       { label: "750 ml Standard", price: 999, oldPrice: 1399 },
     ],
@@ -329,11 +329,11 @@ export default function ProductsSection() {
                 </p>
 
                 {/* Feature Highlight Chips */}
-                <div className="flex flex-wrap gap-1 mb-3">
+                <div className="flex flex-nowrap items-center gap-1 mb-3 overflow-x-auto no-scrollbar whitespace-nowrap">
                   {p.highlights.map((feat, i) => (
                     <span
                       key={i}
-                      className="px-2 py-0.5 rounded bg-white border border-black/10 text-[10px] font-semibold text-[#4A4642]"
+                      className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white border border-black/10 text-[9.5px] xl:text-[10px] font-semibold text-[#4A4642] shrink-0"
                     >
                       <CheckSmIcon /> {feat}
                     </span>
