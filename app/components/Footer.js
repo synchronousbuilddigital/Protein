@@ -35,9 +35,9 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-xs uppercase tracking-wider mb-3.5 text-white/90">Learn</h4>
             <ul className="space-y-2.5 text-xs sm:text-sm text-white/60">
-              <li><a href="#learn" className="hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#learn" className="hover:text-white transition-colors">Hormone dictionary</a></li>
-              <li><a href="#learn" className="hover:text-white transition-colors">Trust wall</a></li>
+              <li><a href="/blog" className="hover:text-white transition-colors">Blog</a></li>
+              <li><a href="/blog" className="hover:text-white transition-colors">Hormone dictionary</a></li>
+              <li><a href="/blog" className="hover:text-white transition-colors">Trust wall</a></li>
             </ul>
           </div>
 
@@ -45,9 +45,9 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-xs uppercase tracking-wider mb-3.5 text-white/90">Company</h4>
             <ul className="space-y-2.5 text-xs sm:text-sm text-white/60">
-              <li><a href="#about" className="hover:text-white transition-colors">About us</a></li>
+              <li><a href="/about" className="hover:text-white transition-colors">About us</a></li>
               <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
-              <li><a href="#calculator" className="hover:text-white transition-colors">Protein calculator</a></li>
+              <li><a href="/calculator" className="hover:text-white transition-colors">Protein calculator</a></li>
               <li><a href="#learn" className="hover:text-white transition-colors">FAQs</a></li>
             </ul>
           </div>

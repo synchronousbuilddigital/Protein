@@ -229,7 +229,6 @@ export default function ProductsSection() {
       {/* Header Container */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div className="max-w-xl">
-
           <h2 className="font-['Anton'] text-3xl sm:text-4xl tracking-tight text-[#111111] uppercase leading-none">
             Start With A Favorite
           </h2>
@@ -397,14 +396,14 @@ export default function ProductsSection() {
                     <div className="flex items-center gap-1.5 bg-[#111111] text-white rounded-full px-2.5 py-1 text-[11px] font-bold shadow-md animate-check">
                       <button
                         onClick={() => handleUpdateQty(p.id, -1)}
-                        className="w-4 h-4 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-white transition-colors text-[10px]"
+                        className="w-4 h-4 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-[#111111] transition-colors text-[10px]"
                       >
                         -
                       </button>
                       <span className="px-1 text-[10px]">{qtyInCart} in cart</span>
                       <button
                         onClick={() => handleUpdateQty(p.id, 1)}
-                        className="w-4 h-4 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-white transition-colors text-[10px]"
+                        className="w-4 h-4 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-[#111111] transition-colors text-[10px]"
                       >
                         +
                       </button>
@@ -415,6 +414,19 @@ export default function ProductsSection() {
             </div>
           );
         })}
+      </div>
+
+      {/* Bottom Section Explore Shop CTA Button */}
+      <div className="mt-10 text-center">
+        <a
+          href="/shop"
+          className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-[#EF5A32] text-white hover:bg-[#111111] text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-xl shadow-[#EF5A32]/25 hover:shadow-2xl hover:scale-105 group"
+        >
+          <span>Explore Full Shop Collection</span>
+          <span className="group-hover:translate-x-1 transition-transform">
+            <ArrowIcon />
+          </span>
+        </a>
       </div>
 
       {/* Quick View Interactive Modal */}

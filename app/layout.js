@@ -1,5 +1,6 @@
 import { Anton, Inter, Caveat } from "next/font/google";
 import "./globals.css";
+import LoadingScreen from "./components/LoadingScreen";
 
 const anton = Anton({
   weight: "400",
@@ -28,7 +29,10 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${anton.variable} ${inter.variable} ${caveat.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <LoadingScreen />
+        {children}
+      </body>
     </html>
   );
 }

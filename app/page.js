@@ -1,7 +1,6 @@
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-
-import DoctorsSection from "./components/DoctorsSection";
+import Marquee from "./components/Marquee";
 import ProductsSection from "./components/ProductsSection";
 import ReelsSection from "./components/ReelsSection";
 import TestimonialsSection from "./components/TestimonialsSection";
@@ -10,16 +9,16 @@ import FounderSection from "./components/FounderSection";
 import FAQSection from "./components/FAQSection";
 import NewsletterSection from "./components/NewsletterSection";
 import Footer from "./components/Footer";
+import LifestyleSection from "./components/LifestyleSection";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white pt-[48px] sm:pt-[48px]">
       <Navbar />
       
-      {/* 1st Section: Hero Banner */}
+      {/* 1st Section: Hero Banner & Trust Marquee */}
       <Hero />
-
-
+      <Marquee />
 
       {/* 2nd Section: Start With A Favorite */}
       <div className="wrap">
@@ -29,11 +28,11 @@ export default function Home() {
       {/* 3rd Section: Reels */}
       <ReelsSection />
 
-      {/* 4th Section: Recommended by Doctors & Dieticians */}
-      <DoctorsSection />
-
-      {/* Comparison Section directly after Doctors Section */}
+      {/* Comparison Section */}
       <ComparisonSection />
+
+      {/* Built For Real Life Lifestyle Section */}
+      <LifestyleSection />
 
       <TestimonialsSection />
 

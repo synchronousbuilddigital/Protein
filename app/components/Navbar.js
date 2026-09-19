@@ -87,7 +87,7 @@ export default function Navbar() {
             Shop
           </a>
           <a
-            href="#calculator"
+            href="/calculator"
             className={`transition-all duration-200 text-xs font-bold uppercase tracking-wider ${
               isScrolled
                 ? 'px-4 py-1.5 rounded-full text-white hover:bg-white hover:text-[#111111]'
@@ -97,7 +97,7 @@ export default function Navbar() {
             Protein calculator
           </a>
           <a
-            href="#about"
+            href="/about"
             className={`transition-all duration-200 text-xs font-bold uppercase tracking-wider ${
               isScrolled
                 ? 'px-4 py-1.5 rounded-full text-white hover:bg-white hover:text-[#111111]'
@@ -107,14 +107,14 @@ export default function Navbar() {
             About us
           </a>
           <a
-            href="#learn"
+            href="/blog"
             className={`transition-all duration-200 text-xs font-bold uppercase tracking-wider ${
               isScrolled
                 ? 'px-4 py-1.5 rounded-full text-white hover:bg-white hover:text-[#111111]'
                 : 'text-white/90 hover:text-white hover:opacity-80'
             }`}
           >
-            Learn
+            Blog
           </a>
         </div>
 
