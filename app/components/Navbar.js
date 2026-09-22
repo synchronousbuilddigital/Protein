@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession, signOut } from '@/lib/auth-client';
 
 /* ── SVG Icon Components ─────────────────────────────────────── */
 function SearchIcon() {
@@ -33,8 +34,11 @@ function CartIcon() {
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { data: session, isPending } = useSession();
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => {
       if (window.scrollY > 40) {
         setIsScrolled(true);
@@ -73,7 +77,7 @@ export default function Navbar() {
         {/* Navigation Links */}
         <div
           className={`hidden md:flex items-center gap-1 transition-all duration-300 ${
-            isScrolled ? 'bg-white/10 p-1 rounded-full border border-white/15' : 'gap-8'
+            isScrolled ? 'bg-white/10 p-1 rounded-full border border-white/15' : 'gap-6'
           }`}
         >
           <a
@@ -118,8 +122,8 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Action Buttons */}
-        <div className="nav-cta flex items-center gap-2">
+        {/* Action Buttons & Session State */}
+        <div className="nav-cta flex items-center gap-2 sm:gap-3">
           <button
             aria-label="Search"
             title="Search"
@@ -131,17 +135,37 @@ export default function Navbar() {
           >
             <SearchIcon />
           </button>
-          <button
-            aria-label="Account"
-            title="Account"
-            className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
-              isScrolled
-                ? 'bg-white/10 hover:bg-white hover:text-[#EF5A32] text-white'
-                : 'bg-white/15 hover:bg-white/30 text-white'
-            }`}
-          >
-            <UserIcon />
-          </button>
+
+          {/* Session Aware Auth Controls */}
+          {mounted && !isPending && session?.user ? (
+            <div className="flex items-center gap-2">
+              <a
+                href="/account"
+                className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 flex items-center gap-1.5 ${
+                  isScrolled
+                    ? 'bg-white text-[#EF5A32] hover:bg-stone-100'
+                    : 'bg-white/20 text-white hover:bg-white/30'
+                }`}
+              >
+                <UserIcon />
+                <span className="hidden sm:inline">{session.user.name?.split(' ')[0] || 'Account'}</span>
+              </a>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5">
+              <a
+                href="/login"
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
+                  isScrolled
+                    ? 'bg-white text-[#EF5A32] hover:bg-stone-100 shadow-sm'
+                    : 'bg-white/15 hover:bg-white/30 text-white'
+                }`}
+              >
+                Login
+              </a>
+            </div>
+          )}
+
           <button
             aria-label="Cart"
             title="Cart"
@@ -158,3 +182,4 @@ export default function Navbar() {
     </header>
   );
 }
+
