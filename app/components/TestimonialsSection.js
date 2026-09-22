@@ -8,7 +8,7 @@ const reviews = [
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
     initials: "NP",
     rating: 5,
-    bgColor: "#EF5A32",
+    bgColor: "#FF683F",
   },
   {
     quote: `"I need something quick, clean, and reliable. Kulfi Mate keeps me full and helps me stay energised through long workdays."`,
@@ -65,8 +65,8 @@ export default function TestimonialsSection() {
     <div className="testi-section">
       <div className="wrap">
         <div className="section-head">
-          <h2>What the tribe is saying</h2>
-          <p>Real routines, real results — from students to cyclists to home makers.</p>
+          <h2 style={{ fontFamily: 'var(--font-fira-sans)', fontWeight: 800, color: '#F8F6F2' }}>What serious people are saying</h2>
+          <p style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, color: 'rgba(248,246,242,0.6)' }}>Plant-powered results from people who never settle. Real experiences, every scoop.</p>
         </div>
       </div>
 

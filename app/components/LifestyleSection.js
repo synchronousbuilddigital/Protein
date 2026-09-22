@@ -37,27 +37,39 @@ export default function LifestyleSection() {
   ];
 
   return (
-    <section className="bg-[#FBF7F1] py-16 sm:py-24 px-6 sm:px-10 lg:px-14 relative overflow-hidden border-t border-black/5">
+    <section className="py-16 sm:py-24 px-6 sm:px-10 lg:px-14 relative overflow-hidden border-t border-black/5" style={{ background: '#F8F6F2' }}>
       <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
         {/* Left Column: Heading & Copy (4 cols) */}
         <div className="lg:col-span-4 flex flex-col items-start pr-0 lg:pr-6">
-          <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#4A4642] mb-3">
-            BUILT FOR REAL LIFE
+          <span
+            className="text-[11px] font-bold uppercase tracking-[0.2em] mb-3"
+            style={{ fontFamily: 'var(--font-fira-sans)', color: '#4A4642' }}
+          >
+            Built for real life
           </span>
 
-          <h2 className="font-['Anton'] text-4xl sm:text-5xl lg:text-6xl uppercase tracking-tight text-[#111111] leading-[1.05] mb-5">
-            Protein for all the places you go.
+          <h2
+            className="text-4xl sm:text-5xl lg:text-6xl uppercase tracking-tight leading-[1.05] mb-5"
+            style={{ fontFamily: 'var(--font-fira-sans)', fontWeight: 800, color: '#141414' }}
+          >
+            Protein for every place you perform
           </h2>
 
-          <p className="text-sm sm:text-base text-[#4A4642] font-normal leading-relaxed mb-8 max-w-md">
-            Whether you&apos;re working, studying, travelling or just trying to eat a little better, The Proteinest fits into your everyday routine.
+          <p
+            className="text-sm sm:text-base leading-relaxed mb-8 max-w-md"
+            style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, color: '#4A4642', lineHeight: '1.65' }}
+          >
+            At your desk, on the trail, in the kitchen — The Proteinest integrates into the life you already live. No ritual required.
           </p>
 
           <a
             href="/shop"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[#EF5A32] text-[#EF5A32] bg-white hover:bg-[#EF5A32] hover:text-white text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-md hover:scale-105"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-md hover:scale-105"
+            style={{ fontFamily: 'var(--font-fira-sans)', border: '2px solid #FF683F', color: '#FF683F', background: 'transparent' }}
+            onMouseEnter={e => { e.currentTarget.style.background='#FF683F'; e.currentTarget.style.color='#F8F6F2'; }}
+            onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='#FF683F'; }}
           >
-            <span>See How People Use It</span>
+            <span>Shop Protein Now</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
@@ -77,7 +89,7 @@ export default function LifestyleSection() {
                     onClick={() => setActiveCardId(isActive ? null : card.id)}
                     className={`group relative w-full aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-200 border transition-all duration-300 text-left focus:outline-none cursor-pointer ${
                       isActive
-                        ? 'ring-4 ring-[#EF5A32] ring-offset-2 border-[#EF5A32] shadow-xl scale-[1.02]'
+                        ? 'ring-4 ring-[#FF683F] ring-offset-2 border-[#FF683F] shadow-xl scale-[1.02]'
                         : 'border-black/5 shadow-md hover:shadow-xl hover:scale-[1.01]'
                     }`}
                     aria-label={`View ${card.badge} details`}
@@ -98,8 +110,8 @@ export default function LifestyleSection() {
                       <span
                         className={`text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-sm transition-all duration-300 ${
                           isActive
-                            ? 'bg-[#EF5A32] text-white shadow-md'
-                            : 'bg-white/90 backdrop-blur-md text-[#111111] group-hover:bg-white'
+                            ? 'bg-[#FF683F] text-white shadow-md'
+                            : 'bg-white/90 backdrop-blur-md text-[#141414] group-hover:bg-white'
                         }`}
                       >
                         {card.badge}
@@ -107,7 +119,7 @@ export default function LifestyleSection() {
                       <div
                         className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
                           isActive
-                            ? 'bg-white text-[#EF5A32] rotate-180'
+                            ? 'bg-white text-[#FF683F] rotate-180'
                             : 'bg-black/30 backdrop-blur-md text-white group-hover:bg-black/50'
                         }`}
                       >
@@ -120,12 +132,12 @@ export default function LifestyleSection() {
 
                   {/* Exact Width Compact Info Dropdown directly below this image */}
                   {isActive && (
-                    <div className="mt-2.5 w-full bg-white rounded-xl sm:rounded-2xl p-3 border border-[#EF5A32]/30 shadow-md transition-all duration-300 animate-fadeIn">
+                    <div className="mt-2.5 w-full bg-white rounded-xl sm:rounded-2xl p-3 border border-[#FF683F]/30 shadow-md transition-all duration-300 animate-fadeIn">
                       <p className="text-[11px] sm:text-xs text-[#4A4642] leading-snug font-normal">
                         {card.shortInfo}
                       </p>
                       <div className="mt-2 pt-2 border-t border-stone-100 flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-[#EF5A32] tracking-tight">
+                        <span className="text-[10px] font-bold text-[#FF683F] tracking-tight">
                           {card.tag}
                         </span>
                       </div>
@@ -137,13 +149,16 @@ export default function LifestyleSection() {
           </div>
         </div>
 
-        {/* Right Column: Cursive Script Note (2 cols) */}
+        {/* Right Column: Editorial Italic Note (2 cols) */}
         <div className="lg:col-span-2 flex items-center justify-start lg:justify-center pt-2 lg:pt-0 pl-2 lg:pl-4">
           <div className="transform rotate-[-3deg] lg:rotate-[6deg] select-none">
-            <span className="font-serif italic text-2xl sm:text-3xl text-[#5C4033] block tracking-wide opacity-90 leading-tight">
+            <span
+              className="text-2xl sm:text-3xl block tracking-wide opacity-85 leading-tight"
+              style={{ fontFamily: 'var(--font-playfair)', fontStyle: 'italic', fontWeight: 400, color: '#1A4030' }}
+            >
               Same goals.<br />
-              A kinder<br />
-              routine.
+              A cleaner<br />
+              standard.
             </span>
           </div>
         </div>

@@ -10,19 +10,24 @@ export default function FounderSection() {
         />
       </div>
       <div className="founder-copy">
-        <h2>Why we created The Proteinest</h2>
+        <h2 style={{ fontFamily: 'var(--font-fira-sans)', fontWeight: 800 }}>
+          Built for people who refuse to settle
+        </h2>
         <p>
-          For years I woke up tired, went to bed tired, and felt like my body was working against me. Everything changed when I fixed one thing: my protein. I noticed almost every Indian home is unknowingly low on it — the one nutrient quietly powering energy, hormones, mood, and strength.
+          For years, I watched Indian kitchens run low on the one nutrient quietly powering energy, hormones, and strength. Most options on the shelf were loud, synthetic, and not built for how we actually eat and live.
+        </p>
+        <p style={{ marginTop: '14px' }}>
+          The Proteinest was built differently. Clean, potent, responsibly sourced ingredients — including Spanish-sourced cocoa and plant-based pea protein — engineered for serious results. Not for everyone. Made for the finest version of you.
         </p>
         <p className="pull">
-          One scoop a day. A stronger you. And the strongest family.
+          "One scoop. One standard. No compromise."
         </p>
         <a
-          href="#shop"
-          className="btn btn-white"
-          style={{ background: "var(--black)", color: "#fff", marginTop: "26px", display: "inline-block" }}
+          href="/shop"
+          className="btn btn-orange"
+          style={{ marginTop: '28px', display: 'inline-block' }}
         >
-          Explore Our Products
+          Shop Protein Now
         </a>
       </div>
     </section>

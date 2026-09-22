@@ -63,7 +63,7 @@ const PRODUCTS = [
     id: "choco-buddy",
     category: "protein",
     tag: "BEST SELLER",
-    tagColor: "bg-[#EF5A32] text-white badge-glow-orange",
+    tagColor: "bg-[#FF683F] text-white badge-glow-orange",
     discount: "6% OFF",
     title: "Choco Buddy",
     subtitle: "Rich Chocolate Flavor Protein",
@@ -223,13 +223,13 @@ export default function ProductsSection() {
     <section id="shop" className="relative pt-6 sm:pt-8 pb-10 sm:pb-14">
       {/* Background Accent Mesh */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-gradient-to-r from-[#EF5A32]/10 via-amber-400/5 to-transparent blur-3xl rounded-full opacity-70" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-gradient-to-r from-[#FF683F]/10 via-amber-400/5 to-transparent blur-3xl rounded-full opacity-70" />
       </div>
 
       {/* Header Container */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div className="max-w-xl">
-          <h2 className="font-['Anton'] text-3xl sm:text-4xl tracking-tight text-[#111111] uppercase leading-none">
+          <h2 className="font-['Fira_Sans'] font-extrabold text-3xl sm:text-4xl tracking-tight text-[#141414] uppercase leading-none">
             Start With A Favorite
           </h2>
           <p className="mt-2 text-[#4A4642] text-sm sm:text-base font-normal leading-relaxed">
@@ -238,7 +238,7 @@ export default function ProductsSection() {
         </div>
 
         {/* Filter Switcher Tabs */}
-        <div className="flex items-center gap-1 bg-[#FBF7F1] p-1 rounded-xl border border-black/10 self-start md:self-end shadow-inner">
+        <div className="flex items-center gap-1 bg-[#F8F6F2] p-1 rounded-xl border border-black/10 self-start md:self-end shadow-inner">
           {[
             { id: "all", label: "All Products" },
             { id: "protein", label: "Protein Blends" },
@@ -249,8 +249,8 @@ export default function ProductsSection() {
               onClick={() => setActiveTab(tab.id)}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all duration-200 uppercase tracking-wider ${
                 activeTab === tab.id
-                  ? "bg-[#111111] text-white shadow-md shadow-black/15 scale-[1.02]"
-                  : "text-[#4A4642] hover:text-[#111111] hover:bg-black/5"
+                  ? "bg-[#141414] text-white shadow-md shadow-black/15 scale-[1.02]"
+                  : "text-[#4A4642] hover:text-[#141414] hover:bg-black/5"
               }`}
             >
               {tab.label}
@@ -269,8 +269,8 @@ export default function ProductsSection() {
           return (
             <div
               key={p.id}
-              className={`prod-card-enhanced relative flex flex-col bg-[#FBF7F1] rounded-2xl border border-black/10 overflow-hidden ${
-                p.isFeatured ? "featured-card ring-2 ring-[#EF5A32]/30" : ""
+              className={`prod-card-enhanced relative flex flex-col bg-[#F8F6F2] rounded-2xl border border-black/10 overflow-hidden ${
+                p.isFeatured ? "featured-card ring-2 ring-[#FF683F]/30" : ""
               }`}
             >
               {/* Product Top Image Banner - Full Width Edge-to-Edge */}
@@ -284,7 +284,7 @@ export default function ProductsSection() {
 
                 {p.discount && (
                   <div className="absolute top-3 right-3 z-10">
-                    <span className="px-2 py-0.5 rounded-md bg-[#111111] text-white text-[9px] font-extrabold tracking-wider uppercase shadow-md">
+                    <span className="px-2 py-0.5 rounded-md bg-[#141414] text-white text-[9px] font-extrabold tracking-wider uppercase shadow-md">
                       {p.discount}
                     </span>
                   </div>
@@ -301,7 +301,7 @@ export default function ProductsSection() {
                 <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
                   <button
                     onClick={() => setQuickViewProduct(p)}
-                    className="px-4 py-2 rounded-full bg-white/95 text-[#111111] text-[11px] font-bold uppercase tracking-wider shadow-lg hover:bg-[#EF5A32] hover:text-white transition-all transform hover:scale-105 flex items-center gap-1.5"
+                    className="px-4 py-2 rounded-full bg-white/95 text-[#141414] text-[11px] font-bold uppercase tracking-wider shadow-lg hover:bg-[#FF683F] hover:text-white transition-all transform hover:scale-105 flex items-center gap-1.5"
                   >
                     <SearchIcon /> Quick View
                   </button>
@@ -315,12 +315,12 @@ export default function ProductsSection() {
                   <div className="flex text-amber-500">
                     {"★".repeat(Math.floor(p.rating))}
                   </div>
-                  <span className="font-bold text-[#111111]">{p.rating}</span>
+                  <span className="font-bold text-[#141414]">{p.rating}</span>
                   <span className="text-[#4A4642]">({p.reviews})</span>
                 </div>
 
                 {/* Title & Subtitle */}
-                <h3 className="font-['Anton'] text-xl sm:text-2xl uppercase tracking-wide text-[#111111]">
+                <h3 className="font-['Fira_Sans'] font-extrabold text-xl sm:text-2xl uppercase tracking-wide text-[#141414]">
                   {p.title}
                 </h3>
                 <p className="text-[11px] text-[#4A4642] mt-0.5 mb-2.5 font-medium line-clamp-1">
@@ -342,7 +342,7 @@ export default function ProductsSection() {
                 {/* Variant / Size Options (Compact Row) */}
                 {p.sizes.length > 1 && (
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[10px] font-bold text-[#111111] uppercase tracking-wider">
+                    <span className="text-[10px] font-bold text-[#141414] uppercase tracking-wider">
                       Size:
                     </span>
                     <div className="flex gap-1">
@@ -352,7 +352,7 @@ export default function ProductsSection() {
                           onClick={() => handleSizeChange(p.id, idx)}
                           className={`py-0.5 px-2 rounded-lg text-[10px] font-bold border transition-all ${
                             currentSizeIdx === idx
-                              ? "bg-[#111111] text-white border-[#111111]"
+                              ? "bg-[#141414] text-white border-[#141414]"
                               : "bg-white text-[#4A4642] border-black/10 hover:border-black/30"
                           }`}
                         >
@@ -367,7 +367,7 @@ export default function ProductsSection() {
                 <div className="mt-auto pt-3 border-t border-black/10 flex items-center justify-between gap-2">
                   <div>
                     <div className="flex items-baseline gap-1.5">
-                      <span className="font-['Anton'] text-xl text-[#111111]">
+                      <span className="font-['Fira_Sans'] font-extrabold text-xl text-[#141414]">
                         ₹{currentSize.price.toLocaleString("en-IN")}
                       </span>
                       {currentSize.oldPrice && (
@@ -377,7 +377,7 @@ export default function ProductsSection() {
                       )}
                     </div>
                     {currentSize.oldPrice && (
-                      <span className="text-[9px] font-extrabold text-[#EF5A32] uppercase tracking-wide">
+                      <span className="text-[9px] font-extrabold text-[#FF683F] uppercase tracking-wide">
                         Save ₹{(currentSize.oldPrice - currentSize.price).toLocaleString("en-IN")}
                       </span>
                     )}
@@ -387,23 +387,23 @@ export default function ProductsSection() {
                   {qtyInCart === 0 ? (
                     <button
                       onClick={() => handleAddToCart(p)}
-                      className="px-4 py-2 rounded-full bg-[#111111] text-white text-[11px] font-bold uppercase tracking-wider hover:bg-[#EF5A32] active:scale-95 transition-all shadow-md flex items-center gap-1 group"
+                      className="px-4 py-2 rounded-full bg-[#141414] text-white text-[11px] font-bold uppercase tracking-wider hover:bg-[#FF683F] active:scale-95 transition-all shadow-md flex items-center gap-1 group"
                     >
                       <span>Add</span>
                       <span className="group-hover:translate-x-0.5 transition-transform"><ArrowIcon /></span>
                     </button>
                   ) : (
-                    <div className="flex items-center gap-1.5 bg-[#111111] text-white rounded-full px-2.5 py-1 text-[11px] font-bold shadow-md animate-check">
+                    <div className="flex items-center gap-1.5 bg-[#141414] text-white rounded-full px-2.5 py-1 text-[11px] font-bold shadow-md animate-check">
                       <button
                         onClick={() => handleUpdateQty(p.id, -1)}
-                        className="w-4 h-4 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-[#111111] transition-colors text-[10px]"
+                        className="w-4 h-4 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-[#141414] transition-colors text-[10px]"
                       >
                         -
                       </button>
                       <span className="px-1 text-[10px]">{qtyInCart} in cart</span>
                       <button
                         onClick={() => handleUpdateQty(p.id, 1)}
-                        className="w-4 h-4 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-[#111111] transition-colors text-[10px]"
+                        className="w-4 h-4 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center text-[#141414] transition-colors text-[10px]"
                       >
                         +
                       </button>
@@ -420,7 +420,7 @@ export default function ProductsSection() {
       <div className="mt-10 text-center">
         <a
           href="/shop"
-          className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-[#EF5A32] text-white hover:bg-[#111111] text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-xl shadow-[#EF5A32]/25 hover:shadow-2xl hover:scale-105 group"
+          className="inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-[#FF683F] text-white hover:bg-[#141414] text-xs font-bold uppercase tracking-widest transition-all duration-300 shadow-xl shadow-[#FF683F]/25 hover:shadow-2xl hover:scale-105 group"
         >
           <span>Explore Full Shop Collection</span>
           <span className="group-hover:translate-x-1 transition-transform">
@@ -433,13 +433,13 @@ export default function ProductsSection() {
       {quickViewProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 animate-modal-backdrop bg-black/60 backdrop-blur-md">
           <div
-            className="relative w-full max-w-2xl bg-[#FBF7F1] rounded-3xl border border-black/15 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col md:flex-row animate-modal-content"
+            className="relative w-full max-w-2xl bg-[#F8F6F2] rounded-3xl border border-black/15 shadow-2xl overflow-hidden max-h-[90vh] flex flex-col md:flex-row animate-modal-content"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close Button */}
             <button
               onClick={() => setQuickViewProduct(null)}
-              className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/10 hover:bg-black/20 text-[#111111] font-bold flex items-center justify-center transition-colors"
+              className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/10 hover:bg-black/20 text-[#141414] font-bold flex items-center justify-center transition-colors"
             >
               <XSmIcon />
             </button>
@@ -460,14 +460,14 @@ export default function ProductsSection() {
             <div className="w-full md:w-1/2 p-6 sm:p-8 flex flex-col overflow-y-auto">
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-amber-500 text-sm">{"★".repeat(Math.floor(quickViewProduct.rating))}</span>
-                <span className="text-xs font-bold text-[#111111]">{quickViewProduct.rating}</span>
+                <span className="text-xs font-bold text-[#141414]">{quickViewProduct.rating}</span>
                 <span className="text-xs text-[#4A4642]">({quickViewProduct.reviews} reviews)</span>
               </div>
 
-              <h3 className="font-['Anton'] text-3xl uppercase tracking-tight text-[#111111]">
+              <h3 className="font-['Fira_Sans'] font-extrabold text-3xl uppercase tracking-tight text-[#141414]">
                 {quickViewProduct.title}
               </h3>
-              <p className="text-xs text-[#EF5A32] font-bold uppercase tracking-wider mb-3">
+              <p className="text-xs text-[#FF683F] font-bold uppercase tracking-wider mb-3">
                 {quickViewProduct.subtitle}
               </p>
 
@@ -477,14 +477,14 @@ export default function ProductsSection() {
 
               {/* Nutrition / Specs Table */}
               <div className="bg-white rounded-xl p-3 border border-black/10 mb-4">
-                <div className="text-[11px] font-bold text-[#111111] uppercase tracking-wider mb-2">
+                <div className="text-[11px] font-bold text-[#141414] uppercase tracking-wider mb-2">
                   Key Specs &amp; Nutrition:
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   {quickViewProduct.details.nutrition.map((item, idx) => (
                     <div key={idx} className="flex justify-between border-b border-black/5 pb-1">
                       <span className="text-[#4A4642]">{item.label}</span>
-                      <span className="font-bold text-[#111111]">{item.val}</span>
+                      <span className="font-bold text-[#141414]">{item.val}</span>
                     </div>
                   ))}
                 </div>
@@ -494,7 +494,7 @@ export default function ProductsSection() {
               <div className="mb-6 space-y-1">
                 {quickViewProduct.details.benefits.map((b, idx) => (
                   <div key={idx} className="text-[11px] text-[#4A4642] flex items-center gap-1.5">
-                    <span className="text-[#EF5A32] font-bold"><CheckSmIcon /></span>
+                    <span className="text-[#FF683F] font-bold"><CheckSmIcon /></span>
                     <span>{b}</span>
                   </div>
                 ))}
@@ -503,11 +503,11 @@ export default function ProductsSection() {
               {/* Modal Footer CTA */}
               <div className="mt-auto pt-4 border-t border-black/10 flex items-center justify-between">
                 <div>
-                  <div className="font-['Anton'] text-2xl text-[#111111]">
+                  <div className="font-['Fira_Sans'] font-extrabold text-2xl text-[#141414]">
                     ₹{quickViewProduct.price.toLocaleString("en-IN")}
                   </div>
                   {quickViewProduct.oldPrice && (
-                    <div className="text-[10px] text-[#EF5A32] font-extrabold uppercase">
+                    <div className="text-[10px] text-[#FF683F] font-extrabold uppercase">
                       Save ₹{(quickViewProduct.oldPrice - quickViewProduct.price).toLocaleString("en-IN")}
                     </div>
                   )}
@@ -518,7 +518,7 @@ export default function ProductsSection() {
                     handleAddToCart(quickViewProduct);
                     setQuickViewProduct(null);
                   }}
-                  className="px-6 py-3 rounded-full bg-[#EF5A32] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#C8441F] transition-colors shadow-lg shadow-[#EF5A32]/30 flex items-center gap-2"
+                  className="px-6 py-3 rounded-full bg-[#FF683F] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#D94D28] transition-colors shadow-lg shadow-[#FF683F]/30 flex items-center gap-2"
                 >
                   Add To Cart <BagIcon />
                 </button>
@@ -530,7 +530,7 @@ export default function ProductsSection() {
 
       {/* Interactive Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 max-w-sm bg-[#111111] text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-white/20 flex items-center justify-between gap-3 animate-toast">
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm bg-[#141414] text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-white/20 flex items-center justify-between gap-3 animate-toast">
           <span className="text-xs font-semibold">{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}

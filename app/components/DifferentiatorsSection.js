@@ -2,31 +2,35 @@ export default function DifferentiatorsSection() {
   const diffs = [
     {
       num: "01",
-      title: "Clean & safe",
-      desc: "No fillers, gums, or artificial sweeteners in any batch.",
+      title: "Clean ingredients",
+      desc: "No fillers, gums, or artificial sweeteners. Every ingredient is accountable, every dosage is published.",
     },
     {
       num: "02",
-      title: "No-bloat promise",
-      desc: "Ultra-fine pea and rice protein your gut can actually process.",
+      title: "Zero bloat",
+      desc: "Ultra-fine pea and brown rice protein your gut can process without discomfort.",
     },
     {
       num: "03",
-      title: "Made for the Indian body",
-      desc: "Formulated around Indian diets, digestion, and daily routines.",
+      title: "Precision formulated",
+      desc: "Built around science, not trends. Clinically researched doses, not proprietary blends.",
     },
     {
       num: "04",
       title: "NABL lab tested",
-      desc: "Every batch checked for purity, heavy metals, and pesticides.",
+      desc: "Every batch verified for purity, heavy metals, and pesticide residue. No exceptions.",
     },
   ];
 
   return (
     <section>
       <div className="section-head">
-        <h2>Built differently, felt differently</h2>
-        <p>Four things that separate The Proteinest from every other tub on the shelf.</p>
+        <h2 style={{ fontFamily: 'var(--font-fira-sans)', fontWeight: 800 }}>
+          The standard others avoid
+        </h2>
+        <p style={{ fontFamily: 'var(--font-inter)', fontWeight: 300 }}>
+          Four things that separate The Proteinest from every other tub on the shelf.
+        </p>
       </div>
       <div className="diff-grid">
         {diffs.map((item, idx) => (

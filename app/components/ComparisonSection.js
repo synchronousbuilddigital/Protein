@@ -65,16 +65,16 @@ function HeartIcon() {
 
 export default function ComparisonSection() {
   return (
-    <section id="compare" className="w-full bg-[#F8F6F2] py-[90px] sm:py-[100px] lg:py-[115px] relative overflow-hidden text-[#111111] font-sans">
+    <section id="compare" className="w-full bg-[#F8F6F2] py-[90px] sm:py-[100px] lg:py-[115px] relative overflow-hidden text-[#141414] font-sans">
       {/* Background Soft Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-[#F4512A]/6 blur-[120px] rounded-full pointer-events-none -z-0" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-[#FF683F]/6 blur-[120px] rounded-full pointer-events-none -z-0" />
 
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 lg:mb-16 pt-2 lg:pt-4">
-          <h2 className="font-['Anton'] text-3xl sm:text-5xl lg:text-[56px] uppercase tracking-tight text-[#111111] leading-[1.08] mb-3">
-            NOT ALL PROTEIN <span className="text-[#F4512A]">IS THE SAME</span>
+          <h2 className="font-['Fira_Sans'] text-3xl sm:text-5xl lg:text-[56px] uppercase tracking-tight text-[#141414] leading-[1.08] mb-3">
+            NOT ALL PROTEIN <span className="text-[#FF683F]">IS THE SAME</span>
           </h2>
           <p className="text-[#6B625D] text-base sm:text-lg font-medium tracking-normal">
             Same goal. A much better way.
@@ -95,7 +95,7 @@ export default function ComparisonSection() {
             {/* LEFT HALF: OTHERS */}
             <div className="p-6 sm:p-8 lg:py-10 lg:pl-10 lg:pr-14 flex flex-col justify-between">
               <div>
-                <h3 className="font-['Anton'] text-3xl sm:text-4xl text-[#111111] uppercase tracking-wide">
+                <h3 className="font-['Fira_Sans'] text-3xl sm:text-4xl text-[#141414] uppercase tracking-wide">
                   OTHERS
                 </h3>
                 <p className="text-xs sm:text-sm text-[#6B625D] font-medium mt-1 mb-8">
@@ -112,7 +112,7 @@ export default function ComparisonSection() {
                         <XIcon />
                       </div>
                       <div>
-                        <h4 className="font-bold text-xs sm:text-sm text-[#111111] leading-tight">
+                        <h4 className="font-bold text-xs sm:text-sm text-[#141414] leading-tight">
                           OFTEN CAUSES BLOATING
                         </h4>
                         <p className="text-xs text-[#6B625D] mt-0.5 font-normal">
@@ -126,7 +126,7 @@ export default function ComparisonSection() {
                         <XIcon />
                       </div>
                       <div>
-                        <h4 className="font-bold text-xs sm:text-sm text-[#111111] leading-tight">
+                        <h4 className="font-bold text-xs sm:text-sm text-[#141414] leading-tight">
                           ARTIFICIAL FILLERS
                         </h4>
                         <p className="text-xs text-[#6B625D] mt-0.5 font-normal">
@@ -140,7 +140,7 @@ export default function ComparisonSection() {
                         <XIcon />
                       </div>
                       <div>
-                        <h4 className="font-bold text-xs sm:text-sm text-[#111111] leading-tight">
+                        <h4 className="font-bold text-xs sm:text-sm text-[#141414] leading-tight">
                           ARTIFICIAL SWEETENERS
                         </h4>
                         <p className="text-xs text-[#6B625D] mt-0.5 font-normal">
@@ -167,7 +167,7 @@ export default function ComparisonSection() {
 
             {/* Center VS Badge */}
             <div className="hidden lg:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#F4512A] text-white font-['Anton'] text-xl sm:text-2xl flex items-center justify-center shadow-lg border-4 border-white">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#FF683F] text-white font-['Fira_Sans'] text-xl sm:text-2xl flex items-center justify-center shadow-lg border-4 border-white">
                 VS
               </div>
             </div>
@@ -175,7 +175,7 @@ export default function ComparisonSection() {
             {/* RIGHT HALF: THE PROTEINEST */}
             <div className="p-6 sm:p-8 lg:py-10 lg:pl-14 lg:pr-10 flex flex-col justify-between bg-[#FCECE6] lg:bg-transparent border-t lg:border-t-0 border-black/5">
               <div>
-                <h3 className="font-['Anton'] text-3xl sm:text-4xl text-[#F4512A] uppercase tracking-wide">
+                <h3 className="font-['Fira_Sans'] text-3xl sm:text-4xl text-[#FF683F] uppercase tracking-wide">
                   THE PROTEINEST
                 </h3>
                 <p className="text-xs sm:text-sm text-[#6B625D] font-medium mt-1 mb-8">
@@ -203,7 +203,7 @@ export default function ComparisonSection() {
                         <CheckIcon />
                       </div>
                       <div>
-                        <h4 className="font-bold text-xs sm:text-sm text-[#111111] leading-tight">
+                        <h4 className="font-bold text-xs sm:text-sm text-[#141414] leading-tight">
                           LIGHT &amp; EASY-TO-ENJOY
                         </h4>
                         <p className="text-xs text-[#524B46] mt-0.5 font-normal">
@@ -217,7 +217,7 @@ export default function ComparisonSection() {
                         <CheckIcon />
                       </div>
                       <div>
-                        <h4 className="font-bold text-xs sm:text-sm text-[#111111] leading-tight">
+                        <h4 className="font-bold text-xs sm:text-sm text-[#141414] leading-tight">
                           CLEAN INGREDIENTS
                         </h4>
                         <p className="text-xs text-[#524B46] mt-0.5 font-normal">
@@ -231,7 +231,7 @@ export default function ComparisonSection() {
                         <CheckIcon />
                       </div>
                       <div>
-                        <h4 className="font-bold text-xs sm:text-sm text-[#111111] leading-tight">
+                        <h4 className="font-bold text-xs sm:text-sm text-[#141414] leading-tight">
                           SWEETENED WITH MONK FRUIT
                         </h4>
                         <p className="text-xs text-[#524B46] mt-0.5 font-normal">
@@ -252,7 +252,7 @@ export default function ComparisonSection() {
         <div className="mt-10 lg:mt-12 text-center">
           <a
             href="/shop"
-            className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-4 rounded-full bg-[#F4512A] text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-md shadow-[#F4512A]/25 hover:bg-[#E03E17] hover:scale-[1.03] active:scale-[0.98] hover:shadow-xl hover:shadow-[#F4512A]/35"
+            className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-4 rounded-full bg-[#FF683F] text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-md shadow-[#FF683F]/25 hover:bg-[#D94D28] hover:scale-[1.03] active:scale-[0.98] hover:shadow-xl hover:shadow-[#FF683F]/35"
           >
             <span>DISCOVER THE PROTEINEST</span>
             <ArrowRightIcon />
@@ -260,21 +260,21 @@ export default function ComparisonSection() {
         </div>
 
         {/* Micro Trust Features Bar */}
-        <div className="mt-12 lg:mt-14 pt-8 border-t border-[#E6E1D8] max-w-4xl mx-auto flex flex-wrap items-center justify-center sm:justify-between gap-4 sm:gap-6 text-[#111111] font-semibold text-xs text-center">
+        <div className="mt-12 lg:mt-14 pt-8 border-t border-[#E6E1D8] max-w-4xl mx-auto flex flex-wrap items-center justify-center sm:justify-between gap-4 sm:gap-6 text-[#141414] font-semibold text-xs text-center">
           <div className="flex items-center gap-2 bg-white/60 px-3.5 py-2 rounded-full border border-black/5 shadow-2xs">
             <span className="text-[#059669]"><LeafIcon /></span>
             <span>100% Plant-Based</span>
           </div>
           <div className="flex items-center gap-2 bg-white/60 px-3.5 py-2 rounded-full border border-black/5 shadow-2xs">
-            <span className="text-[#F4512A]"><DnaIcon /></span>
+            <span className="text-[#FF683F]"><DnaIcon /></span>
             <span>Gut Friendly</span>
           </div>
           <div className="flex items-center gap-2 bg-white/60 px-3.5 py-2 rounded-full border border-black/5 shadow-2xs">
-            <span className="text-[#F4512A]"><MuscleIcon /></span>
+            <span className="text-[#FF683F]"><MuscleIcon /></span>
             <span>Builds Lean Muscle</span>
           </div>
           <div className="flex items-center gap-2 bg-white/60 px-3.5 py-2 rounded-full border border-black/5 shadow-2xs">
-            <span className="text-[#F4512A]"><HeartIcon /></span>
+            <span className="text-[#FF683F]"><HeartIcon /></span>
             <span>No Whey, No Bloat</span>
           </div>
         </div>
