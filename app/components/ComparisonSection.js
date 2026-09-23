@@ -70,28 +70,18 @@ export default function ComparisonSection() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-[#FF683F]/6 blur-[120px] rounded-full pointer-events-none -z-0" />
 
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14 lg:mb-16 pt-2 lg:pt-4">
-          <h2 className="font-['Fira_Sans'] text-3xl sm:text-5xl lg:text-[56px] uppercase tracking-tight text-[#141414] leading-[1.08] mb-3">
-            NOT ALL PROTEIN <span className="text-[#FF683F]">IS THE SAME</span>
-          </h2>
-          <p className="text-[#6B625D] text-base sm:text-lg font-medium tracking-normal">
-            Same goal. A much better way.
-          </p>
-        </div>
 
         {/* Main Dual Comparison Showcase Card */}
         <div className="relative rounded-[28px] sm:rounded-[32px] border border-[#E6E1D8] shadow-[0_16px_45px_rgba(0,0,0,0.035)] overflow-hidden bg-[#FAF8F5]">
-          
+
           {/* Angled Soft Warm Peach Background for Right Half */}
-          <div 
+          <div
             className="absolute top-0 right-0 w-full lg:w-[54%] h-full bg-[#FCECE6] pointer-events-none hidden lg:block"
             style={{ clipPath: "polygon(14% 0, 100% 0, 100% 100%, 0% 100%)" }}
           />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 relative z-10">
-            
+
             {/* LEFT HALF: OTHERS */}
             <div className="p-6 sm:p-8 lg:py-10 lg:pl-10 lg:pr-14 flex flex-col justify-between">
               <div>
@@ -104,7 +94,7 @@ export default function ComparisonSection() {
 
                 {/* Bullets (Left) + Left Image (image.png) */}
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 items-center">
-                  
+
                   {/* Left Bullet List */}
                   <div className="sm:col-span-7 space-y-6">
                     <div className="flex items-start gap-3.5">
@@ -184,7 +174,7 @@ export default function ComparisonSection() {
 
                 {/* The Proteinest Brand Image (Left) + Bullets (Right) */}
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 items-center">
-                  
+
                   {/* Right Side Image (protein.png - Shifted Left Cleanly) */}
                   <div className="sm:col-span-5 flex justify-center sm:justify-start">
                     <div className="w-[150px] h-[150px] sm:w-[170px] sm:h-[170px] lg:w-[190px] lg:h-[190px] flex-shrink-0 rounded-2xl overflow-hidden shadow-md border border-black/5 bg-white flex items-center justify-center transition-transform duration-300 hover:scale-105">

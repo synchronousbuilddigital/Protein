@@ -37,7 +37,7 @@ export default function LifestyleSection() {
   ];
 
   return (
-    <section className="py-16 sm:py-24 px-6 sm:px-10 lg:px-14 relative overflow-hidden border-t border-black/5" style={{ background: '#F8F6F2' }}>
+    <section className="pt-16 sm:pt-24 pb-8 sm:pb-12 px-6 sm:px-10 lg:px-14 relative overflow-hidden border-t border-black/5" style={{ background: '#F8F6F2' }}>
       <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
         {/* Left Column: Heading & Copy (4 cols) */}
         <div className="lg:col-span-4 flex flex-col items-start pr-0 lg:pr-6">
@@ -66,8 +66,8 @@ export default function LifestyleSection() {
             href="/shop"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-md hover:scale-105"
             style={{ fontFamily: 'var(--font-fira-sans)', border: '2px solid #FF683F', color: '#FF683F', background: 'transparent' }}
-            onMouseEnter={e => { e.currentTarget.style.background='#FF683F'; e.currentTarget.style.color='#F8F6F2'; }}
-            onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='#FF683F'; }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#FF683F'; e.currentTarget.style.color = '#F8F6F2'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#FF683F'; }}
           >
             <span>Shop Protein Now</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,19 +87,17 @@ export default function LifestyleSection() {
                   {/* Image Card Container */}
                   <button
                     onClick={() => setActiveCardId(isActive ? null : card.id)}
-                    className={`group relative w-full aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-200 border transition-all duration-300 text-left focus:outline-none cursor-pointer ${
-                      isActive
+                    className={`group relative w-full aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-200 border transition-all duration-300 text-left focus:outline-none cursor-pointer ${isActive
                         ? 'ring-4 ring-[#FF683F] ring-offset-2 border-[#FF683F] shadow-xl scale-[1.02]'
                         : 'border-black/5 shadow-md hover:shadow-xl hover:scale-[1.01]'
-                    }`}
+                      }`}
                     aria-label={`View ${card.badge} details`}
                   >
                     <img
                       src={card.image}
                       alt={card.badge}
-                      className={`w-full h-full object-cover object-center transition-transform duration-500 ${
-                        isActive ? 'scale-105' : 'group-hover:scale-105'
-                      }`}
+                      className={`w-full h-full object-cover object-center transition-transform duration-500 ${isActive ? 'scale-105' : 'group-hover:scale-105'
+                        }`}
                     />
 
                     {/* Gradient Overlay for visual quality */}
@@ -108,20 +106,18 @@ export default function LifestyleSection() {
                     {/* Overlay Badge inside image */}
                     <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
                       <span
-                        className={`text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-sm transition-all duration-300 ${
-                          isActive
+                        className={`text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-sm transition-all duration-300 ${isActive
                             ? 'bg-[#FF683F] text-white shadow-md'
                             : 'bg-white/90 backdrop-blur-md text-[#141414] group-hover:bg-white'
-                        }`}
+                          }`}
                       >
                         {card.badge}
                       </span>
                       <div
-                        className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${
-                          isActive
+                        className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${isActive
                             ? 'bg-white text-[#FF683F] rotate-180'
                             : 'bg-black/30 backdrop-blur-md text-white group-hover:bg-black/50'
-                        }`}
+                          }`}
                       >
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />

@@ -62,7 +62,7 @@ export default function AboutPage() {
       <section className="py-16 sm:py-24 bg-[#FBF7F1]">
         <div className="wrap">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
+
             <div className="lg:col-span-6">
               <span className="text-xs font-bold uppercase tracking-widest text-[#EF5A32] block mb-2">
                 The Indian Dilemma

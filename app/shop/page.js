@@ -5,8 +5,8 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 
-import proteinImg from '../../public/protein.png';
-import kulfiImg from '../../public/badamkhulfi.png';
+import proteinImg from '../../public/chocolate flavor.png';
+import kulfiImg from '../../public/khulfi.png';
 import shakerImg from '../../public/steel-shaker.png';
 
 /* ── SVG Icon Components ─────────────────────────────────────── */
@@ -121,18 +121,16 @@ function ProductRow({ product, index }) {
     <div
       ref={ref}
       id={product.id}
-      className={`py-6 sm:py-10 first:pt-2 sm:first:pt-4 border-b border-[#E6E1D8] last:border-b-0 transition-all duration-700 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-      }`}
+      className={`py-6 sm:py-10 first:pt-2 sm:first:pt-4 border-b border-[#E6E1D8] last:border-b-0 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+        }`}
     >
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          
+
           {/* IMAGE SIDE */}
           <div
-            className={`lg:col-span-6 relative flex items-center justify-center ${
-              isEven ? 'lg:order-1' : 'lg:order-2'
-            }`}
+            className={`lg:col-span-6 relative flex items-center justify-center ${isEven ? 'lg:order-1' : 'lg:order-2'
+              }`}
           >
             {/* Ambient Radial Backlight Glow */}
             <div
@@ -142,7 +140,7 @@ function ProductRow({ product, index }) {
 
             {/* Main Product Showcase Box */}
             <div className="relative w-full max-w-[480px] h-[380px] sm:h-[460px] lg:h-[500px] rounded-[32px] bg-white border border-[#E6E1D8] shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-6 flex items-center justify-center group overflow-hidden">
-              
+
               {/* Badge Tag */}
               <div className="absolute top-5 left-5 z-20">
                 <span className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-white shadow-md" style={{ backgroundColor: product.tagBg }}>
@@ -177,9 +175,8 @@ function ProductRow({ product, index }) {
 
           {/* DETAILS SIDE */}
           <div
-            className={`lg:col-span-6 flex flex-col justify-center ${
-              isEven ? 'lg:order-2' : 'lg:order-1'
-            }`}
+            className={`lg:col-span-6 flex flex-col justify-center ${isEven ? 'lg:order-2' : 'lg:order-1'
+              }`}
           >
             {/* Category / Subtitle */}
             <div className="text-xs font-bold uppercase tracking-[0.2em] text-[#F4512A] mb-2">
@@ -230,11 +227,10 @@ function ProductRow({ product, index }) {
                   <button
                     key={idx}
                     onClick={() => setSelectedSize(idx)}
-                    className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 border ${
-                      selectedSize === idx
+                    className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 border ${selectedSize === idx
                         ? 'bg-[#111111] text-white border-[#111111] shadow-md'
                         : 'bg-white text-[#111111] border-[#E6E1D8] hover:border-[#111111]'
-                    }`}
+                      }`}
                   >
                     {sz.label}
                   </button>

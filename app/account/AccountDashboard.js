@@ -265,17 +265,17 @@ export default function AccountDashboard({ user }) {
         <div>
           {/* User Profile Avatar & Header */}
           <div className="flex items-center gap-3.5 mb-6 pb-6 border-b border-stone-100">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#EF5A32] text-white flex items-center justify-center font-['Anton'] text-2xl shadow-md shrink-0">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#FF683F] text-white flex items-center justify-center font-['Fira_Sans'] font-extrabold text-2xl shadow-md shrink-0">
               {userInitial}
             </div>
             <div className="min-w-0 flex-1">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#EF5A32] block mb-0.5">
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#FF683F] block mb-0.5">
                 TRIBE MEMBER
               </span>
-              <h2 className="font-['Anton'] text-lg sm:text-xl text-[#111111] uppercase tracking-wide truncate">
+              <h2 className="font-['Fira_Sans'] font-extrabold text-lg sm:text-xl text-[#141414] uppercase tracking-wide truncate">
                 {user?.name}
               </h2>
-              <span className="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#EF5A32]/10 text-[#EF5A32] border border-[#EF5A32]/20">
+              <span className="inline-block mt-0.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-[#FF683F]/10 text-[#FF683F] border border-[#FF683F]/20">
                 {user?.role || 'Customer'}
               </span>
             </div>
@@ -291,8 +291,8 @@ export default function AccountDashboard({ user }) {
                   onClick={() => setActiveTab(item.id)}
                   className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200 text-left cursor-pointer ${
                     isActive
-                      ? 'bg-[#EF5A32] text-white shadow-md'
-                      : 'text-stone-600 hover:text-[#111111] hover:bg-stone-100'
+                      ? 'bg-[#FF683F] text-white shadow-md'
+                      : 'text-stone-600 hover:text-[#141414] hover:bg-stone-100'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -326,17 +326,17 @@ export default function AccountDashboard({ user }) {
       </aside>
 
       {/* ── Right Main Structured Details Area ───────────────────── */}
-      <main className="flex-1 p-6 sm:p-10 lg:p-12 overflow-y-auto bg-[#FBF7F1]">
+      <main className="flex-1 p-6 sm:p-10 lg:p-12 overflow-y-auto bg-[#F8F6F2]">
         
         {/* 1. PROFILE OVERVIEW TAB */}
         {activeTab === 'overview' && (
           <div className="space-y-6 animate-fadeIn">
             {/* Header */}
             <div>
-              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#EF5A32] mb-1 block">
+              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#FF683F] mb-1 block">
                 WELCOME BACK
               </span>
-              <h1 className="font-['Anton'] text-3xl sm:text-5xl text-[#111111] uppercase tracking-wide">
+              <h1 className="font-['Fira_Sans'] font-extrabold text-3xl sm:text-5xl text-[#141414] uppercase tracking-wide">
                 Welcome, {user?.name}
               </h1>
               <p className="text-xs sm:text-sm text-stone-600 mt-2">
@@ -348,7 +348,7 @@ export default function AccountDashboard({ user }) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Profile Card */}
               <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-black/5">
-                <h3 className="font-['Anton'] text-xl text-[#111111] uppercase tracking-wide mb-4">
+                <h3 className="font-['Fira_Sans'] font-extrabold text-xl text-[#141414] uppercase tracking-wide mb-4">
                   Profile Information
                 </h3>
                 <div className="space-y-3.5 text-xs sm:text-sm">
@@ -382,9 +382,9 @@ export default function AccountDashboard({ user }) {
                     <span className="text-[10px] font-extrabold uppercase tracking-wider text-amber-900 bg-amber-100 px-3 py-1 rounded-full">
                       ⚡ Routine Status
                     </span>
-                    <span className="text-xs text-[#EF5A32] font-bold">30g Daily Target</span>
+                    <span className="text-xs text-[#FF683F] font-bold">30g Daily Target</span>
                   </div>
-                  <h3 className="font-['Anton'] text-xl text-[#111111] uppercase tracking-wide mb-2">
+                  <h3 className="font-['Fira_Sans'] font-extrabold text-xl text-[#141414] uppercase tracking-wide mb-2">
                     Daily Protein Fuel
                   </h3>
                   <p className="text-xs sm:text-sm text-stone-600 leading-relaxed mb-4">
@@ -393,7 +393,7 @@ export default function AccountDashboard({ user }) {
                 </div>
                 <a
                   href="/calculator"
-                  className="w-full py-3 px-4 rounded-xl bg-[#111111] text-white hover:bg-[#EF5A32] text-xs font-bold uppercase tracking-wider text-center transition-all block"
+                  className="w-full py-3 px-4 rounded-xl bg-[#141414] text-white hover:bg-[#FF683F] text-xs font-bold uppercase tracking-wider text-center transition-all block"
                 >
                   Recalculate Protein Target →
                 </a>
@@ -406,10 +406,10 @@ export default function AccountDashboard({ user }) {
         {activeTab === 'orders' && (
           <div className="space-y-6 animate-fadeIn">
             <div>
-              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#EF5A32] mb-1 block">
+              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#FF683F] mb-1 block">
                 ORDER HISTORY
               </span>
-              <h1 className="font-['Anton'] text-3xl sm:text-5xl text-[#111111] uppercase tracking-wide">
+              <h1 className="font-['Fira_Sans'] font-extrabold text-3xl sm:text-5xl text-[#141414] uppercase tracking-wide">
                 My Orders
               </h1>
               <p className="text-xs sm:text-sm text-stone-600 mt-2">
@@ -424,7 +424,7 @@ export default function AccountDashboard({ user }) {
                 <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-stone-100 text-xs">
                   <div>
                     <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Order ID</span>
-                    <span className="font-bold text-[#111111]">#PRT-892401</span>
+                    <span className="font-bold text-[#141414]">#PRT-892401</span>
                   </div>
                   <div>
                     <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Date Placed</span>
@@ -432,7 +432,7 @@ export default function AccountDashboard({ user }) {
                   </div>
                   <div>
                     <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Total</span>
-                    <span className="font-bold text-[#EF5A32]">₹2,598</span>
+                    <span className="font-bold text-[#FF683F]">₹2,598</span>
                   </div>
                   <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800">
                     Delivered ✓
@@ -440,16 +440,16 @@ export default function AccountDashboard({ user }) {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-[#FBF7F1] p-2 border border-stone-200 shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-[#F8F6F2] p-2 border border-stone-200 shrink-0">
                     <img src="/kulfi-mate.png" alt="Kulfi Mate" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-sm text-[#111111]">Kulfi Mate - Plant Protein (1 KG Pack)</h4>
+                    <h4 className="font-bold text-sm text-[#141414]">Kulfi Mate - Plant Protein (1 KG Pack)</h4>
                     <p className="text-xs text-stone-500">Qty: 1 • Flavor: Kulfi Mate</p>
                   </div>
                   <a
                     href="/shop"
-                    className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-[#111111] font-bold text-xs uppercase tracking-wider transition-all"
+                    className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-[#141414] font-bold text-xs uppercase tracking-wider transition-all"
                   >
                     Reorder
                   </a>
@@ -461,7 +461,7 @@ export default function AccountDashboard({ user }) {
                 <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-stone-100 text-xs">
                   <div>
                     <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Order ID</span>
-                    <span className="font-bold text-[#111111]">#PRT-781204</span>
+                    <span className="font-bold text-[#141414]">#PRT-781204</span>
                   </div>
                   <div>
                     <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Date Placed</span>
@@ -469,7 +469,7 @@ export default function AccountDashboard({ user }) {
                   </div>
                   <div>
                     <span className="text-stone-400 block text-[10px] uppercase font-bold tracking-wider">Total</span>
-                    <span className="font-bold text-[#EF5A32]">₹1,849</span>
+                    <span className="font-bold text-[#FF683F]">₹1,849</span>
                   </div>
                   <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-100 text-emerald-800">
                     Delivered ✓
@@ -477,16 +477,16 @@ export default function AccountDashboard({ user }) {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-[#FBF7F1] p-2 border border-stone-200 shrink-0">
+                  <div className="w-14 h-14 rounded-2xl bg-[#F8F6F2] p-2 border border-stone-200 shrink-0">
                     <img src="/protein.png" alt="Choco Buddy" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-bold text-sm text-[#111111]">Choco Buddy - Plant Protein (1 KG Pack)</h4>
+                    <h4 className="font-bold text-sm text-[#141414]">Choco Buddy - Plant Protein (1 KG Pack)</h4>
                     <p className="text-xs text-stone-500">Qty: 1 • Flavor: Belgian Chocolate</p>
                   </div>
                   <a
                     href="/shop"
-                    className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-[#111111] font-bold text-xs uppercase tracking-wider transition-all"
+                    className="px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-[#141414] font-bold text-xs uppercase tracking-wider transition-all"
                   >
                     Reorder
                   </a>
@@ -501,16 +501,16 @@ export default function AccountDashboard({ user }) {
           <div className="space-y-6 animate-fadeIn">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#EF5A32] mb-1 block">
+                <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#FF683F] mb-1 block">
                   DELIVERY PREFERENCES
                 </span>
-                <h1 className="font-['Anton'] text-3xl sm:text-5xl text-[#111111] uppercase tracking-wide">
+                <h1 className="font-['Fira_Sans'] font-extrabold text-3xl sm:text-5xl text-[#141414] uppercase tracking-wide">
                   Saved Addresses ({addresses.length})
                 </h1>
               </div>
               <button
                 onClick={handleOpenAddAddress}
-                className="px-4 py-2.5 rounded-xl bg-[#EF5A32] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#d94822] transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
+                className="px-4 py-2.5 rounded-xl bg-[#FF683F] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#1A4030] transition-all shadow-sm flex items-center gap-1.5 cursor-pointer"
               >
                 <span>+ Add New Address</span>
               </button>
@@ -522,7 +522,7 @@ export default function AccountDashboard({ user }) {
                   <div
                     key={addr.id}
                     className={`bg-white rounded-3xl p-6 shadow-md border transition-all flex flex-col justify-between ${
-                      addr.isDefault ? 'border-[#EF5A32]/40 ring-1 ring-[#EF5A32]/20' : 'border-black/5'
+                      addr.isDefault ? 'border-[#FF683F]/40 ring-1 ring-[#FF683F]/20' : 'border-black/5'
                     }`}
                   >
                     <div>
@@ -530,17 +530,17 @@ export default function AccountDashboard({ user }) {
                         <span
                           className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                             addr.isDefault
-                              ? 'bg-[#EF5A32] text-white'
+                              ? 'bg-[#FF683F] text-white'
                               : 'bg-stone-100 text-stone-700'
                           }`}
                         >
                           {addr.isDefault ? `DEFAULT ${addr.type}` : addr.type}
                         </span>
                         {addr.isDefault && (
-                          <span className="text-xs text-[#EF5A32] font-semibold">Primary Address</span>
+                          <span className="text-xs text-[#FF683F] font-semibold">Primary Address</span>
                         )}
                       </div>
-                      <h4 className="font-bold text-base text-[#111111]">{addr.fullName}</h4>
+                      <h4 className="font-bold text-base text-[#141414]">{addr.fullName}</h4>
                       <p className="text-xs text-stone-600 mt-2 leading-relaxed">
                         {addr.street}<br />
                         {addr.city}, {addr.state} - {addr.pincode}
@@ -548,7 +548,7 @@ export default function AccountDashboard({ user }) {
                       <p className="text-xs text-stone-500 mt-2 font-medium">📱 {addr.phone}</p>
                     </div>
 
-                    <div className="pt-4 mt-4 border-t border-stone-100 flex items-center gap-3 text-xs font-bold text-[#EF5A32]">
+                    <div className="pt-4 mt-4 border-t border-stone-100 flex items-center gap-3 text-xs font-bold text-[#FF683F]">
                       {!addr.isDefault && (
                         <>
                           <button
@@ -582,7 +582,7 @@ export default function AccountDashboard({ user }) {
                 <p className="text-sm text-stone-500 font-medium">No delivery addresses saved yet.</p>
                 <button
                   onClick={handleOpenAddAddress}
-                  className="mt-4 px-5 py-2.5 rounded-xl bg-[#EF5A32] text-white font-bold text-xs uppercase tracking-wider cursor-pointer"
+                  className="mt-4 px-5 py-2.5 rounded-xl bg-[#FF683F] text-white font-bold text-xs uppercase tracking-wider cursor-pointer"
                 >
                   + Add Your First Address
                 </button>
@@ -595,10 +595,10 @@ export default function AccountDashboard({ user }) {
         {activeTab === 'wishlist' && (
           <div className="space-y-6 animate-fadeIn">
             <div>
-              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#EF5A32] mb-1 block">
+              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#FF683F] mb-1 block">
                 SAVED FAVORITES
               </span>
-              <h1 className="font-['Anton'] text-3xl sm:text-5xl text-[#111111] uppercase tracking-wide">
+              <h1 className="font-['Fira_Sans'] font-extrabold text-3xl sm:text-5xl text-[#141414] uppercase tracking-wide">
                 My Wishlist ({wishlistItems.length})
               </h1>
               <p className="text-xs sm:text-sm text-stone-600 mt-2">
@@ -610,23 +610,23 @@ export default function AccountDashboard({ user }) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {wishlistItems.map((item) => (
                   <div key={item.id} className="bg-white rounded-3xl p-5 shadow-md border border-black/5 flex gap-4 items-center justify-between">
-                    <div className="w-20 h-20 bg-[#FBF7F1] rounded-2xl p-2 shrink-0 border border-stone-200">
+                    <div className="w-20 h-20 bg-[#F8F6F2] rounded-2xl p-2 shrink-0 border border-stone-200">
                       <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <span className="text-[9px] font-extrabold uppercase tracking-wider text-[#EF5A32] block">
+                      <span className="text-[9px] font-extrabold uppercase tracking-wider text-[#FF683F] block">
                         {item.tag}
                       </span>
-                      <h4 className="font-bold text-sm text-[#111111] truncate">{item.name}</h4>
+                      <h4 className="font-bold text-sm text-[#141414] truncate">{item.name}</h4>
                       <div className="flex items-center gap-2 mt-1">
-                        <span className="font-['Anton'] text-base text-[#111111]">₹{item.price}</span>
+                        <span className="font-['Fira_Sans'] font-extrabold text-base text-[#141414]">₹{item.price}</span>
                         <span className="text-xs text-stone-400 line-through">₹{item.originalPrice}</span>
                       </div>
                     </div>
                     <div className="flex flex-col gap-2 shrink-0">
                       <a
                         href="/shop"
-                        className="px-3 py-1.5 rounded-xl bg-[#EF5A32] text-white text-[11px] font-bold uppercase tracking-wider text-center hover:bg-[#d94822] transition-colors"
+                        className="px-3 py-1.5 rounded-xl bg-[#FF683F] text-white text-[11px] font-bold uppercase tracking-wider text-center hover:bg-[#1A4030] transition-colors"
                       >
                         Buy Now
                       </a>
@@ -643,7 +643,7 @@ export default function AccountDashboard({ user }) {
             ) : (
               <div className="bg-white rounded-3xl p-8 text-center border border-stone-200">
                 <p className="text-sm text-stone-500 font-medium">Your wishlist is empty.</p>
-                <a href="/shop" className="mt-4 inline-block px-5 py-2.5 rounded-xl bg-[#EF5A32] text-white font-bold text-xs uppercase tracking-wider">
+                <a href="/shop" className="mt-4 inline-block px-5 py-2.5 rounded-xl bg-[#FF683F] text-white font-bold text-xs uppercase tracking-wider">
                   Explore Flavors
                 </a>
               </div>
@@ -655,10 +655,10 @@ export default function AccountDashboard({ user }) {
         {activeTab === 'settings' && (
           <div className="space-y-6 animate-fadeIn max-w-3xl">
             <div>
-              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#EF5A32] mb-1 block">
+              <span className="text-[11px] font-extrabold uppercase tracking-[0.2em] text-[#FF683F] mb-1 block">
                 SECURITY & PREFERENCES
               </span>
-              <h1 className="font-['Anton'] text-3xl sm:text-5xl text-[#111111] uppercase tracking-wide">
+              <h1 className="font-['Fira_Sans'] font-extrabold text-3xl sm:text-5xl text-[#141414] uppercase tracking-wide">
                 Account Settings
               </h1>
               <p className="text-xs sm:text-sm text-stone-600 mt-2">
@@ -674,7 +674,7 @@ export default function AccountDashboard({ user }) {
 
             {/* Profile Form */}
             <form onSubmit={handleSaveProfile} className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-black/5 space-y-5">
-              <h3 className="font-['Anton'] text-lg text-[#111111] uppercase tracking-wide pb-3 border-b border-stone-100">
+              <h3 className="font-['Fira_Sans'] font-extrabold text-lg text-[#141414] uppercase tracking-wide pb-3 border-b border-stone-100">
                 Edit Profile Details
               </h3>
 
@@ -687,7 +687,7 @@ export default function AccountDashboard({ user }) {
                     type="text"
                     value={profileForm.name}
                     onChange={(e) => setProfileForm({ ...profileForm, name: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#EF5A32] text-xs outline-none bg-stone-50/50"
+                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#FF683F] text-xs outline-none bg-stone-50/50"
                   />
                 </div>
 
@@ -699,7 +699,7 @@ export default function AccountDashboard({ user }) {
                     type="text"
                     value={profileForm.phone}
                     onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#EF5A32] text-xs outline-none bg-stone-50/50"
+                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#FF683F] text-xs outline-none bg-stone-50/50"
                   />
                 </div>
               </div>
@@ -719,7 +719,7 @@ export default function AccountDashboard({ user }) {
               <div className="pt-3">
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-xl bg-[#EF5A32] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#d94822] transition-all shadow-sm cursor-pointer"
+                  className="px-6 py-3 rounded-xl bg-[#FF683F] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#1A4030] transition-all shadow-sm cursor-pointer"
                 >
                   Save Changes
                 </button>
@@ -728,7 +728,7 @@ export default function AccountDashboard({ user }) {
 
             {/* Logout Card */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-red-200 space-y-3">
-              <h3 className="font-['Anton'] text-lg text-red-600 uppercase tracking-wide">
+              <h3 className="font-['Fira_Sans'] font-extrabold text-lg text-red-600 uppercase tracking-wide">
                 Account Security & Sign Out
               </h3>
               <p className="text-xs text-stone-600">
@@ -753,7 +753,7 @@ export default function AccountDashboard({ user }) {
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-black/10 relative">
             {/* Modal Header */}
             <div className="flex items-center justify-between pb-4 border-b border-stone-100 mb-5">
-              <h3 className="font-['Anton'] text-xl text-[#111111] uppercase tracking-wide">
+              <h3 className="font-['Fira_Sans'] font-extrabold text-xl text-[#141414] uppercase tracking-wide">
                 {editingAddressId ? 'Edit Address' : 'Add New Address'}
               </h3>
               <button
@@ -778,7 +778,7 @@ export default function AccountDashboard({ user }) {
                   value={addressForm.fullName}
                   onChange={(e) => setAddressForm({ ...addressForm, fullName: e.target.value })}
                   placeholder="e.g. Vishal Sharma"
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#EF5A32] text-xs outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#FF683F] text-xs outline-none"
                 />
               </div>
 
@@ -792,7 +792,7 @@ export default function AccountDashboard({ user }) {
                   value={addressForm.street}
                   onChange={(e) => setAddressForm({ ...addressForm, street: e.target.value })}
                   placeholder="Flat 402, Sunshine Heights, 12th Main Road..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#EF5A32] text-xs outline-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#FF683F] text-xs outline-none"
                 />
               </div>
 
@@ -807,7 +807,7 @@ export default function AccountDashboard({ user }) {
                     value={addressForm.city}
                     onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
                     placeholder="Bengaluru"
-                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#EF5A32] text-xs outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#FF683F] text-xs outline-none"
                   />
                 </div>
                 <div>
@@ -823,7 +823,7 @@ export default function AccountDashboard({ user }) {
                     value={addressForm.pincode}
                     onChange={(e) => setAddressForm({ ...addressForm, pincode: e.target.value.replace(/\D/g, '') })}
                     placeholder="560038"
-                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#EF5A32] text-xs outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#FF683F] text-xs outline-none"
                   />
                 </div>
               </div>
@@ -838,7 +838,7 @@ export default function AccountDashboard({ user }) {
                     value={addressForm.state}
                     onChange={(e) => setAddressForm({ ...addressForm, state: e.target.value })}
                     placeholder="Karnataka"
-                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#EF5A32] text-xs outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#FF683F] text-xs outline-none"
                   />
                 </div>
                 <div>
@@ -854,7 +854,7 @@ export default function AccountDashboard({ user }) {
                     value={addressForm.phone}
                     onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value.replace(/\D/g, '') })}
                     placeholder="9876543210"
-                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#EF5A32] text-xs outline-none"
+                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#FF683F] text-xs outline-none"
                   />
                 </div>
               </div>
@@ -867,7 +867,7 @@ export default function AccountDashboard({ user }) {
                   <select
                     value={addressForm.type}
                     onChange={(e) => setAddressForm({ ...addressForm, type: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#EF5A32] text-xs outline-none bg-white"
+                    className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:border-[#FF683F] text-xs outline-none bg-white"
                   >
                     <option value="HOME">HOME</option>
                     <option value="WORK">WORK / OFFICE</option>
@@ -880,7 +880,7 @@ export default function AccountDashboard({ user }) {
                       type="checkbox"
                       checked={addressForm.isDefault}
                       onChange={(e) => setAddressForm({ ...addressForm, isDefault: e.target.checked })}
-                      className="rounded text-[#EF5A32] focus:ring-[#EF5A32]"
+                      className="rounded text-[#FF683F] focus:ring-[#FF683F]"
                     />
                     <span>Set as Primary Default</span>
                   </label>
@@ -898,7 +898,7 @@ export default function AccountDashboard({ user }) {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-[#EF5A32] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#d94822] shadow-sm"
+                  className="px-6 py-2.5 rounded-xl bg-[#FF683F] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#1A4030] shadow-sm"
                 >
                   {editingAddressId ? 'Update Address' : 'Save Address'}
                 </button>

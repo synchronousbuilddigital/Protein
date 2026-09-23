@@ -264,10 +264,10 @@ Calculated at https://theproteinest.com/calculator`;
       <section className="pt-24 sm:pt-28 pb-12 sm:pb-16">
         <div className="wrap">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
+
             {/* ── Left Column: Inputs Form ─────────────────────── */}
             <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-9 shadow-[0_15px_40px_rgba(0,0,0,0.06)] border border-[#111111]/8">
-              
+
               {/* Top Controls: Unit Switcher */}
               <div className="flex items-center justify-between pb-6 border-b border-[#111111]/10 mb-6">
                 <div>
@@ -281,17 +281,15 @@ Calculated at https://theproteinest.com/calculator`;
                 <div className="flex items-center bg-[#FBF7F1] p-1 rounded-full border border-[#111111]/10 text-xs font-semibold">
                   <button
                     onClick={() => setUnit('metric')}
-                    className={`px-3.5 py-1.5 rounded-full transition-all duration-200 ${
-                      unit === 'metric' ? 'bg-[#EF5A32] text-white shadow-sm' : 'text-[#111111]/60 hover:text-[#111111]'
-                    }`}
+                    className={`px-3.5 py-1.5 rounded-full transition-all duration-200 ${unit === 'metric' ? 'bg-[#EF5A32] text-white shadow-sm' : 'text-[#111111]/60 hover:text-[#111111]'
+                      }`}
                   >
                     Metric (kg / cm)
                   </button>
                   <button
                     onClick={() => setUnit('imperial')}
-                    className={`px-3.5 py-1.5 rounded-full transition-all duration-200 ${
-                      unit === 'imperial' ? 'bg-[#EF5A32] text-white shadow-sm' : 'text-[#111111]/60 hover:text-[#111111]'
-                    }`}
+                    className={`px-3.5 py-1.5 rounded-full transition-all duration-200 ${unit === 'imperial' ? 'bg-[#EF5A32] text-white shadow-sm' : 'text-[#111111]/60 hover:text-[#111111]'
+                      }`}
                   >
                     Imperial (lbs / ft)
                   </button>
@@ -307,17 +305,15 @@ Calculated at https://theproteinest.com/calculator`;
                   <button
                     type="button"
                     onClick={() => setGender('male')}
-                    className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden flex items-center justify-between ${
-                      gender === 'male'
+                    className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden flex items-center justify-between ${gender === 'male'
                         ? 'border-[#EF5A32] bg-[#EF5A32]/5 ring-2 ring-[#EF5A32]/20'
                         : 'border-[#111111]/15 hover:border-[#111111]/40 bg-white'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${
-                          gender === 'male' ? 'bg-[#EF5A32] text-white' : 'bg-[#FBF7F1] text-[#111111]'
-                        }`}
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${gender === 'male' ? 'bg-[#EF5A32] text-white' : 'bg-[#FBF7F1] text-[#111111]'
+                          }`}
                       >
                         ♂
                       </div>
@@ -336,17 +332,15 @@ Calculated at https://theproteinest.com/calculator`;
                   <button
                     type="button"
                     onClick={() => setGender('female')}
-                    className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden flex items-center justify-between ${
-                      gender === 'female'
+                    className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden flex items-center justify-between ${gender === 'female'
                         ? 'border-[#EF5A32] bg-[#EF5A32]/5 ring-2 ring-[#EF5A32]/20'
                         : 'border-[#111111]/15 hover:border-[#111111]/40 bg-white'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${
-                          gender === 'female' ? 'bg-[#EF5A32] text-white' : 'bg-[#FBF7F1] text-[#111111]'
-                        }`}
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${gender === 'female' ? 'bg-[#EF5A32] text-white' : 'bg-[#FBF7F1] text-[#111111]'
+                          }`}
                       >
                         ♀
                       </div>
@@ -380,7 +374,7 @@ Calculated at https://theproteinest.com/calculator`;
                 </label>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  
+
                   {/* Age */}
                   <div className="p-3.5 bg-[#FBF7F1] rounded-2xl border border-[#111111]/10">
                     <div className="text-xs text-[#111111]/60 font-semibold mb-1">Age</div>
@@ -506,17 +500,15 @@ Calculated at https://theproteinest.com/calculator`;
                         key={g.id}
                         type="button"
                         onClick={() => setGoalId(g.id)}
-                        className={`p-4 rounded-2xl border text-left transition-all duration-200 relative ${
-                          isSelected
+                        className={`p-4 rounded-2xl border text-left transition-all duration-200 relative ${isSelected
                             ? 'border-[#EF5A32] bg-[#EF5A32]/5 ring-2 ring-[#EF5A32]/20 shadow-sm'
                             : 'border-[#111111]/10 hover:border-[#111111]/30 bg-white'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-start gap-3">
                           <div
-                            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
-                              isSelected ? 'bg-[#EF5A32] text-white shadow-sm' : 'bg-[#FBF7F1] text-[#111111]'
-                            }`}
+                            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#EF5A32] text-white shadow-sm' : 'bg-[#FBF7F1] text-[#111111]'
+                              }`}
                           >
                             <Icon className="w-5 h-5" />
                           </div>
@@ -548,17 +540,15 @@ Calculated at https://theproteinest.com/calculator`;
                         key={act.id}
                         type="button"
                         onClick={() => setActivityId(act.id)}
-                        className={`w-full p-3 rounded-xl border text-left flex items-center justify-between transition-all duration-150 ${
-                          isSelected
+                        className={`w-full p-3 rounded-xl border text-left flex items-center justify-between transition-all duration-150 ${isSelected
                             ? 'border-[#EF5A32] bg-[#EF5A32]/5 font-medium'
                             : 'border-[#111111]/10 hover:bg-[#FBF7F1]'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-2.5">
                           <span
-                            className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
-                              isSelected ? 'border-[#EF5A32] bg-[#EF5A32]' : 'border-[#111111]/30'
-                            }`}
+                            className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${isSelected ? 'border-[#EF5A32] bg-[#EF5A32]' : 'border-[#111111]/30'
+                              }`}
                           >
                             {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
                           </span>
@@ -586,11 +576,10 @@ Calculated at https://theproteinest.com/calculator`;
                         key={dt.id}
                         type="button"
                         onClick={() => setDietId(dt.id)}
-                        className={`p-3 rounded-xl border text-center transition-all duration-200 ${
-                          isSelected
+                        className={`p-3 rounded-xl border text-center transition-all duration-200 ${isSelected
                             ? 'border-[#EF5A32] bg-[#EF5A32] text-white font-bold shadow-sm'
                             : 'border-[#111111]/10 bg-[#FBF7F1] text-[#111111] hover:border-[#111111]/30 font-semibold'
-                        }`}
+                          }`}
                       >
                         <div className="text-xs">{dt.label}</div>
                       </button>
@@ -606,7 +595,7 @@ Calculated at https://theproteinest.com/calculator`;
 
             {/* ── Right Column: Live Results Panel ──────────────── */}
             <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
-              
+
               {/* Primary Target Card */}
               <div className="bg-[#111111] text-white rounded-3xl p-7 shadow-2xl relative overflow-hidden border border-white/10">
                 {/* Background decorative watermark */}
@@ -696,9 +685,8 @@ Calculated at https://theproteinest.com/calculator`;
                       <button
                         key={count}
                         onClick={() => setMealCount(count)}
-                        className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
-                          mealCount === count ? 'bg-[#111111] text-white shadow-sm' : 'text-[#111111]/60 hover:text-[#111111]'
-                        }`}
+                        className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${mealCount === count ? 'bg-[#111111] text-white shadow-sm' : 'text-[#111111]/60 hover:text-[#111111]'
+                          }`}
                       >
                         {count}
                       </button>
@@ -806,7 +794,7 @@ Calculated at https://theproteinest.com/calculator`;
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            
+
             {/* The Proteinest Scoop (Featured) */}
             <div className="p-4 rounded-2xl bg-gradient-to-b from-[#EF5A32]/10 to-[#EF5A32]/5 border-2 border-[#EF5A32] text-center flex flex-col justify-between relative shadow-sm">
               <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#EF5A32] text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full whitespace-nowrap">

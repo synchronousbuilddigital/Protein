@@ -17,7 +17,7 @@ export default async function AccountPage() {
   const user = session.user;
 
   return (
-    <div className="min-h-screen bg-[#FBF7F1] flex flex-col">
+    <div className="min-h-screen bg-[#F8F6F2] flex flex-col">
       <Navbar />
       <AccountDashboard user={user} />
     </div>

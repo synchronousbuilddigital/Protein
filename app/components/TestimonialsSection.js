@@ -2,130 +2,154 @@
 
 const reviews = [
   {
-    quote: `"I often had bloating issues from whey, and most plant protein tasted chalky. Choco Buddy is the tastiest I've had, with zero bloating."`,
-    name: "Neha Pawar",
-    role: "Engineering student",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
-    initials: "NP",
-    rating: 5,
-    bgColor: "#FF683F",
+    quote: '"Finally a truly delicious and quality protein powder."',
+    name: 'Arjun Bakali',
+    role: 'Owner & Coach at CrossFit Third Eye',
+    image: '/rv1.png',
   },
   {
-    quote: `"I need something quick, clean, and reliable. Kulfi Mate keeps me full and helps me stay energised through long workdays."`,
-    name: "Kavita",
-    role: "Cyclist",
-    image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
-    initials: "K",
-    rating: 5,
-    bgColor: "#22C55E",
+    quote: '"It\'s so tasty, I didn\'t even feel like I was having a protein shake"',
+    name: 'Prerna Maarvikurne',
+    role: 'Student of Oberoi International',
+    image: '/rv2.png',
   },
   {
-    quote: `"I was diagnosed with diabetes and advised to increase protein. The Proteinest is very tasty and my sugar levels are in check now."`,
-    name: "Shephali",
-    role: "Home maker",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
-    initials: "S",
-    rating: 5,
-    bgColor: "#3B82F6",
+    quote: '"Found my go-to protein — clean, tasty and keeps me full"',
+    name: 'Shailin Suvarna',
+    role: 'Antal International, India Partner',
+    image: '/rv3.png',
   },
   {
-    quote: `"Light on the stomach, no weird aftertaste, and the Steel Shaker makes mixing super smooth into my daily routine."`,
-    name: "Anshita",
-    role: "Image coach",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
-    initials: "A",
-    rating: 5,
-    bgColor: "#A855F7",
+    quote: '"Tastes like it\'s been freshly squeezed — absolutely love it"',
+    name: 'Riya Shah',
+    role: 'Yoga Instructor',
+    image: '/avatar_riya.png',
   },
   {
-    quote: `"Finally a plant protein that actually tastes good and doesn't make me feel heavy. Love the Kulfi Mate flavour!"`,
-    name: "Riya Shah",
-    role: "Yoga instructor",
-    image: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=200&q=80",
-    initials: "RS",
-    rating: 5,
-    bgColor: "#F59E0B",
-  },
-  {
-    quote: `"I've tried so many proteins but The Proteinest is the only one I've stuck with for 6 months. Clean, effective, delicious."`,
-    name: "Manav",
-    role: "Software engineer",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-    initials: "M",
-    rating: 5,
-    bgColor: "#10B981",
+    quote: '"Smooth texture, zero bloat, and super delicious flavor!"',
+    name: 'Manav Joshi',
+    role: 'Software Engineer',
+    image: '/avatar_manav.png',
   },
 ];
 
-// Duplicate for seamless infinite loop
-const doubled = [...reviews, ...reviews];
+function ArrowIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function HeartIcon({ filled = false }) {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill={filled ? 'white' : 'none'} aria-hidden="true">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke={filled ? 'none' : '#d63384'} strokeWidth="2" />
+    </svg>
+  );
+}
 
 export default function TestimonialsSection() {
   return (
-    <div className="testi-section">
-      <div className="wrap">
-        <div className="section-head">
-          <h2 style={{ fontFamily: 'var(--font-fira-sans)', fontWeight: 800, color: '#F8F6F2' }}>What serious people are saying</h2>
-          <p style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, color: 'rgba(248,246,242,0.6)' }}>Plant-powered results from people who never settle. Real experiences, every scoop.</p>
+    <section style={{ background: '#F8F6F2', padding: '24px 0 52px' }}>
+      {/* Contained wrapper — wider max-width and smaller side padding to push closer to edges */}
+      <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 16px' }}>
+
+        {/* ── Header Row ── */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '28px', flexWrap: 'wrap', gap: '12px' }}>
+          <div>
+            {/* Heart badge */}
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '5px',
+              background: '#d63384', color: '#fff',
+              padding: '4px 10px', borderRadius: '999px',
+              fontSize: '11px', fontWeight: 700, marginBottom: '10px',
+            }}>
+              <HeartIcon filled />
+              228K
+            </div>
+            <h2 style={{
+              fontSize: 'clamp(2rem, 4.5vw, 2.8rem)',
+              fontWeight: 900,
+              color: '#141414',
+              lineHeight: 1.1,
+              margin: 0,
+              fontFamily: 'var(--font-fira-sans, inherit)',
+            }}>
+              Real people.<br />Real love.
+            </h2>
+          </div>
+
+          <p style={{ fontSize: '13px', color: '#4A4642', textAlign: 'right', maxWidth: '200px', lineHeight: 1.5 }}>
+            We&apos;re blessed! Because we have you&nbsp;<HeartIcon />
+          </p>
         </div>
-      </div>
 
-      {/* Full-width infinite scroll track */}
-      <div className="testi-marquee-outer">
-        <div className="testi-marquee-track">
-          {doubled.map((rev, idx) => (
-            <div key={idx} className="testi-card flex flex-col justify-between">
-              <div>
-                {/* 5-Star Rating & Verified Badge */}
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-1 text-[#F59E0B] text-xs">
-                    {[...Array(rev.rating)].map((_, i) => (
-                      <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-full">
-                    <svg className="w-2.5 h-2.5 text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    Verified
-                  </span>
-                </div>
-
-                <p className="testi-quote">{rev.quote}</p>
+        {/* ── 5-column card grid ── */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(5, 1fr)',
+          gap: '12px',
+        }}>
+          {reviews.map((r, i) => (
+            <div
+              key={i}
+              style={{
+                background: '#fff',
+                border: '1.5px solid #e9a0bf',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                cursor: 'default',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(214,51,132,0.12)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
+            >
+              {/* Quote */}
+              <div style={{ padding: '16px 14px 12px' }}>
+                <p style={{ fontSize: '13px', fontWeight: 700, color: '#141414', lineHeight: 1.4, margin: 0 }}>
+                  {r.quote}
+                </p>
               </div>
 
-              <div className="testi-who mt-4">
-                {/* Profile Image with Initials Fallback */}
-                <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-white/20 shrink-0 bg-stone-800">
-                  <img
-                    src={rev.image}
-                    alt={rev.name}
-                    className="w-full h-full object-cover object-center"
-                    onError={(e) => {
-                      // Fallback to initials circle if image fails to load
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  <div
-                    className="absolute inset-0 flex items-center justify-center font-bold text-white text-xs -z-10"
-                    style={{ backgroundColor: rev.bgColor }}
-                  >
-                    {rev.initials}
-                  </div>
-                </div>
+              {/* Rectangular photo */}
+              <div style={{ margin: '0 12px', borderRadius: '10px', overflow: 'hidden', height: '160px', flexShrink: 0 }}>
+                <img
+                  src={r.image}
+                  alt={r.name}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
+                />
+              </div>
 
+              {/* Name + role + arrow */}
+              <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', padding: '12px 14px 14px', marginTop: 'auto' }}>
                 <div>
-                  <div className="name text-white font-semibold text-sm">{rev.name}</div>
-                  <div className="role text-stone-400 text-xs">{rev.role}</div>
+                  <p style={{ fontSize: '13px', fontWeight: 800, color: '#141414', margin: 0 }}>{r.name}</p>
+                  <p style={{ fontSize: '11px', color: '#4A4642', margin: '2px 0 0', lineHeight: 1.3 }}>{r.role}</p>
                 </div>
+                <button
+                  style={{
+                    width: '28px', height: '28px', borderRadius: '50%',
+                    background: '#fce4ef', color: '#d63384',
+                    border: '1px solid #e9a0bf',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer', flexShrink: 0,
+                    transition: 'transform 0.15s',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.15)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                  aria-label={`Read ${r.name}'s review`}
+                >
+                  <ArrowIcon />
+                </button>
               </div>
             </div>
           ))}
         </div>
+
       </div>
-    </div>
+    </section>
   );
 }
-

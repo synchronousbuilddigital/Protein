@@ -80,11 +80,10 @@ export default function BlogPage() {
           <button
             key={cat}
             onClick={() => setSelectedCategory(cat)}
-            className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
-              selectedCategory === cat
+            className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${selectedCategory === cat
                 ? 'bg-[#EF5A32] text-white shadow-lg shadow-[#EF5A32]/20 scale-105'
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
+              }`}
           >
             {cat}
           </button>

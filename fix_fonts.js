@@ -43,10 +43,10 @@ for (const filePath of files) {
     console.log(`SKIP (not found): ${filePath}`);
     continue;
   }
-  
+
   let content = fs.readFileSync(filePath, 'utf8');
   let changed = false;
-  
+
   for (const [from, to] of replacements) {
     if (content.includes(from)) {
       content = content.split(from).join(to);
@@ -54,7 +54,7 @@ for (const filePath of files) {
       totalChanges++;
     }
   }
-  
+
   if (changed) {
     fs.writeFileSync(filePath, content, 'utf8');
     console.log(`Updated: ${filePath}`);

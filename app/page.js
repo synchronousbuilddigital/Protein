@@ -11,12 +11,13 @@ import FAQSection from "./components/FAQSection";
 import NewsletterSection from "./components/NewsletterSection";
 import Footer from "./components/Footer";
 import LifestyleSection from "./components/LifestyleSection";
+import SectionDivider from "./components/SectionDivider";
 
 export default function Home() {
   return (
     <main className="min-h-screen" style={{ background: '#F8F6F2' }}>
       <Navbar />
-      
+
       {/* 1st Section: Hero Banner & Trust Marquee */}
       <Hero />
       <Marquee />
@@ -24,10 +25,8 @@ export default function Home() {
       {/* Why We Need Protein & Solution Section */}
       <ProteinWhySection />
 
-      {/* 2nd Section: Start With A Favorite */}
-      <div className="wrap">
-        <ProductsSection />
-      </div>
+      {/* Products Section */}
+      <ProductsSection />
 
       {/* 3rd Section: Reels */}
       <ReelsSection />
@@ -37,6 +36,9 @@ export default function Home() {
 
       {/* Built For Real Life Lifestyle Section */}
       <LifestyleSection />
+
+      {/* Separation Divider */}
+      <SectionDivider />
 
       <TestimonialsSection />
 

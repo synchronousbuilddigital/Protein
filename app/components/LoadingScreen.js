@@ -65,16 +65,14 @@ export default function LoadingScreen() {
   return (
     <div
       onClick={handleSkip}
-      className={`fixed inset-0 z-[9999] flex items-center justify-center select-none overflow-hidden ${
-        isLoaded ? 'pointer-events-none' : 'pointer-events-auto'
-      }`}
+      className={`fixed inset-0 z-[9999] flex items-center justify-center select-none overflow-hidden ${isLoaded ? 'pointer-events-none' : 'pointer-events-auto'
+        }`}
       aria-label="The Proteinest Loading Screen"
     >
       {/* ── TOP SHUTTER PANEL ───────────────────────────────── */}
       <div
-        className={`absolute top-0 left-0 right-0 h-1/2 border-b transition-transform duration-800 ease-[cubic-bezier(0.85,0,0.15,1)] ${
-          isLoaded ? '-translate-y-full' : 'translate-y-0'
-        }`}
+        className={`absolute top-0 left-0 right-0 h-1/2 border-b transition-transform duration-800 ease-[cubic-bezier(0.85,0,0.15,1)] ${isLoaded ? '-translate-y-full' : 'translate-y-0'
+          }`}
         style={{ background: '#F8F6F2', borderColor: 'rgba(20,20,20,0.08)' }}
       >
         <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full blur-[140px] pointer-events-none" style={{ background: 'rgba(255,104,63,0.07)' }} />
@@ -82,9 +80,8 @@ export default function LoadingScreen() {
 
       {/* ── BOTTOM SHUTTER PANEL ────────────────────────────── */}
       <div
-        className={`absolute bottom-0 left-0 right-0 h-1/2 border-t transition-transform duration-800 ease-[cubic-bezier(0.85,0,0.15,1)] ${
-          isLoaded ? 'translate-y-full' : 'translate-y-0'
-        }`}
+        className={`absolute bottom-0 left-0 right-0 h-1/2 border-t transition-transform duration-800 ease-[cubic-bezier(0.85,0,0.15,1)] ${isLoaded ? 'translate-y-full' : 'translate-y-0'
+          }`}
         style={{ background: '#F8F6F2', borderColor: 'rgba(20,20,20,0.08)' }}
       >
         <div className="absolute -bottom-32 left-1/2 -translate-x-1/2 w-[600px] h-[500px] rounded-full blur-[140px] pointer-events-none" style={{ background: 'rgba(26,64,48,0.08)' }} />
@@ -92,17 +89,15 @@ export default function LoadingScreen() {
 
       {/* ── CENTER SPLIT LASER ──────────────────────────────── */}
       <div
-        className={`absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[2px] z-30 transition-all duration-500 ${
-          isLoaded ? 'opacity-0 scale-x-150' : 'opacity-90 scale-x-100'
-        }`}
+        className={`absolute left-0 right-0 top-1/2 -translate-y-1/2 h-[2px] z-30 transition-all duration-500 ${isLoaded ? 'opacity-0 scale-x-150' : 'opacity-90 scale-x-100'
+          }`}
         style={{ background: 'linear-gradient(to right, transparent, #FF683F, transparent)', boxShadow: '0 0 15px rgba(255,104,63,0.5)' }}
       />
 
       {/* ── WATERMARK ───────────────────────────────────────── */}
       <div
-        className={`absolute inset-0 flex flex-col justify-between py-12 pointer-events-none z-10 overflow-hidden transition-opacity duration-500 ${
-          isFinishing ? 'opacity-0' : 'opacity-100'
-        }`}
+        className={`absolute inset-0 flex flex-col justify-between py-12 pointer-events-none z-10 overflow-hidden transition-opacity duration-500 ${isFinishing ? 'opacity-0' : 'opacity-100'
+          }`}
       >
         <div
           className="whitespace-nowrap text-[80px] sm:text-[130px] uppercase tracking-widest leading-none select-none"
@@ -120,9 +115,8 @@ export default function LoadingScreen() {
 
       {/* ── CENTER CONTENT ──────────────────────────────────── */}
       <div
-        className={`relative z-20 flex flex-col items-center text-center px-5 max-w-lg mx-auto transition-all duration-500 ${
-          isFinishing ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
-        }`}
+        className={`relative z-20 flex flex-col items-center text-center px-5 max-w-lg mx-auto transition-all duration-500 ${isFinishing ? 'scale-95 opacity-0' : 'scale-100 opacity-100'
+          }`}
       >
         {/* Status Pill */}
         <div
@@ -295,9 +289,8 @@ export default function LoadingScreen() {
 
       {/* Skip hint */}
       <div
-        className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-30 transition-opacity duration-300 flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-widest cursor-pointer ${
-          isFinishing ? 'opacity-0' : 'opacity-100'
-        }`}
+        className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-30 transition-opacity duration-300 flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-widest cursor-pointer ${isFinishing ? 'opacity-0' : 'opacity-100'
+          }`}
         style={{ color: 'rgba(20,20,20,0.4)' }}
       >
         <span>Click anywhere to enter</span>

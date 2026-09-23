@@ -1,168 +1,161 @@
 'use client';
 
-import React, { useRef } from 'react';
+const PROTEIN_NEEDS = [
+  {
+    id: 1,
+    img: '/protein_gym_woman.png',
+    alt: 'Woman training at gym with protein shake',
+    label: 'Training & Recovery',
+    quote:
+      'After every workout your muscles enter a 30-minute repair window. Without enough protein, the gains you worked for simply break down overnight.',
+    stat: '30 min',
+    statLabel: 'Recovery Window',
+  },
+  {
+    id: 2,
+    img: '/protein_office_man.png',
+    alt: 'Professional staying focused at work',
+    label: 'Office & Focus',
+    quote:
+      'Most working adults get under 50g of protein daily — less than half the minimum needed to maintain muscle mass, sharp focus, and all-day energy.',
+    stat: '< 50g',
+    statLabel: 'Average Daily Intake',
+  },
+  {
+    id: 3,
+    img: '/protein_morning_woman.png',
+    alt: 'Woman making a healthy protein smoothie',
+    label: 'Daily Nutrition',
+    quote:
+      'A typical Indian meal delivers just 10–15g protein per serving. Hitting your daily target through food alone is nearly impossible without smart supplementation.',
+    stat: '1.6g',
+    statLabel: 'Per kg Bodyweight Needed',
+  },
+  {
+    id: 4,
+    img: '/protein_outdoor_runner.png',
+    alt: 'Man jogging outdoors for fitness',
+    label: 'Active Lifestyle',
+    quote:
+      'Active individuals need up to 2× more protein than sedentary adults. Falling short means slower metabolism, fatigue, and constant sugar cravings.',
+    stat: '2×',
+    statLabel: 'Higher Protein Need',
+  },
+];
 
 export default function ProteinWhySection() {
-  const scrollRef = useRef(null);
-
-  const slides = [
-    {
-      id: 1,
-      badge: '01 / RECOVERY',
-      title: 'Muscle & Cell Repair',
-      metric: '24g Isolate',
-      submetric: '5.5g EAAs • 30-Min Recovery',
-      need: 'Daily stress & physical exertion drain key amino acids required to repair muscle tissue.',
-      solution: 'Cold-filtered pure whey isolate delivering instant cellular recovery without soreness.',
-    },
-    {
-      id: 2,
-      badge: '02 / ENERGY',
-      title: 'Crash-Free Stamina',
-      metric: '4+ Hours',
-      submetric: 'Sustained Stamina • Zero Spike',
-      need: 'High-carb meals cause sharp blood sugar spikes followed by severe mid-day energy crashes.',
-      solution: 'Steady-release amino matrix maintaining constant nitrogen balance and all-day stamina.',
-    },
-    {
-      id: 3,
-      badge: '03 / DIGESTION',
-      title: 'Zero-Bloat Digestion',
-      metric: '99.8% Absorption',
-      submetric: 'DigeZyme® + Lactase Synergy',
-      need: 'Conventional protein powders trigger stomach cramps, gas, heaviness, and poor nutrient uptake.',
-      solution: 'Fortified with multi-enzyme complexes enabling complete, effortless gut digestion.',
-    },
-    {
-      id: 4,
-      badge: '04 / SATIETY',
-      title: 'Metabolic & Weight Drive',
-      metric: 'GLP-1 Satiety',
-      submetric: 'High-Satiety • Thermogenesis',
-      need: 'Protein-deficient diets accelerate muscle breakdown and trigger constant sugar cravings.',
-      solution: 'High-satiety isolate that curbs unwanted cravings while stimulating active calorie burning.',
-    },
-    {
-      id: 5,
-      badge: '05 / PURITY',
-      title: '100% Clean Bio-Purity',
-      metric: '0g Sugar',
-      submetric: 'NABL & FSSAI Certified',
-      need: 'Mass-market supplements hide behind artificial gums, heavy metals, and hidden sugars.',
-      solution: 'Third-party lab tested with zero added sugar, zero maltodextrin, and 100% clean label.',
-    },
-  ];
-
-  const handleScroll = (direction) => {
-    if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -280 : 280;
-      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-    }
-  };
-
   return (
-    <section className="w-full py-14 sm:py-18 px-6 sm:px-12 lg:px-16 select-none border-b border-white/10" style={{ background: '#0E2016' }}>
+    <section
+      className="w-full py-12 sm:py-16 px-4 sm:px-8 lg:px-16"
+      style={{ background: '#F8F6F2' }}
+    >
       <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#FF683F] mb-2 block">
-            The Science Of Daily Vitality
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Why your body needs protein—and our solution.
+
+        {/* Section Header */}
+        <div className="text-center max-w-xl mx-auto mb-10 sm:mb-12">
+          <h2
+            className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight"
+            style={{ color: '#0E2016' }}
+          >
+            Why your body needs protein{' '}
+            <span style={{ color: '#FF683F' }}>every single day.</span>
           </h2>
         </div>
 
-        {/* Carousel Container with Safely Positioned Side Navigation Arrows */}
-        <div className="relative group max-w-7xl mx-auto">
-          {/* Left Arrow Button (Positioned cleanly outside cards) */}
-          <button
-            onClick={() => handleScroll('left')}
-            aria-label="Scroll Left"
-            className="absolute -left-4 sm:-left-7 lg:-left-10 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#0E2016] hover:bg-[#FF683F] hover:text-white font-bold shadow-2xl flex items-center justify-center transition-all border border-white/20 active:scale-95 cursor-pointer text-base sm:text-lg"
-          >
-            ←
-          </button>
+        {/* 4-Card Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {PROTEIN_NEEDS.map((card) => (
+            <div
+              key={card.id}
+              className="flex flex-col rounded-2xl overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              style={{
+                background: '#fff',
+                boxShadow: '0 2px 16px rgba(14,32,22,0.07)',
+              }}
+            >
+              {/* Photo */}
+              <div className="relative overflow-hidden" style={{ height: '190px' }}>
+                <img
+                  src={card.img}
+                  alt={card.alt}
+                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                />
+                {/* Fade bottom of image into card */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 pointer-events-none"
+                  style={{
+                    height: '45%',
+                    background:
+                      'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.55) 70%, #ffffff 100%)',
+                  }}
+                />
+              </div>
 
-          {/* Right Arrow Button (Positioned cleanly outside cards) */}
-          <button
-            onClick={() => handleScroll('right')}
-            aria-label="Scroll Right"
-            className="absolute -right-4 sm:-right-7 lg:-right-10 top-1/2 -translate-y-1/2 z-20 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#0E2016] hover:bg-[#FF683F] hover:text-white font-bold shadow-2xl flex items-center justify-center transition-all border border-white/20 active:scale-95 cursor-pointer text-base sm:text-lg"
-          >
-            →
-          </button>
+              {/* Card Body */}
+              <div className="flex flex-col flex-1 px-4 pb-5 pt-1">
+                {/* Label */}
+                <span
+                  className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full self-start mb-3"
+                  style={{
+                    color: '#FF683F',
+                    background: 'rgba(255,104,63,0.1)',
+                    border: '1px solid rgba(255,104,63,0.2)',
+                  }}
+                >
+                  {card.label}
+                </span>
 
-          {/* 5-Slide Track (Calculated so 4 cards fit cleanly across desktop view) */}
-          <div
-            ref={scrollRef}
-            className="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-none py-4 px-1"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {slides.map((s) => (
-              <div
-                key={s.id}
-                className="snap-start flex-shrink-0 w-[245px] sm:w-[260px] md:w-[270px] lg:w-[calc(25%-15px)] rounded-2xl p-5 border border-white/10 shadow-xl hover:border-[#FF683F]/50 transition-all duration-300 flex flex-col justify-between"
-                style={{ background: '#163526' }}
-              >
-                <div>
-                  {/* Category Pill Tag */}
-                  <div className="mb-2.5">
-                    <span className="text-[9.5px] font-bold tracking-widest text-[#FF683F] bg-[#FF683F]/15 px-2.5 py-0.5 rounded-full border border-[#FF683F]/30 inline-block uppercase">
-                      {s.badge}
-                    </span>
-                  </div>
+                {/* Quote mark */}
+                <span
+                  className="block font-black leading-none mb-1 select-none"
+                  style={{ fontSize: '2.8rem', color: '#FF683F', lineHeight: '1', marginTop: '-4px' }}
+                  aria-hidden="true"
+                >
+                  "
+                </span>
 
-                  {/* Clean Headline */}
-                  <h3 className="text-base sm:text-lg font-extrabold text-white leading-tight mb-3 h-11 flex items-center">
-                    {s.title}
-                  </h3>
+                {/* Quote text */}
+                <p
+                  className="text-xs leading-relaxed flex-1 mb-4"
+                  style={{ color: '#333', fontFamily: 'var(--font-inter)' }}
+                >
+                  {card.quote}
+                </p>
 
-                  {/* Clean Stat Metric (Uniform Height) */}
-                  <div className="my-3 pb-3 border-b border-white/10 text-center">
-                    <span className="text-2xl sm:text-3xl font-black text-[#FF683F] block tracking-tight leading-none mb-1 whitespace-nowrap overflow-hidden text-ellipsis">
-                      {s.metric}
-                    </span>
-                    <span className="text-[10px] font-mono tracking-wider text-emerald-300 uppercase block font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
-                      {s.submetric}
-                    </span>
-                  </div>
-
-                  {/* Clean Editorial Need & Solution */}
-                  <div className="space-y-3 my-4 text-left">
-                    <div>
-                      <span className="text-[9.5px] font-extrabold uppercase tracking-widest text-[#FF683F] block mb-1">
-                        • The Need
-                      </span>
-                      <p className="text-xs text-white/80 leading-relaxed font-light">
-                        {s.need}
-                      </p>
-                    </div>
-
-                    <div>
-                      <span className="text-[9.5px] font-extrabold uppercase tracking-widest text-emerald-400 block mb-1">
-                        ✓ Our Solution
-                      </span>
-                      <p className="text-xs text-emerald-100/90 leading-relaxed font-normal">
-                        {s.solution}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Bottom Action CTA */}
-                <div className="mt-3 pt-3 border-t border-white/10">
-                  <a
-                    href="/shop"
-                    className="w-full block py-2.5 px-3 rounded-full bg-[#FF683F] hover:bg-[#D94D28] text-white font-bold text-[11px] uppercase tracking-wider transition-all shadow-md text-center"
+                {/* Stat */}
+                <div
+                  className="flex items-baseline gap-2 pt-3"
+                  style={{ borderTop: '1px solid rgba(14,32,22,0.07)' }}
+                >
+                  <span
+                    className="text-xl font-black tracking-tight"
+                    style={{ color: '#0E2016' }}
                   >
-                    Explore Formulation
-                  </a>
+                    {card.stat}
+                  </span>
+                  <span
+                    className="text-[9px] font-semibold uppercase tracking-wider leading-tight"
+                    style={{ color: '#999' }}
+                  >
+                    {card.statLabel}
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
+
+        {/* Bottom CTA */}
+        <div className="text-center mt-10">
+          <a
+            href="/shop"
+            className="inline-block px-7 py-3 rounded-full font-bold text-sm uppercase tracking-wider text-white transition-all hover:scale-105 hover:shadow-lg"
+            style={{ background: '#FF683F' }}
+          >
+            Fix Your Protein Gap →
+          </a>
+        </div>
+
       </div>
     </section>
   );
