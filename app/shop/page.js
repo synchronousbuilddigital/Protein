@@ -361,6 +361,30 @@ export default function ShopPage() {
       ],
     },
     {
+      id: 'coffee-boost',
+      category: 'PROTEIN ISOLATE',
+      tag: 'EXCLUSIVE',
+      tagBg: '#6B4226',
+      discount: '12% OFF',
+      title: 'Coffee Boost',
+      subtitle: 'Rich Single-Origin Cold Brew Coffee Plant Isolate',
+      rating: 4.9,
+      reviews: 78,
+      image: '/coffeeflavor.png',
+      glowBg: 'radial-gradient(circle, rgba(107,66,38,0.25) 0%, transparent 70%)',
+      description:
+        'Brewed for the coffee lover in you. Single-origin cold brew extract meets 24g of ultra-pure plant protein isolate per scoop — zero bitterness, smooth café-style taste, zero added sugar, and DigeZyme® for smooth digestion.',
+      highlights: [
+        { title: '24g Protein', desc: 'Plant Isolate' },
+        { title: 'Cold Brew', desc: 'Real Coffee Extract' },
+        { title: '0g Sugar', desc: 'Café Quality' },
+      ],
+      sizes: [
+        { label: '1 KG (30 Servings)', price: 1499, oldPrice: 1699 },
+        { label: '2 KG (60 Servings)', price: 2799, oldPrice: 3199 },
+      ],
+    },
+    {
       id: 'steel-shaker',
       category: 'SHAKER ACCESSORIES',
       tag: 'SIGNATURE GEAR',

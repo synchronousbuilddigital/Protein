@@ -5,7 +5,7 @@ export default function Hero() {
     {
       id: 1,
       type: 'image',
-      src: '/newbanner.png',
+      src: '/last banner.png',
       alt: 'The Proteinest — Fueling The Finest You',
     },
   ];

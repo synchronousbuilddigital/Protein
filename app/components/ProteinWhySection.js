@@ -1,5 +1,7 @@
 'use client';
 
+import { useRef } from 'react';
+
 const PROTEIN_NEEDS = [
   {
     id: 1,
@@ -41,15 +43,44 @@ const PROTEIN_NEEDS = [
     stat: '2×',
     statLabel: 'Higher Protein Need',
   },
+  {
+    id: 5,
+    img: '/rv1.png',
+    alt: 'Healthy protein lifestyle & nutrition',
+    label: 'Satiety & Metabolism',
+    quote:
+      'Protein increases satiety hormones while curbing hunger signals. Hitting your daily protein requirement boosts metabolism and keeps energy steady.',
+    stat: '20-30%',
+    statLabel: 'Metabolic Support',
+  },
+  {
+    id: 6,
+    img: '/avatar_shephali.png',
+    alt: 'Healthy lifestyle & longevity',
+    label: 'Immunity & Longevity',
+    quote:
+      'Antibodies, enzymes, and cellular repair depend on essential amino acids. Preserving lean muscle mass is key to immune health and vibrant longevity.',
+    stat: '9 Essential',
+    statLabel: 'Amino Acids Needed',
+  },
 ];
 
 export default function ProteinWhySection() {
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === 'left' ? -330 : 330;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
   return (
     <section
-      className="w-full py-12 sm:py-16 px-4 sm:px-8 lg:px-16"
+      className="w-full py-12 sm:py-16 px-4 sm:px-8 lg:px-12 relative overflow-hidden"
       style={{ background: '#F8F6F2' }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative">
 
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-10 sm:mb-12">
@@ -57,92 +88,146 @@ export default function ProteinWhySection() {
             className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight"
             style={{ color: '#0E2016' }}
           >
-            Why your body needs protein{' '}
-            <span style={{ color: '#FF683F' }}>every single day.</span>
+            Why Protein is{' '}
+            <span style={{ color: '#FF683F' }}>Important.</span>
           </h2>
         </div>
 
-        {/* 4-Card Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {PROTEIN_NEEDS.map((card) => (
-            <div
-              key={card.id}
-              className="flex flex-col rounded-2xl overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-              style={{
-                background: '#fff',
-                boxShadow: '0 2px 16px rgba(14,32,22,0.07)',
-              }}
-            >
-              {/* Photo */}
-              <div className="relative overflow-hidden" style={{ height: '190px' }}>
-                <img
-                  src={card.img}
-                  alt={card.alt}
-                  className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                />
-                {/* Fade bottom of image into card */}
-                <div
-                  className="absolute bottom-0 left-0 right-0 pointer-events-none"
-                  style={{
-                    height: '45%',
-                    background:
-                      'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.55) 70%, #ffffff 100%)',
-                  }}
-                />
-              </div>
+        {/* Carousel Container with Left & Right Navigation Arrows */}
+        <div className="relative flex items-center group px-2 sm:px-4">
+          
+          {/* Left Arrow Button */}
+          <button
+            onClick={() => scroll('left')}
+            className="absolute -left-2 sm:-left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white text-[#0E2016] shadow-xl border border-gray-200/80 flex items-center justify-center hover:bg-[#FF683F] hover:text-white hover:border-[#FF683F] transition-all duration-200 focus:outline-none"
+            aria-label="Scroll left"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-              {/* Card Body */}
-              <div className="flex flex-col flex-1 px-4 pb-5 pt-1">
-                {/* Label */}
-                <span
-                  className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full self-start mb-3"
+          {/* Scrollable Card Container */}
+          <div
+            ref={scrollRef}
+            className="w-full flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth py-5 px-1"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            {PROTEIN_NEEDS.map((card) => (
+              <div
+                key={card.id}
+                className="min-w-[270px] sm:min-w-[290px] md:min-w-[305px] max-w-[315px] flex-shrink-0 snap-start py-1 group/card"
+              >
+                <div
+                  className="h-full flex flex-col rounded-2xl overflow-hidden transition-all duration-300 ease-out transform-gpu hover:-translate-y-2 hover:shadow-2xl"
                   style={{
-                    color: '#FF683F',
-                    background: 'rgba(255,104,63,0.1)',
-                    border: '1px solid rgba(255,104,63,0.2)',
+                    background: '#fff',
+                    boxShadow: '0 2px 16px rgba(14,32,22,0.07)',
+                    willChange: 'transform, box-shadow',
+                    backfaceVisibility: 'hidden',
                   }}
                 >
-                  {card.label}
-                </span>
-
-                {/* Quote mark */}
-                <span
-                  className="block font-black leading-none mb-1 select-none"
-                  style={{ fontSize: '2.8rem', color: '#FF683F', lineHeight: '1', marginTop: '-4px' }}
-                  aria-hidden="true"
-                >
-                  "
-                </span>
-
-                {/* Quote text */}
-                <p
-                  className="text-xs leading-relaxed flex-1 mb-4"
-                  style={{ color: '#333', fontFamily: 'var(--font-inter)' }}
-                >
-                  {card.quote}
-                </p>
-
-                {/* Stat */}
-                <div
-                  className="flex items-baseline gap-2 pt-3"
-                  style={{ borderTop: '1px solid rgba(14,32,22,0.07)' }}
-                >
-                  <span
-                    className="text-xl font-black tracking-tight"
-                    style={{ color: '#0E2016' }}
+                  {/* Photo Wrapper — Flicker-Free GPU Layer */}
+                  <div
+                    className="relative overflow-hidden bg-[#F8F6F2]"
+                    style={{
+                      height: '190px',
+                      isolation: 'isolate',
+                      transform: 'translateZ(0)',
+                      WebkitTransform: 'translateZ(0)',
+                    }}
                   >
-                    {card.stat}
-                  </span>
+                    <img
+                      src={card.img}
+                      alt={card.alt}
+                      className="w-full h-full object-cover object-top"
+                      style={{
+                        transform: 'translateZ(0)',
+                        WebkitTransform: 'translateZ(0)',
+                        backfaceVisibility: 'hidden',
+                      }}
+                    />
+                    {/* Fade bottom of image into card */}
+                    <div
+                      className="absolute bottom-0 left-0 right-0 pointer-events-none"
+                      style={{
+                        height: '45%',
+                        background:
+                          'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.55) 70%, #ffffff 100%)',
+                        transform: 'translateZ(0)',
+                      }}
+                    />
+                  </div>
+
+                {/* Card Body */}
+                <div className="flex flex-col flex-1 px-4 pb-5 pt-1">
+                  {/* Label */}
                   <span
-                    className="text-[9px] font-semibold uppercase tracking-wider leading-tight"
-                    style={{ color: '#999' }}
+                    className="text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full self-start mb-3"
+                    style={{
+                      color: '#FF683F',
+                      background: 'rgba(255,104,63,0.1)',
+                      border: '1px solid rgba(255,104,63,0.2)',
+                    }}
                   >
-                    {card.statLabel}
+                    {card.label}
                   </span>
+
+                  {/* Quote mark */}
+                  <span
+                    className="block font-black leading-none mb-1 select-none"
+                    style={{ fontSize: '2.8rem', color: '#FF683F', lineHeight: '1', marginTop: '-4px' }}
+                    aria-hidden="true"
+                  >
+                    "
+                  </span>
+
+                  {/* Quote text */}
+                  <p
+                    className="text-xs leading-relaxed flex-1 mb-4"
+                    style={{ color: '#333', fontFamily: 'var(--font-inter)' }}
+                  >
+                    {card.quote}
+                  </p>
+
+                  {/* Stat */}
+                  <div
+                    className="flex items-baseline gap-2 pt-3"
+                    style={{ borderTop: '1px solid rgba(14,32,22,0.07)' }}
+                  >
+                    <span
+                      className="text-xl font-black tracking-tight"
+                      style={{ color: '#0E2016' }}
+                    >
+                      {card.stat}
+                    </span>
+                    <span
+                      className="text-[9px] font-semibold uppercase tracking-wider leading-tight"
+                      style={{ color: '#999' }}
+                    >
+                      {card.statLabel}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Right Arrow Button */}
+          <button
+            onClick={() => scroll('right')}
+            className="absolute -right-2 sm:-right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white text-[#0E2016] shadow-xl border border-gray-200/80 flex items-center justify-center hover:bg-[#FF683F] hover:text-white hover:border-[#FF683F] transition-all duration-200 focus:outline-none"
+            aria-label="Scroll right"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
         </div>
 
         {/* Bottom CTA */}

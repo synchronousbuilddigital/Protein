@@ -173,8 +173,7 @@ export default function ProductsSection() {
       className="w-full py-14 sm:py-20 px-4 sm:px-8 lg:px-16 relative overflow-hidden"
       style={{
         background: '#0E2016',
-        borderTopLeftRadius: 'clamp(24px, 3.5vw, 48px)',
-        borderTopRightRadius: 'clamp(24px, 3.5vw, 48px)',
+        borderRadius: 'clamp(24px, 3.5vw, 48px)',
       }}
     >
       <div className="max-w-7xl mx-auto">
@@ -203,11 +202,11 @@ export default function ProductsSection() {
             return (
               <div
                 key={p.id}
-                className="flex flex-col rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                className="flex flex-col rounded-3xl overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:scale-[1.03] hover:shadow-[0_16px_48px_rgba(0,0,0,0.45)] group"
                 style={{
                   background: '#163526',
                   boxShadow: '0 4px 32px rgba(0,0,0,0.25)',
-                  border: p.isFeatured ? '1.5px solid rgba(255,104,63,0.5)' : '1px solid rgba(255,255,255,0.07)',
+                  border: '1px solid rgba(255,255,255,0.08)',
                 }}
               >
                 {/* Tag badge */}
