@@ -1,6 +1,5 @@
 import { Fira_Sans, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import LoadingScreen from "./components/LoadingScreen";
 
 const firaSans = Fira_Sans({
   weight: ["300", "400", "600", "700", "800"],
@@ -33,7 +32,6 @@ export default function RootLayout({ children }) {
       className={`${firaSans.variable} ${inter.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <LoadingScreen />
         {children}
       </body>
     </html>
