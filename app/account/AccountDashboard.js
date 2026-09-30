@@ -24,7 +24,7 @@ export default function AccountDashboard({ user }) {
       name: 'Kulfi Mate - Plant Protein',
       price: 1899,
       originalPrice: 2499,
-      image: '/kulfi-mate.png',
+      image: '/products/kulfi-mate.jpg',
       tag: 'Best Seller ⭐',
     },
     {
@@ -32,7 +32,7 @@ export default function AccountDashboard({ user }) {
       name: 'Matte Steel Shaker Bottle',
       price: 699,
       originalPrice: 999,
-      image: '/steel-shaker.png',
+      image: '/products/steel-shaker.jpg',
       tag: 'Essential Gear ⚡',
     },
   ]);
@@ -441,7 +441,7 @@ export default function AccountDashboard({ user }) {
 
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-[#F8F6F2] p-2 border border-stone-200 shrink-0">
-                    <img src="/kulfi-mate.png" alt="Kulfi Mate" className="w-full h-full object-contain" />
+                    <img src="/products/kulfi-mate.jpg" alt="Kulfi Mate" className="w-full h-full object-contain" />
                   </div>
                   <div className="flex-1">
                     <h4 className="font-bold text-sm text-[#141414]">Kulfi Mate - Plant Protein (1 KG Pack)</h4>

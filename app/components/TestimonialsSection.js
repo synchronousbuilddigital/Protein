@@ -1,154 +1,140 @@
 'use client';
 
-const reviews = [
-  {
-    quote: '"Finally a truly delicious and quality protein powder."',
-    name: 'Arjun Bakali',
-    role: 'Owner & Coach at CrossFit Third Eye',
-    image: '/rv1.png',
-  },
-  {
-    quote: '"It\'s so tasty, I didn\'t even feel like I was having a protein shake"',
-    name: 'Prerna Maarvikurne',
-    role: 'Student of Oberoi International',
-    image: '/rv2.png',
-  },
-  {
-    quote: '"Found my go-to protein — clean, tasty and keeps me full"',
-    name: 'Shailin Suvarna',
-    role: 'Antal International, India Partner',
-    image: '/rv3.png',
-  },
-  {
-    quote: '"Tastes like it\'s been freshly squeezed — absolutely love it"',
-    name: 'Riya Shah',
-    role: 'Yoga Instructor',
-    image: '/avatar_riya.png',
-  },
-  {
-    quote: '"Smooth texture, zero bloat, and super delicious flavor!"',
-    name: 'Manav Joshi',
-    role: 'Software Engineer',
-    image: '/avatar_manav.png',
-  },
+/**
+ * Testimonials spotlight: one review at a time. The quote and reviewer sit on the left; on the
+ * right a deck of portrait cards shuffles the next reviewer forward. Avatars and arrows switch
+ * reviews, it auto-advances with a progress line (paused on hover, off under reduced motion).
+ * Styles: "Testimonials spotlight" in globals.css.
+ */
+import { useCallback, useEffect, useState } from 'react';
+
+const REVIEWS = [
+  { quote: 'Finally a truly delicious and quality protein powder.', name: 'Arjun Bakali', role: 'Owner & Coach at CrossFit Third Eye', image: '/rv1.png', pos: '50% 20%' },
+  { quote: "It's so tasty, I didn't even feel like I was having a protein shake.", name: 'Prerna Maarvikurne', role: 'Student of Oberoi International', image: '/rv2.png', pos: '50% 25%' },
+  { quote: 'Found my go-to protein — clean, tasty and keeps me full.', name: 'Shailin Suvarna', role: 'Antal International, India Partner', image: '/rv3.png', pos: '50% 20%' },
+  { quote: "Tastes like it's been freshly squeezed — absolutely love it.", name: 'Riya Shah', role: 'Yoga Instructor', image: '/avatar_riya.png', pos: '50% 25%' },
+  { quote: 'Smooth texture, zero bloat, and super delicious flavor!', name: 'Manav Joshi', role: 'Software Engineer', image: '/avatar_manav.png', pos: '50% 20%' },
 ];
 
-function ArrowIcon() {
+const AUTO_MS = 5500;
+const pad = (n) => String(n).padStart(2, '0');
+
+function HeartIcon({ size = 12 }) {
   return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+    </svg>
+  );
+}
+function ArrowIcon({ left = false }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={left ? { transform: 'scaleX(-1)' } : undefined}>
       <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-function HeartIcon({ filled = false }) {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" fill={filled ? 'white' : 'none'} aria-hidden="true">
-      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke={filled ? 'none' : '#d63384'} strokeWidth="2" />
-    </svg>
-  );
-}
-
 export default function TestimonialsSection() {
-  return (
-    <section style={{ background: '#F8F6F2', padding: '24px 0 52px' }}>
-      {/* Contained wrapper — wider max-width and smaller side padding to push closer to edges */}
-      <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 16px' }}>
+  const n = REVIEWS.length;
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [autoplay, setAutoplay] = useState(true);
+  const go = useCallback((d) => setActive((a) => (a + d + n) % n), [n]);
 
-        {/* ── Header Row ── */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '28px', flexWrap: 'wrap', gap: '12px' }}>
-          <div>
-            {/* Heart badge */}
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: '5px',
-              background: '#d63384', color: '#fff',
-              padding: '4px 10px', borderRadius: '999px',
-              fontSize: '11px', fontWeight: 700, marginBottom: '10px',
-            }}>
-              <HeartIcon filled />
-              228K
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const apply = () => setAutoplay(!mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
+
+  useEffect(() => {
+    if (!autoplay || paused) return;
+    const t = setInterval(() => setActive((a) => (a + 1) % n), AUTO_MS);
+    return () => clearInterval(t);
+  }, [autoplay, paused, active, n]);
+
+  const onKey = (e) => {
+    if (e.key === 'ArrowRight') go(1);
+    if (e.key === 'ArrowLeft') go(-1);
+  };
+
+  const r = REVIEWS[active];
+
+  return (
+    <section className="tm band band--blush" aria-labelledby="tm-title" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+      <div className="tm-wrap">
+        {/* ── copy ── */}
+        <div className="tm-copy" data-reveal="up">
+          <span className="tm-pill">
+            <HeartIcon /> 228K <span>loves</span>
+          </span>
+          <h2 id="tm-title" className="tm-title" data-split>
+            Real people.
+            <br />
+            <em>Real love.</em>
+          </h2>
+
+          <figure key={active} className="tm-quote" aria-live="polite">
+            <span className="tm-quote-mark" aria-hidden>
+              “
+            </span>
+            <blockquote className="tm-quote-text editorial">{r.quote}</blockquote>
+            <figcaption className="tm-quote-by">
+              <strong>{r.name}</strong>
+              <span>{r.role}</span>
+            </figcaption>
+          </figure>
+
+          <div className="tm-controls" onKeyDown={onKey}>
+            <div className="tm-avatars" role="tablist" aria-label="Reviews">
+              {REVIEWS.map((v, i) => (
+                <button key={v.name} type="button" role="tab" aria-selected={i === active} aria-label={`${v.name}'s review`} className="tm-avatar" data-active={i === active} onClick={() => setActive(i)}>
+                  <img src={v.image} alt="" style={{ objectPosition: v.pos }} loading="lazy" />
+                </button>
+              ))}
             </div>
-            <h2 style={{
-              fontSize: 'clamp(2rem, 4.5vw, 2.8rem)',
-              fontWeight: 900,
-              color: '#141414',
-              lineHeight: 1.1,
-              margin: 0,
-              fontFamily: 'var(--font-fira-sans, inherit)',
-            }}>
-              Real people.<br />Real love.
-            </h2>
+            <div className="tm-arrows">
+              <button type="button" onClick={() => go(-1)} aria-label="Previous review">
+                <ArrowIcon left />
+              </button>
+              <span className="tm-count">
+                {pad(active + 1)} <span>/ {pad(n)}</span>
+              </span>
+              <button type="button" onClick={() => go(1)} aria-label="Next review">
+                <ArrowIcon />
+              </button>
+            </div>
           </div>
 
-          <p style={{ fontSize: '13px', color: '#4A4642', textAlign: 'right', maxWidth: '200px', lineHeight: 1.5 }}>
-            We&apos;re blessed! Because we have you&nbsp;<HeartIcon />
-          </p>
+          {autoplay && (
+            <span key={`p-${active}`} className="tm-progress" data-paused={paused} aria-hidden>
+              <span style={{ animationDuration: `${AUTO_MS}ms` }} />
+            </span>
+          )}
         </div>
 
-        {/* ── 5-column card grid ── */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
-          gap: '12px',
-        }}>
-          {reviews.map((r, i) => (
-            <div
-              key={i}
-              style={{
-                background: '#fff',
-                border: '1.5px solid #e9a0bf',
-                borderRadius: '16px',
-                overflow: 'hidden',
-                display: 'flex',
-                flexDirection: 'column',
-                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                cursor: 'default',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 10px 30px rgba(214,51,132,0.12)'; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
-            >
-              {/* Quote */}
-              <div style={{ padding: '16px 14px 12px' }}>
-                <p style={{ fontSize: '13px', fontWeight: 700, color: '#141414', lineHeight: 1.4, margin: 0 }}>
-                  {r.quote}
-                </p>
+        {/* ── portrait deck ── */}
+        <div className="tm-deck" aria-hidden data-reveal="scale" data-reveal-delay="0.1" data-parallax="-0.08">
+          {REVIEWS.map((v, i) => {
+            const off = (i - active + n) % n;
+            const state = off === n - 1 ? 'out' : Math.min(off, 3);
+            return (
+              <div key={v.name} className="tm-card" data-off={state} style={{ zIndex: off === n - 1 ? 0 : n - off }}>
+                <img src={v.image} alt="" style={{ objectPosition: v.pos }} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+                <span className="tm-card-shade" />
+                <span className="tm-card-heart">
+                  <HeartIcon size={14} />
+                </span>
+                <span className="tm-card-chip">
+                  <strong>{v.name}</strong>
+                  <span>{v.role}</span>
+                </span>
               </div>
-
-              {/* Rectangular photo */}
-              <div style={{ margin: '0 12px', borderRadius: '10px', overflow: 'hidden', height: '160px', flexShrink: 0 }}>
-                <img
-                  src={r.image}
-                  alt={r.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }}
-                />
-              </div>
-
-              {/* Name + role + arrow */}
-              <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', padding: '12px 14px 14px', marginTop: 'auto' }}>
-                <div>
-                  <p style={{ fontSize: '13px', fontWeight: 800, color: '#141414', margin: 0 }}>{r.name}</p>
-                  <p style={{ fontSize: '11px', color: '#4A4642', margin: '2px 0 0', lineHeight: 1.3 }}>{r.role}</p>
-                </div>
-                <button
-                  style={{
-                    width: '28px', height: '28px', borderRadius: '50%',
-                    background: '#fce4ef', color: '#d63384',
-                    border: '1px solid #e9a0bf',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', flexShrink: 0,
-                    transition: 'transform 0.15s',
-                  }}
-                  onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.15)'}
-                  onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-                  aria-label={`Read ${r.name}'s review`}
-                >
-                  <ArrowIcon />
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-
       </div>
     </section>
   );

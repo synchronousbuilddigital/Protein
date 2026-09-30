@@ -1,279 +1,353 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useDeferredValue, useRef, useLayoutEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ScrollReveal from '../components/ScrollReveal';
+import NewsletterSection from '../components/NewsletterSection';
 import { BLOG_ARTICLES } from './blogData';
+
+/*
+ * Journal — dark hero with search, sticky category rail, editorial featured story,
+ * then the article grid. Cards that mount after a filter change animate in with CSS
+ * (.bl-card, keyed on the filter) because ScrollReveal only wires elements present on mount.
+ * Styles: "Blog" in globals.css (reuses the shop hero).
+ */
+
+const CATEGORIES = ['All', 'Nutrition & Science', 'Recipes & Shakes', 'Doctor Insights', 'Hormone Health'];
+
+const TOPICS = [
+  { cat: 'Nutrition & Science', note: 'How protein works in Indian diets', d: 'M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3M7.5 15h9' },
+  { cat: 'Recipes & Shakes', note: 'Two-minute shakes and desi twists', d: 'M5 11h14l-1.5 8.5a2 2 0 0 1-2 1.5h-7a2 2 0 0 1-2-1.5zM8 11a4 4 0 0 1 8 0M12 3v2' },
+  { cat: 'Doctor Insights', note: 'Safety, testing and what to look for', d: 'M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6zM9 12l2 2 4-4' },
+  { cat: 'Hormone Health', note: 'PCOS, energy and women’s health', d: 'M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.6-7 10-7 10z' },
+];
+
+const POPULAR = [
+  { label: 'Gut health', q: 'gut' },
+  { label: 'PCOS', q: 'PCOS' },
+  { label: 'Smoothies', q: 'smoothie' },
+  { label: 'Lab testing', q: 'NABL' },
+];
+
+// Wide, text-free shot for the full-bleed featured card (article pages keep their own cover).
+const FEATURE_ART = '/products/coffee-crew-3.webp';
+
+function Arrow({ size = 15 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function Meta({ article, light }) {
+  return (
+    <div className={`bl-meta${light ? ' bl-meta--light' : ''}`}>
+      <span>{article.date}</span>
+      <i aria-hidden />
+      <span>{article.readTime}</span>
+    </div>
+  );
+}
+
+function Author({ article, size = 'sm', light }) {
+  return (
+    <div className={`bl-author bl-author--${size}${light ? ' bl-author--light' : ''}`}>
+      <img src={article.authorAvatar} alt="" loading="lazy" />
+      <span>
+        <strong>{article.author}</strong>
+        {size === 'lg' && <small>{article.authorRole}</small>}
+      </span>
+    </div>
+  );
+}
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const query = useDeferredValue(searchQuery.trim().toLowerCase());
 
-  const categories = ['All', 'Nutrition & Science', 'Recipes & Shakes', 'Doctor Insights', 'Hormone Health'];
+  const counts = useMemo(() => {
+    const c = { All: BLOG_ARTICLES.length };
+    BLOG_ARTICLES.forEach((a) => (c[a.category] = (c[a.category] || 0) + 1));
+    return c;
+  }, []);
 
-  const filteredArticles = useMemo(() => {
-    return BLOG_ARTICLES.filter((article) => {
-      const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory;
-      const matchesSearch =
-        article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        article.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        article.author.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-  }, [selectedCategory, searchQuery]);
+  const filteredArticles = useMemo(
+    () =>
+      BLOG_ARTICLES.filter((a) => {
+        const inCategory = selectedCategory === 'All' || a.category === selectedCategory;
+        const hay = `${a.title} ${a.excerpt} ${a.author} ${a.category}`.toLowerCase();
+        return inCategory && (!query || hay.includes(query));
+      }),
+    [selectedCategory, query]
+  );
 
   const featuredArticle = BLOG_ARTICLES.find((a) => a.featured) || BLOG_ARTICLES[0];
-  const gridArticles = filteredArticles.filter((a) => a.slug !== (selectedCategory === 'All' && !searchQuery ? featuredArticle.slug : ''));
+  const showFeatured = selectedCategory === 'All' && !query;
+  const gridArticles = showFeatured ? filteredArticles.filter((a) => a.slug !== featuredArticle.slug) : filteredArticles;
+  const gridKey = `${selectedCategory}|${query}`;
+  const stackArticles = [featuredArticle, ...BLOG_ARTICLES.filter((a) => a.slug !== featuredArticle.slug)].slice(0, 3);
+
+  // Slide the dark highlight under the active pill (DOM write, no re-render).
+  const trackRef = useRef(null);
+  const indRef = useRef(null);
+  useLayoutEffect(() => {
+    const track = trackRef.current;
+    const ind = indRef.current;
+    if (!track || !ind) return;
+    const place = () => {
+      const btn = track.querySelector(`[data-cat="${CSS.escape(selectedCategory)}"]`);
+      if (!btn) return;
+      ind.style.width = `${btn.offsetWidth}px`;
+      ind.style.transform = `translateX(${btn.offsetLeft}px)`;
+      ind.style.opacity = '1';
+      const { scrollLeft, clientWidth } = track;
+      if (btn.offsetLeft < scrollLeft || btn.offsetLeft + btn.offsetWidth > scrollLeft + clientWidth) {
+        track.scrollTo({ left: btn.offsetLeft - (clientWidth - btn.offsetWidth) / 2, behavior: 'smooth' });
+      }
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    ro.observe(track);
+    document.fonts?.ready.then(place);
+    return () => ro.disconnect();
+  }, [selectedCategory]);
+
+  const reset = () => {
+    setSelectedCategory('All');
+    setSearchQuery('');
+  };
 
   return (
-    <main className="min-h-screen bg-[#FBF7F1] pt-[48px] text-[#111111] font-['Inter',sans-serif]">
+    <main className="shop blog min-h-screen text-[#141414]">
       <Navbar />
+      <ScrollReveal />
 
-      {/* Hero Section */}
-      <section className="bg-[#EF5A32] text-white pt-16 pb-20 px-6 sm:px-12 relative overflow-hidden">
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <span className="inline-block bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest mb-4 border border-white/30">
-            Clean Science & Wellness Journal
-          </span>
-          <h1 className="font-['Anton'] text-4xl sm:text-6xl md:text-7xl uppercase tracking-tight leading-none mb-6">
-            The Proteinest Journal
-          </h1>
-          <p className="text-base sm:text-lg text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
-            Doctor-approved nutrition advice, plant-based recipe guides, digestive health insights, and pure science tailored for Indian bodies.
-          </p>
-
-          {/* Search Input */}
-          <div className="max-w-xl mx-auto relative shadow-2xl rounded-full overflow-hidden">
-            <input
-              type="text"
-              placeholder="Search articles, recipes, doctor tips..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-6 py-4 pl-14 bg-white text-[#111111] text-sm sm:text-base outline-none placeholder-gray-400 font-medium"
-            />
-            <svg
-              className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs font-bold px-2 py-1"
-              >
-                Clear
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Decorative background accent */}
-        <div className="absolute -bottom-16 -right-16 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-      </section>
-
-      {/* Category Filter Pills */}
-      <div className="max-w-6xl mx-auto px-6 pt-10 pb-6 flex items-center justify-center gap-2.5 flex-wrap">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${selectedCategory === cat
-                ? 'bg-[#EF5A32] text-white shadow-lg shadow-[#EF5A32]/20 scale-105'
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-              }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* Featured Article Banner (Only shown on 'All' and no search query) */}
-      {selectedCategory === 'All' && !searchQuery && featuredArticle && (
-        <section className="max-w-6xl mx-auto px-6 py-6">
-          <div className="bg-white rounded-3xl overflow-hidden border border-gray-200/80 shadow-xl grid grid-cols-1 md:grid-cols-12 gap-0 group hover:border-[#EF5A32]/40 transition-all duration-300">
-            <div className="md:col-span-7 aspect-[16/10] md:aspect-auto relative overflow-hidden bg-orange-50">
-              <img
-                src={featuredArticle.image}
-                alt={featuredArticle.title}
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+      {/* ── hero: copy + search | fanned cover stack ── */}
+      <section className="shop-hero bl-hero" aria-labelledby="blog-title">
+        <div className="shop-hero-glow" aria-hidden />
+        <div className="shop-hero-grain" aria-hidden />
+        <span className="shop-hero-ghost" aria-hidden data-parallax="0.25">
+          JOURNAL
+        </span>
+        <div className="bl-hero-grid">
+          <div className="bl-hero-copy" data-reveal-stagger="0.1">
+            <span className="shop-kicker">
+              <i aria-hidden />
+              Clean science &amp; wellness
+            </span>
+            <h1 id="blog-title" className="shop-hero-title bl-hero-title" data-split>
+              The Proteinest <em>Journal.</em>
+            </h1>
+            <p className="shop-hero-sub">
+              Doctor-reviewed nutrition, plant-based recipes, gut health and hormone science, written for Indian bodies and Indian kitchens.
+            </p>
+            <form className="bl-search" role="search" onSubmit={(e) => e.preventDefault()}>
+              <label htmlFor="blog-search" className="sr-only">
+                Search the journal
+              </label>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2.2" />
+                <path d="m20 20-3.5-3.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+              </svg>
+              <input
+                id="blog-search"
+                type="search"
+                placeholder="Search articles, recipes, doctor tips…"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoComplete="off"
               />
-              <span className="absolute top-4 left-4 bg-[#EF5A32] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow-md">
-                Featured Spotlight
-              </span>
-            </div>
-
-            <div className="md:col-span-5 p-8 sm:p-10 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-3 text-xs font-semibold text-gray-500 mb-4">
-                  <span className="text-[#EF5A32] font-bold uppercase tracking-wider">{featuredArticle.category}</span>
-                  <span>•</span>
-                  <span>{featuredArticle.readTime}</span>
-                </div>
-
-                <a href={`/blog/${featuredArticle.slug}`}>
-                  <h2 className="font-['Anton'] text-2xl sm:text-3xl uppercase tracking-wide text-[#111111] mb-4 hover:text-[#EF5A32] transition-colors leading-tight">
-                    {featuredArticle.title}
-                  </h2>
-                </a>
-
-                <p className="text-sm text-gray-600 mb-6 leading-relaxed">
-                  {featuredArticle.excerpt}
-                </p>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-3 border-t border-gray-100 pt-5 mb-6">
-                  <img
-                    src={featuredArticle.authorAvatar}
-                    alt={featuredArticle.author}
-                    className="w-10 h-10 rounded-full object-cover border-2 border-[#EF5A32]"
-                  />
-                  <div>
-                    <div className="text-xs font-bold text-gray-900">{featuredArticle.author}</div>
-                    <div className="text-[11px] text-gray-500">{featuredArticle.authorRole}</div>
-                  </div>
-                </div>
-
-                <a
-                  href={`/blog/${featuredArticle.slug}`}
-                  className="inline-flex items-center justify-center gap-2 w-full bg-[#111111] hover:bg-[#EF5A32] text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-full transition-all duration-300"
-                >
-                  Read Full Article
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              {searchQuery && (
+                <button type="button" onClick={() => setSearchQuery('')} aria-label="Clear search">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
                   </svg>
-                </a>
-              </div>
+                </button>
+              )}
+            </form>
+            <div className="bl-popular">
+              <span>Popular</span>
+              {POPULAR.map((p) => (
+                <button key={p.q} type="button" onClick={() => { setSelectedCategory('All'); setSearchQuery(p.q); }}>
+                  {p.label}
+                </button>
+              ))}
             </div>
           </div>
-        </section>
-      )}
 
-      {/* Main Articles Grid */}
-      <section className="max-w-6xl mx-auto px-6 py-10">
-        <div className="flex items-center justify-between mb-8 border-b border-gray-200 pb-4">
-          <h3 className="font-['Anton'] text-2xl uppercase tracking-wider text-[#111111]">
-            {selectedCategory === 'All' ? 'Latest Articles' : `${selectedCategory} (${gridArticles.length})`}
-          </h3>
-          <span className="text-xs text-gray-500 font-medium">Showing {gridArticles.length} stories</span>
-        </div>
-
-        {gridArticles.length === 0 ? (
-          <div className="bg-white rounded-2xl p-12 text-center border border-gray-200 max-w-md mx-auto my-12">
-            <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-            </svg>
-            <h4 className="font-bold text-lg text-gray-800 mb-2">No articles found</h4>
-            <p className="text-xs text-gray-500 mb-6">Try searching for different keywords or select another category.</p>
-            <button
-              onClick={() => {
-                setSelectedCategory('All');
-                setSearchQuery('');
-              }}
-              className="bg-[#EF5A32] text-white text-xs font-bold px-6 py-2.5 rounded-full uppercase tracking-wider hover:bg-[#111111] transition-colors"
-            >
-              Reset Filters
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {gridArticles.map((article) => (
-              <article
-                key={article.slug}
-                className="bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group hover:-translate-y-1"
-              >
-                <div>
-                  <a href={`/blog/${article.slug}`} className="block relative aspect-[16/10] overflow-hidden bg-gray-100">
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <span className="absolute top-3 left-3 bg-[#111111]/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-                      {article.category}
-                    </span>
-                  </a>
-
-                  <div className="p-6">
-                    <div className="flex items-center gap-2 text-[11px] text-gray-500 font-semibold mb-3">
-                      <span>{article.date}</span>
-                      <span>•</span>
-                      <span>{article.readTime}</span>
-                    </div>
-
-                    <a href={`/blog/${article.slug}`}>
-                      <h3 className="font-['Anton'] text-xl uppercase tracking-wide text-[#111111] mb-3 leading-snug group-hover:text-[#EF5A32] transition-colors line-clamp-2">
-                        {article.title}
-                      </h3>
-                    </a>
-
-                    <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed mb-4">
-                      {article.excerpt}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="px-6 pb-6 pt-2 border-t border-gray-100 flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <img
-                      src={article.authorAvatar}
-                      alt={article.author}
-                      className="w-7 h-7 rounded-full object-cover border border-gray-200"
-                    />
-                    <span className="text-xs font-medium text-gray-700">{article.author}</span>
-                  </div>
-
-                  <a
-                    href={`/blog/${article.slug}`}
-                    className="text-xs font-bold text-[#EF5A32] hover:text-[#111111] uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-all"
-                  >
-                    Read
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </a>
-                </div>
-              </article>
+          <div className="bl-stack" aria-hidden data-reveal="left">
+            {stackArticles.map((a, i) => (
+              <a key={a.slug} href={`/blog/${a.slug}`} tabIndex={-1} className="bl-stack-card" style={{ '--n': i }}>
+                <img src={a.image} alt="" />
+                {i === 0 && (
+                  <span className="bl-stack-cap">
+                    <small>{a.category}</small>
+                    <strong>{a.title}</strong>
+                  </span>
+                )}
+              </a>
             ))}
           </div>
-        )}
-      </section>
-
-      {/* Newsletter Signup Banner */}
-      <section className="max-w-6xl mx-auto px-6 py-12 my-8">
-        <div className="bg-[#EF5A32] rounded-3xl p-8 sm:p-12 text-white text-center relative overflow-hidden shadow-2xl">
-          <div className="relative z-10 max-w-xl mx-auto">
-            <span className="inline-block bg-white/20 px-4 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest mb-3">
-              Stay Informed
-            </span>
-            <h3 className="font-['Anton'] text-3xl sm:text-4xl uppercase tracking-wide mb-3">
-              Get Doctor-Backed Nutrition Tips
-            </h3>
-            <p className="text-xs sm:text-sm text-white/90 mb-8 leading-relaxed">
-              Join 25,000+ wellness enthusiasts getting weekly recipe ideas, science breakdowns, and exclusive discounts directly in their inbox.
-            </p>
-
-            <form onSubmit={(e) => e.preventDefault()} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                required
-                className="flex-1 px-5 py-3.5 rounded-full bg-white text-[#111111] text-xs font-medium outline-none placeholder-gray-400"
-              />
-              <button
-                type="submit"
-                className="bg-[#111111] hover:bg-white hover:text-[#111111] text-white text-xs font-bold uppercase tracking-wider px-7 py-3.5 rounded-full transition-all duration-300"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
         </div>
       </section>
 
+      {/* ── category rail ── */}
+      <nav className="bl-rail" aria-label="Article categories">
+        <div className="bl-rail-track" ref={trackRef}>
+          <span className="bl-pill-ind" ref={indRef} aria-hidden />
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              aria-pressed={selectedCategory === cat}
+              onClick={() => setSelectedCategory(cat)}
+              className="bl-pill"
+              data-cat={cat}
+            >
+              {cat}
+              <span>{counts[cat] || 0}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <div className="bl-body">
+        <div className="bl-body-glow" aria-hidden />
+        <div className="bl-body-dots" aria-hidden />
+
+        {/* ── featured (cinematic) + topics ── */}
+        {showFeatured && (
+          <section className="bl-section bl-featured-wrap" aria-label="Featured story and topics">
+            <div className="bl-lead">
+              <article className="bl-feature" data-reveal="up">
+                <img src={FEATURE_ART} alt="" className="bl-feature-img" />
+                <div className="bl-feature-shade" aria-hidden />
+                <span className="bl-flag">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="m12 2 2.9 6.9L22 9.3l-5.5 4.8 1.7 7.2L12 17.6 5.8 21.3l1.7-7.2L2 9.3l7.1-.4z" />
+                  </svg>
+                  Editor&apos;s pick
+                </span>
+                <div className="bl-feature-copy">
+                  <span className="bl-cat">{featuredArticle.category}</span>
+                  <h2>
+                    <a href={`/blog/${featuredArticle.slug}`} className="bl-feature-link">
+                      {featuredArticle.title}
+                    </a>
+                  </h2>
+                  <p>{featuredArticle.excerpt}</p>
+                  <div className="bl-feature-foot">
+                    <Author article={featuredArticle} size="lg" light />
+                    <Meta article={featuredArticle} light />
+                    <span className="shop-cta bl-read" aria-hidden>
+                      Read the story <Arrow />
+                    </span>
+                  </div>
+                </div>
+              </article>
+
+              <aside className="bl-topics" aria-labelledby="bl-topics-title" data-reveal="right">
+                <h2 id="bl-topics-title">
+                  Browse <em>topics</em>
+                </h2>
+                <ul>
+                  {TOPICS.map((t, i) => (
+                    <li key={t.cat}>
+                      <button type="button" onClick={() => setSelectedCategory(t.cat)} className="bl-topic">
+                        <span className="bl-topic-icon" aria-hidden>
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                            <path d={t.d} />
+                          </svg>
+                        </span>
+                        <span className="bl-topic-text">
+                          <strong>{t.cat}</strong>
+                          <small>{t.note}</small>
+                        </span>
+                        <span className="bl-topic-count">{String(counts[t.cat] || 0).padStart(2, '0')}</span>
+                        <span className="bl-topic-num" aria-hidden>{String(i + 1).padStart(2, '0')}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <a href="/calculator" className="bl-topics-cta">
+                  <span>
+                    <small>Not sure where to start?</small>
+                    <strong>Find your daily protein target</strong>
+                  </span>
+                  <Arrow />
+                </a>
+              </aside>
+            </div>
+          </section>
+        )}
+
+        {/* ── grid ── */}
+        <section className="bl-section bl-grid-wrap" aria-labelledby="bl-latest">
+          <header className="bl-grid-head">
+            <h2 id="bl-latest">
+              {query ? (
+                <>
+                  Results for <em>“{searchQuery.trim()}”</em>
+                </>
+              ) : selectedCategory === 'All' ? (
+                <>
+                  Latest <em>stories</em>
+                </>
+              ) : (
+                <em>{selectedCategory}</em>
+              )}
+            </h2>
+            <span aria-live="polite">
+              {gridArticles.length} {gridArticles.length === 1 ? 'story' : 'stories'}
+            </span>
+          </header>
+
+          {gridArticles.length === 0 ? (
+            <div className="bl-empty">
+              <span className="bl-empty-icon" aria-hidden>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+                  <path d="m20 20-3.5-3.5M8.5 11h5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </span>
+              <h3>No stories found</h3>
+              <p>Try a different keyword or browse another category.</p>
+              <button type="button" onClick={reset} className="shop-cta">
+                Show all stories
+              </button>
+            </div>
+          ) : (
+            <div className="bl-grid" key={gridKey} data-bento={gridArticles.length >= 4 && gridArticles.length % 3 === 1 ? '' : undefined}>
+              {gridArticles.map((article, i) => (
+                <article key={article.slug} className="bl-card" style={{ '--i': i }}>
+                  <a href={`/blog/${article.slug}`} className="bl-card-link">
+                    <span className="bl-card-img">
+                      <img src={article.image} alt="" loading="lazy" />
+                      <span className="bl-chip">{article.category}</span>
+                    </span>
+                    <span className="bl-card-body">
+                      <Meta article={article} />
+                      <h3>{article.title}</h3>
+                      <p>{article.excerpt}</p>
+                      <span className="bl-card-foot">
+                        <Author article={article} />
+                        <span className="bl-card-go" aria-hidden>
+                          <Arrow size={14} />
+                        </span>
+                      </span>
+                    </span>
+                  </a>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+
+      <NewsletterSection />
       <Footer />
     </main>
   );

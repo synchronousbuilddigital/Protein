@@ -8,7 +8,7 @@ export const BLOG_ARTICLES = [
     authorAvatar: '/doc-ankit.png',
     date: 'Sept 18, 2026',
     readTime: '6 min read',
-    image: '/protein.png',
+    image: '/products/choco-buddy-3.webp',
     featured: true,
     excerpt: 'Over 70% of Indians experience lactose sensitivity or bloating from traditional whey protein. Discover how pea & brown rice protein isolate offers 98% digestibility without stomach distress.',
     content: `
@@ -54,7 +54,7 @@ The traditional Indian vegetarian diet is rich in lentils, legumes, grains, and 
     authorAvatar: '/doc-bandana.png',
     date: 'Sept 15, 2026',
     readTime: '4 min read',
-    image: '/kulfi-mate.png',
+    image: '/lifestyle-in-the-kitchen.png',
     featured: false,
     excerpt: 'From Choco-Banana Peanut Butter Fudge to Kulfi Almond Protein Chillers—fuel your morning with 26g of clean plant protein.',
     content: `
@@ -104,7 +104,7 @@ Drink your smoothies slowly rather than chugging them down. Chewing slightly tri
     authorAvatar: '/doc-dishaa.png',
     date: 'Sept 12, 2026',
     readTime: '5 min read',
-    image: '/badamkhulfi.png',
+    image: '/products/choco-buddy-2.webp',
     featured: false,
     excerpt: 'The average Indian vegetarian diet provides under 30g of protein daily. Here is the exact calculation for weight loss, muscle recovery, and daily energy.',
     content: `
@@ -145,7 +145,7 @@ Typical Indian meals are carbohydrate-heavy (rice, roti, potato curries) with mo
     authorAvatar: '/doc-payal.png',
     date: 'Sept 08, 2026',
     readTime: '7 min read',
-    image: '/founder.png',
+    image: '/products/kulfi-mate-5.jpg',
     featured: false,
     excerpt: 'Unregulated protein supplements can contain lead, arsenic, or hidden steroids. Learn how NABL 17025 certification guarantees 100% purity.',
     content: `
@@ -179,7 +179,7 @@ Every batch of **The Proteinest** undergoes rigorous NABL ISO/IEC 17025 testing 
     authorAvatar: '/doc-rinshu.png',
     date: 'Sept 04, 2026',
     readTime: '8 min read',
-    image: '/doc-dishaa.png',
+    image: '/protein_gym_woman.png',
     featured: false,
     excerpt: 'How clean plant protein supports insulin sensitivity, reduces systemic inflammation, and aids hormonal balance for women with PCOS.',
     content: `

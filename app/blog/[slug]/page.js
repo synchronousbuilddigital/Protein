@@ -1,190 +1,184 @@
-'use client';
-
-import { use } from 'react';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import ScrollReveal from '../../components/ScrollReveal';
 import { BLOG_ARTICLES } from '../blogData';
+import { renderArticle } from '../_lib/markdown';
+import ArticleAside from './ArticleAside';
 
-export default function BlogArticlePage({ params }) {
-  const resolvedParams = use(params);
-  const { slug } = resolvedParams;
+/*
+ * Journal article — dark editorial header, wide cover, sticky outline + share rail,
+ * long-form prose, reviewer card, "put it into practice" CTA and related stories.
+ * Styles: "Article" in globals.css (reuses the shop hero and the blog cards).
+ */
 
-  const article = BLOG_ARTICLES.find((a) => a.slug === slug);
-  const relatedArticles = BLOG_ARTICLES.filter((a) => a.slug !== slug).slice(0, 3);
+const find = (slug) => BLOG_ARTICLES.find((a) => a.slug === slug);
 
-  if (!article) {
-    return (
-      <main className="min-h-screen bg-[#FBF7F1] pt-[48px] text-[#111111] font-['Inter',sans-serif] flex flex-col justify-between">
-        <Navbar />
-        <div className="max-w-md mx-auto text-center py-24 px-6">
-          <h1 className="font-['Anton'] text-4xl uppercase tracking-wider mb-4">Article Not Found</h1>
-          <p className="text-sm text-gray-600 mb-8">The journal article you are looking for does not exist or has been moved.</p>
-          <a
-            href="/blog"
-            className="inline-block bg-[#EF5A32] text-white text-xs font-bold uppercase tracking-wider px-8 py-3.5 rounded-full hover:bg-[#111111] transition-colors"
-          >
-            Back to Journal
-          </a>
-        </div>
-        <Footer />
-      </main>
-    );
-  }
+// The journal is a fixed list: unknown slugs get a real 404 (root not-found) instead of a 200.
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return BLOG_ARTICLES.map((a) => ({ slug: a.slug }));
+}
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const article = find(slug);
+  if (!article) return { title: 'Article not found — The Proteinest Journal' };
+  return {
+    title: `${article.title} — The Proteinest Journal`,
+    description: article.excerpt,
+    openGraph: { title: article.title, description: article.excerpt, images: [article.image], type: 'article' },
+  };
+}
+
+function Arrow({ size = 15 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export default async function BlogArticlePage({ params }) {
+  const { slug } = await params;
+  const article = find(slug);
+  if (!article) notFound();
+
+  const { nodes, outline } = renderArticle(article.content);
+  const related = [
+    ...BLOG_ARTICLES.filter((a) => a.slug !== slug && a.category === article.category),
+    ...BLOG_ARTICLES.filter((a) => a.slug !== slug && a.category !== article.category),
+  ].slice(0, 3);
 
   return (
-    <main className="min-h-screen bg-[#FBF7F1] pt-[48px] text-[#111111] font-['Inter',sans-serif]">
+    <main className="shop article min-h-screen text-[#141414]">
       <Navbar />
+      <ScrollReveal />
 
-      {/* Article Header */}
-      <section className="bg-[#111111] text-white pt-14 pb-20 px-6 sm:px-12 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto">
-          {/* Breadcrumb / Back button */}
-          <a
-            href="/blog"
-            className="inline-flex items-center gap-2 text-xs font-semibold text-white/70 hover:text-[#EF5A32] mb-8 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Journal
-          </a>
-
-          <div className="flex items-center gap-3 text-xs font-bold text-[#EF5A32] uppercase tracking-widest mb-4">
+      {/* ── header ── */}
+      <section className="shop-hero ar-hero" aria-labelledby="ar-title">
+        <div className="shop-hero-glow" aria-hidden />
+        <div className="shop-hero-grain" aria-hidden />
+        <div className="ar-hero-inner" data-reveal-stagger="0.08">
+          <nav className="ar-crumbs" aria-label="Breadcrumb">
+            <Link href="/blog">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Journal
+            </Link>
+            <span aria-hidden>/</span>
             <span>{article.category}</span>
-            <span className="text-white/30">•</span>
-            <span className="text-white/70 font-medium">{article.readTime}</span>
-          </div>
-
-          <h1 className="font-['Anton'] text-3xl sm:text-5xl md:text-6xl uppercase tracking-tight leading-tight mb-8">
+          </nav>
+          <h1 id="ar-title" className="ar-title" data-split>
             {article.title}
           </h1>
-
-          {/* Author info bar */}
-          <div className="flex items-center justify-between border-t border-white/10 pt-6 flex-wrap gap-4">
-            <div className="flex items-center gap-3.5">
-              <img
-                src={article.authorAvatar}
-                alt={article.author}
-                className="w-12 h-12 rounded-full object-cover border-2 border-[#EF5A32]"
-              />
-              <div>
-                <div className="text-sm font-bold text-white">{article.author}</div>
-                <div className="text-xs text-white/60">{article.authorRole}</div>
-              </div>
+          <p className="ar-dek">{article.excerpt}</p>
+          <div className="ar-byline">
+            <div className="ar-byline-author">
+              <img src={article.authorAvatar} alt="" />
+              <span>
+                <strong>{article.author}</strong>
+                <small>{article.authorRole}</small>
+              </span>
             </div>
-
-            <div className="text-xs text-white/50 font-medium">Published on {article.date}</div>
+            <dl className="ar-byline-meta">
+              <div>
+                <dt>Published</dt>
+                <dd>{article.date}</dd>
+              </div>
+              <div>
+                <dt>Reading time</dt>
+                <dd>{article.readTime}</dd>
+              </div>
+            </dl>
           </div>
         </div>
       </section>
 
-      {/* Main Image */}
-      <div className="max-w-4xl mx-auto px-6 -mt-10 relative z-20">
-        <div className="rounded-3xl overflow-hidden shadow-2xl aspect-[16/9] bg-gray-200 border-4 border-white">
-          <img src={article.image} alt={article.title} className="w-full h-full object-cover object-center" />
+      <figure className="ar-cover" data-reveal="up">
+        <img src={article.image} alt={article.title} />
+      </figure>
+
+      {/* ── body ── */}
+      <div className="ar-layout">
+        <ArticleAside outline={outline} title={article.title} />
+
+        <div className="ar-main">
+          <article className="ar-prose">{nodes}</article>
+
+          <aside className="ar-reviewer" aria-label="About the author" data-reveal="up">
+            <img src={article.authorAvatar} alt="" />
+            <div>
+              <span>Written &amp; reviewed by</span>
+              <strong>{article.author}</strong>
+              <small>{article.authorRole}</small>
+              <p>Reviewed by health practitioners at The Proteinest for medical and nutritional accuracy.</p>
+            </div>
+          </aside>
+
+          <aside className="ar-practice" aria-labelledby="ar-practice-title" data-reveal="up">
+            <div className="ar-practice-glow" aria-hidden />
+            <span className="ar-practice-kicker">Put it into practice</span>
+            <h2 id="ar-practice-title">
+              How much protein do <em>you</em> need?
+            </h2>
+            <p>Get your personal daily target in under a minute, then find the flavour that gets you there.</p>
+            <div className="ar-practice-actions">
+              <a href="/calculator" className="shop-cta">
+                Protein calculator <Arrow />
+              </a>
+              <a href="/shop" className="ar-ghost">
+                Shop the range
+              </a>
+            </div>
+          </aside>
         </div>
       </div>
 
-      {/* Article Body Content */}
-      <article className="max-w-3xl mx-auto px-6 py-14">
-        {/* Intro Excerpt Lead */}
-        <p className="text-lg sm:text-xl text-gray-800 font-medium leading-relaxed mb-10 pb-8 border-b border-gray-200/80">
-          {article.excerpt}
-        </p>
-
-        {/* Dynamic Markdown Content Sections */}
-        <div className="prose prose-lg max-w-none text-gray-800 leading-relaxed space-y-6">
-          {article.content.split('\n\n').map((paragraph, idx) => {
-            if (paragraph.startsWith('## ')) {
-              return (
-                <h2 key={idx} className="font-['Anton'] text-2xl sm:text-3xl uppercase tracking-wide text-[#111111] mt-10 mb-4 pt-4 border-t border-gray-200/60">
-                  {paragraph.replace('## ', '')}
-                </h2>
-              );
-            }
-            if (paragraph.startsWith('### ')) {
-              return (
-                <h3 key={idx} className="font-bold text-lg text-[#EF5A32] mt-8 mb-3">
-                  {paragraph.replace('### ', '')}
-                </h3>
-              );
-            }
-            if (paragraph.startsWith('> ')) {
-              return (
-                <blockquote key={idx} className="bg-orange-50 border-l-4 border-[#EF5A32] p-6 rounded-r-2xl my-8 text-gray-800 font-semibold text-base italic shadow-sm">
-                  {paragraph.replace('> ', '')}
-                </blockquote>
-              );
-            }
-            if (paragraph.startsWith('---')) {
-              return <hr key={idx} className="my-8 border-gray-200" />;
-            }
-            return (
-              <p key={idx} className="text-base text-gray-700 leading-relaxed mb-4">
-                {paragraph}
-              </p>
-            );
-          })}
-        </div>
-
-        {/* Doctor Quality Seal Banner */}
-        <div className="mt-14 bg-white border border-gray-200 p-8 rounded-2xl shadow-md flex flex-col sm:flex-row items-center gap-6">
-          <img
-            src={article.authorAvatar}
-            alt={article.author}
-            className="w-16 h-16 rounded-full object-cover border-2 border-[#EF5A32] shrink-0"
-          />
-          <div>
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#EF5A32]">Medical Reviewer</span>
-            <h4 className="font-['Anton'] text-xl uppercase tracking-wide text-[#111111] mt-0.5">{article.author}</h4>
-            <p className="text-xs text-gray-600 mt-1 leading-relaxed">
-              Reviewed by certified health practitioners at The Proteinest to ensure strict medical and nutritional accuracy.
-            </p>
-          </div>
-        </div>
-      </article>
-
-      {/* Related Articles Section */}
-      <section className="bg-white py-16 border-t border-gray-200">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex items-center justify-between mb-10">
-            <h3 className="font-['Anton'] text-2xl sm:text-3xl uppercase tracking-wide text-[#111111]">
-              More Stories You Might Like
-            </h3>
-            <a href="/blog" className="text-xs font-bold text-[#EF5A32] hover:text-[#111111] uppercase tracking-wider">
-              View All Journal →
-            </a>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedArticles.map((rel) => (
-              <a
-                key={rel.slug}
-                href={`/blog/${rel.slug}`}
-                className="group bg-[#FBF7F1] rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="aspect-[16/10] overflow-hidden bg-gray-200">
-                    <img
-                      src={rel.image}
-                      alt={rel.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <span className="text-[10px] font-bold text-[#EF5A32] uppercase tracking-wider block mb-2">{rel.category}</span>
-                    <h4 className="font-['Anton'] text-lg uppercase tracking-wide text-[#111111] group-hover:text-[#EF5A32] transition-colors leading-snug line-clamp-2 mb-2">
-                      {rel.title}
-                    </h4>
-                    <p className="text-xs text-gray-600 line-clamp-2">{rel.excerpt}</p>
-                  </div>
-                </div>
-                <div className="p-6 pt-0 text-xs font-semibold text-gray-400">
-                  {rel.readTime}
-                </div>
+      {/* ── related ── */}
+      <section className="ar-related" aria-labelledby="ar-related-title">
+        <header className="bl-grid-head">
+          <h2 id="ar-related-title">
+            Keep <em>reading</em>
+          </h2>
+          <Link href="/blog" className="ar-all">
+            All stories <Arrow size={13} />
+          </Link>
+        </header>
+        <div className="bl-grid" data-reveal-stagger="0.08">
+          {related.map((a) => (
+            <article key={a.slug} className="bl-card ar-card">
+              <a href={`/blog/${a.slug}`} className="bl-card-link">
+                <span className="bl-card-img">
+                  <img src={a.image} alt="" loading="lazy" />
+                  <span className="bl-chip">{a.category}</span>
+                </span>
+                <span className="bl-card-body">
+                  <span className="bl-meta">
+                    <span>{a.date}</span>
+                    <i aria-hidden />
+                    <span>{a.readTime}</span>
+                  </span>
+                  <h3>{a.title}</h3>
+                  <p>{a.excerpt}</p>
+                  <span className="bl-card-foot">
+                    <span className="bl-author bl-author--sm">
+                      <img src={a.authorAvatar} alt="" loading="lazy" />
+                      <span>
+                        <strong>{a.author}</strong>
+                      </span>
+                    </span>
+                    <span className="bl-card-go" aria-hidden>
+                      <Arrow size={14} />
+                    </span>
+                  </span>
+                </span>
               </a>
-            ))}
-          </div>
+            </article>
+          ))}
         </div>
       </section>
 

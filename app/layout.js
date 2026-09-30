@@ -1,5 +1,7 @@
 import { Fira_Sans, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import SiteLoader from "./components/SiteLoader";
+import SmoothScroll from "./components/SmoothScroll";
 
 const firaSans = Fira_Sans({
   weight: ["300", "400", "600", "700", "800"],
@@ -31,7 +33,9 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${firaSans.variable} ${inter.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body id="top" className="min-h-full flex flex-col">
+        <SiteLoader />
+        <SmoothScroll />
         {children}
       </body>
     </html>

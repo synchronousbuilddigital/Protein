@@ -12,11 +12,13 @@ import NewsletterSection from "./components/NewsletterSection";
 import Footer from "./components/Footer";
 import LifestyleSection from "./components/LifestyleSection";
 import SectionDivider from "./components/SectionDivider";
+import ScrollReveal from "./components/ScrollReveal";
 
 export default function Home() {
   return (
     <main className="min-h-screen" style={{ background: '#F8F6F2' }}>
       <Navbar />
+      <ScrollReveal />
 
       {/* 1st Section: Hero Banner & Trust Marquee */}
       <Hero />
@@ -42,9 +44,11 @@ export default function Home() {
 
       <TestimonialsSection />
 
-      <div className="wrap">
-        <FounderSection />
-        <FAQSection />
+      <div className="band band--ivory">
+        <div className="wrap">
+          <FounderSection />
+          <FAQSection />
+        </div>
       </div>
 
       <NewsletterSection />

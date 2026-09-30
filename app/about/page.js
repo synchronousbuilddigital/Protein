@@ -1,238 +1,315 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import DoctorsSection from "../components/DoctorsSection";
-import Image from "next/image";
-import founderImg from "../../public/founder.png";
-import proteinImg from "../../public/protein.png";
-import kulfiImg from "../../public/badamkhulfi.png";
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import ScrollReveal from '../components/ScrollReveal';
+import catalog from '@/public/products/manifest.json';
 
 export const metadata = {
-  title: "About Us — The Proteinest",
-  description: "Learn why we created The Proteinest: clean, gentle, great-tasting protein formulated specifically for the Indian body and backed by medical experts.",
+  title: 'About Us — The Proteinest',
+  description:
+    'Why we created The Proteinest: clean, gentle, great-tasting plant protein formulated for the Indian body and backed by medical experts.',
 };
+
+/*
+ * About — told in chapters (hook → problem → answer → founder → experts → formulas → CTA).
+ * Server component; scroll choreography comes from ScrollReveal (data-reveal / data-split / .band).
+ * Styles: "About" in globals.css (reuses the shop hero, kicker and band backdrops).
+ */
+
+const photo = (slug) => catalog[slug]?.images?.[0];
+
+const STATS = [
+  { v: '24', u: 'g', l: 'Plant protein per scoop' },
+  { v: '5.5', u: 'g', l: 'Natural BCAAs' },
+  { v: '0', u: 'g', l: 'Added sugar' },
+  { v: '100', u: '%', l: 'NABL lab tested' },
+];
+
+const Svg = ({ children }) => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    {children}
+  </svg>
+);
+
+const PILLARS = [
+  {
+    t: 'NABL-accredited testing',
+    d: 'Every batch is checked by independent certified labs: no amino-spiking, no heavy metals, and label accuracy you can trust.',
+    icon: (
+      <Svg>
+        <path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3" />
+        <path d="M7.5 15h9" />
+      </Svg>
+    ),
+  },
+  {
+    t: 'Multi-enzyme digest blend',
+    d: 'DigeZyme enzymes break protein down quickly for smooth digestion, so you feel light instead of bloated.',
+    icon: (
+      <Svg>
+        <path d="M20 4s-2 10-8 14-10 2-10 2 2-10 8-14 10-2 10-2z" />
+        <path d="M2 20 10 12" />
+      </Svg>
+    ),
+  },
+  {
+    t: 'Desi taste profiles',
+    d: 'Real Spanish cocoa in Choco Buddy, royal badam kulfi in Kulfi Mate, Arabica in Coffee Crew. No chemical aftertaste.',
+    icon: (
+      <Svg>
+        <path d="M5 11h14l-1.5 8.5a2 2 0 0 1-2 1.5h-7a2 2 0 0 1-2-1.5z" />
+        <path d="M8 11a4 4 0 0 1 8 0" />
+        <path d="M12 3v2" />
+      </Svg>
+    ),
+  },
+  {
+    t: 'Clean energy, 0 g sugar',
+    d: 'No maltodextrin, gums, thickeners or hidden sugars. Just functional nourishment for everyday vitality.',
+    icon: (
+      <Svg>
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+      </Svg>
+    ),
+  },
+];
+
+const EXPERTS = [
+  { name: 'Dr Dishaa Bansal', role: 'Gynecologist', img: '/experts/Dr_Dishaa_Bansal_2.jpg', pos: '50% 20%' },
+  { name: 'Payal Rangar', role: 'Certified nutritionist', img: '/experts/Payal_Rangar.png', pos: '50% 25%' },
+  { name: 'Dr Rinshu Jain', role: 'Dentist', img: '/experts/Dr_Rinshu_Jain_3.jpg', pos: '50% 20%' },
+  { name: 'Dr Ankit Bhartia', role: 'Orthopedic surgeon', img: '/doc-ankit.png', pos: '50% 20%' },
+  { name: 'Bandana', role: 'Nutrition expert', img: '/doc-bandana.png', pos: '50% 20%' },
+];
+
+const FORMULAS = [
+  { id: 'choco-buddy', name: 'Choco Buddy', note: 'Spanish cocoa', accent: '#B25A2C' },
+  { id: 'kulfi-mate', name: 'Kulfi Mate', note: 'Royal badam kulfi', accent: '#C9971C' },
+  { id: 'coffee-crew', name: 'Coffee Crew', note: 'Arabica cold brew', accent: '#8A5A2E' },
+];
+
+function Arrow() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-white text-[#111111] flex flex-col antialiased">
+    <main className="shop about min-h-screen text-[#141414]">
       <Navbar />
+      <ScrollReveal />
 
-      {/* Hero / Brand Intro */}
-      <section className="pt-28 pb-14 sm:pt-36 sm:pb-20 bg-gradient-to-b from-[#111111] via-[#1c1917] to-[#111111] text-white relative overflow-hidden">
-        {/* Glow Accents */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#EF5A32]/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-80 h-80 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
-
-        <div className="wrap relative z-10 text-center max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-semibold uppercase tracking-widest text-[#EF5A32] mb-5">
-            About The Proteinest
-          </div>
-
-          <h1 className="font-['Anton'] text-4xl sm:text-6xl md:text-7xl uppercase tracking-tight text-white mb-6 leading-none">
-            Fueling The <span className="text-[#EF5A32]">Finest You</span>
-          </h1>
-
-          <p className="text-base sm:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed font-normal mb-8">
-            A brand of Gizinest Wellness Pvt Ltd. We are on a single-minded mission: to bring clean, gentle, and
-            truly delicious protein to every Indian kitchen — with zero bloat and uncompromising quality.
-          </p>
-
-          {/* Key Brand Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto pt-6 border-t border-white/15">
-            <div className="p-3 text-center">
-              <div className="font-['Anton'] text-3xl sm:text-4xl text-[#EF5A32]">25g</div>
-              <div className="text-xs text-white/70 uppercase tracking-wider mt-1">Clean Protein/Scoop</div>
-            </div>
-            <div className="p-3 text-center">
-              <div className="font-['Anton'] text-3xl sm:text-4xl text-white">5.5g</div>
-              <div className="text-xs text-white/70 uppercase tracking-wider mt-1">Natural BCAAs</div>
-            </div>
-            <div className="p-3 text-center">
-              <div className="font-['Anton'] text-3xl sm:text-4xl text-[#EF5A32]">0g</div>
-              <div className="text-xs text-white/70 uppercase tracking-wider mt-1">Added Sugar</div>
-            </div>
-            <div className="p-3 text-center">
-              <div className="font-['Anton'] text-3xl sm:text-4xl text-white">100%</div>
-              <div className="text-xs text-white/70 uppercase tracking-wider mt-1">NABL Lab Tested</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* The Problem & Our Mission */}
-      <section className="py-16 sm:py-24 bg-[#FBF7F1]">
-        <div className="wrap">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-
-            <div className="lg:col-span-6">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#EF5A32] block mb-2">
-                The Indian Dilemma
-              </span>
-              <h2 className="font-['Anton'] text-3xl sm:text-5xl uppercase tracking-tight text-[#111111] leading-tight mb-6">
-                Why 80% Of Indians Are Low On Protein
-              </h2>
-              <div className="space-y-4 text-sm sm:text-base text-[#111111]/75 leading-relaxed">
-                <p>
-                  Most traditional Indian meals — while nutrient-dense and comforting — are heavily skewed towards carbohydrates and fats. A typical bowl of dal provides barely 7–9 grams of protein alongside 30g+ of carbs.
-                </p>
-                <p>
-                  Meanwhile, the supplement market was filled with harsh, heavy powders designed for western bodybuilders. They caused severe bloating, digestive cramps, acne, and had an overwhelming synthetic aftertaste.
-                </p>
-                <p className="font-semibold text-[#111111]">
-                  We refused to accept that trade-off. Your daily protein should be as gentle on your digestion as a home-cooked meal, taste heavenly, and deliver pure clinical efficacy.
-                </p>
-              </div>
-            </div>
-
-            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-6 rounded-2xl bg-white border border-[#111111]/10 shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-[#EF5A32]/10 text-[#EF5A32] flex items-center justify-center font-bold text-lg mb-4">
-                  🔬
-                </div>
-                <h3 className="font-bold text-base text-[#111111] mb-2">NABL Accredited Testing</h3>
-                <p className="text-xs text-[#111111]/60 leading-relaxed">
-                  Every batch is tested by independent certified labs. No amino-spiking, zero heavy metals, and 100% label accuracy guaranteed.
-                </p>
-              </div>
-
-              <div className="p-6 rounded-2xl bg-white border border-[#111111]/10 shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg mb-4">
-                  🌿
-                </div>
-                <h3 className="font-bold text-base text-[#111111] mb-2">Multi-Enzyme Digest Blend</h3>
-                <p className="text-xs text-[#111111]/60 leading-relaxed">
-                  Fortified with DigeZyme enzymes to actively break down peptide chains, ensuring rapid gastric emptying and zero bloated tummy feeling.
-                </p>
-              </div>
-
-              <div className="p-6 rounded-2xl bg-white border border-[#111111]/10 shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-lg mb-4">
-                  🍨
-                </div>
-                <h3 className="font-bold text-base text-[#111111] mb-2">Desi Taste Profiles</h3>
-                <p className="text-xs text-[#111111]/60 leading-relaxed">
-                  Say goodbye to artificial chemical flavours. Indulge in authentic Dutch Cocoa (Choco Buddy) and royal Badam Kulfi (Kulfi Mate).
-                </p>
-              </div>
-
-              <div className="p-6 rounded-2xl bg-white border border-[#111111]/10 shadow-sm">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-lg mb-4">
-                  ⚡
-                </div>
-                <h3 className="font-bold text-base text-[#111111] mb-2">Clean Energy, 0g Sugar</h3>
-                <p className="text-xs text-[#111111]/60 leading-relaxed">
-                  No maltodextrin fillers, no cheap thickeners, no hidden sugar rushes. Pure functional nourishment for everyday vitality.
-                </p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* Doctors & Dieticians Section (Moved here as requested) */}
-      <DoctorsSection />
-
-      {/* Founder Story Section */}
-      <section className="py-16 sm:py-24 bg-white border-t border-[#111111]/10">
-        <div className="wrap">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-5 relative">
-              <div className="rounded-3xl overflow-hidden shadow-2xl border border-[#111111]/10 aspect-[4/5] relative bg-[#FBF7F1]">
-                <Image
-                  src={founderImg}
-                  alt="Founder of The Proteinest"
-                  fill
-                  className="object-cover object-top"
-                />
-              </div>
-            </div>
-
-            <div className="lg:col-span-7">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#EF5A32] block mb-2">
-                Founder&apos;s Note
-              </span>
-              <h2 className="font-['Anton'] text-3xl sm:text-5xl uppercase tracking-tight text-[#111111] leading-tight mb-6">
-                Why We Created The Proteinest
-              </h2>
-              <div className="space-y-4 text-sm sm:text-base text-[#111111]/75 leading-relaxed">
-                <p>
-                  For years I woke up tired, went to bed tired, and felt like my body was working against me. Everything changed when I fixed one simple thing: my daily protein intake.
-                </p>
-                <p>
-                  I realized that almost every Indian home is unknowingly running low on protein — the essential macronutrient quietly orchestrating daily energy, hormonal regulation, skin elasticity, and muscular strength.
-                </p>
-                <blockquote className="my-6 pl-4 border-l-4 border-[#EF5A32] text-base sm:text-lg italic font-medium text-[#111111]">
-                  &ldquo;One scoop a day. A stronger you. And the strongest family. That is our promise to you.&rdquo;
-                </blockquote>
-                <p>
-                  Today, The Proteinest is trusted by thousands of working professionals, fitness enthusiasts, homemakers, and doctors across the country. We can&apos;t wait for you to experience the difference.
-                </p>
-              </div>
-
-              <div className="mt-8 flex flex-wrap gap-4">
-                <a
-                  href="/shop"
-                  style={{ color: "#ffffff" }}
-                  className="inline-block px-7 py-3.5 rounded-full bg-[#111111] hover:bg-[#333333] !text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer"
-                >
-                  Explore Our Products →
-                </a>
-                <a
-                  href="/calculator"
-                  className="inline-block px-7 py-3.5 rounded-full bg-[#FBF7F1] hover:bg-[#FBE3DC] text-[#111111] font-bold text-xs uppercase tracking-wider border border-[#111111]/15 transition-all cursor-pointer"
-                >
-                  Calculate Your Target →
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Blends Showcase */}
-      <section className="py-16 sm:py-20 bg-[#FBF7F1] border-t border-[#111111]/10">
-        <div className="wrap text-center max-w-3xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#EF5A32] block mb-2">
-            Formulated With Passion
+      {/* ── hook ── */}
+      <section className="shop-hero" aria-labelledby="about-title">
+        <div className="shop-hero-glow" aria-hidden />
+        <div className="shop-hero-grain" aria-hidden />
+        <span className="shop-hero-ghost" aria-hidden data-parallax="0.25">
+          FINEST
+        </span>
+        <div className="shop-hero-inner" data-reveal-stagger="0.1">
+          <span className="shop-kicker">
+            <i aria-hidden />
+            Our story
+            <i aria-hidden />
           </span>
-          <h2 className="font-['Anton'] text-3xl sm:text-4xl uppercase tracking-tight text-[#111111] mb-4">
-            Meet The Flagship Formulas
-          </h2>
-          <p className="text-xs sm:text-sm text-[#111111]/60 mb-10">
-            Crafted for rapid digestion, instant mixability, and exceptional taste.
+          <h1 id="about-title" className="shop-hero-title" data-split>
+            Fueling the <em>finest you.</em>
+          </h1>
+          <p className="shop-hero-sub">
+            A brand of Gizinest Wellness Pvt Ltd, on one mission: clean, gentle, genuinely delicious protein in every Indian kitchen — with zero bloat and no compromise on quality.
           </p>
+          <dl className="ab-stats">
+            {STATS.map((s) => (
+              <div key={s.l}>
+                <dd>
+                  {s.v}
+                  <span>{s.u}</span>
+                </dd>
+                <dt>{s.l}</dt>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
-            <div className="p-6 rounded-3xl bg-white border border-[#111111]/10 shadow-sm flex items-center gap-4">
-              <div className="w-20 h-20 relative shrink-0 bg-[#FBF7F1] rounded-2xl p-2 flex items-center justify-center">
-                <Image src={proteinImg} alt="Choco Buddy" className="w-16 h-16 object-contain" />
-              </div>
-              <div>
-                <h3 className="font-['Anton'] text-xl uppercase text-[#111111]">Choco Buddy</h3>
-                <p className="text-xs text-[#111111]/60 mt-0.5">Rich Dutch Cocoa · 25g Protein</p>
-                <div className="font-bold text-sm text-[#EF5A32] mt-2">₹2,499</div>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-3xl bg-white border border-[#111111]/10 shadow-sm flex items-center gap-4">
-              <div className="w-20 h-20 relative shrink-0 bg-[#FBF7F1] rounded-2xl p-2 flex items-center justify-center">
-                <Image src={kulfiImg} alt="Kulfi Mate" className="w-16 h-16 object-contain" />
-              </div>
-              <div>
-                <h3 className="font-['Anton'] text-xl uppercase text-[#111111]">Kulfi Mate</h3>
-                <p className="text-xs text-[#111111]/60 mt-0.5">Royal Badam Kulfi · 25g Protein</p>
-                <div className="font-bold text-sm text-[#EF5A32] mt-2">₹2,499</div>
-              </div>
-            </div>
+      {/* ── chapter 01: the problem ── */}
+      <section className="ab-section band band--sand" aria-labelledby="ab-problem">
+        <div className="ab-split">
+          <div className="ab-copy" data-reveal-stagger="0.08">
+            <span className="ab-chapter">
+              <b>01</b> The Indian dilemma
+            </span>
+            <h2 id="ab-problem" className="cx-big ab-h2" data-split>
+              Why <em>80% of Indians</em> fall short on protein
+            </h2>
+            <p>Traditional Indian meals are nourishing and comforting, but they lean heavily on carbohydrates and fats. A bowl of dal gives barely 7–9 g of protein alongside 30 g or more of carbs.</p>
+            <p>Meanwhile the supplement shelf was full of harsh powders built for western bodybuilders: bloating, cramps, acne and a synthetic aftertaste.</p>
+            <p className="ab-strong">We refused that trade-off. Daily protein should be as gentle as a home-cooked meal, taste wonderful, and genuinely work.</p>
           </div>
 
-          <div className="mt-10">
-            <a
-              href="/shop"
-              style={{ color: "#ffffff" }}
-              className="inline-block px-8 py-4 rounded-full bg-[#EF5A32] hover:bg-[#C8441F] !text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer"
-            >
-              Shop All Products →
+          <div className="ab-compare" data-reveal="right">
+            <div className="ab-compare-head">
+              <span>One serving, compared</span>
+              <strong>Protein per portion</strong>
+            </div>
+            {[
+              { n: 'Bowl of dal', s: '180 g · 160 kcal', g: 8, max: 24 },
+              { n: '2 rotis', s: '80 g · 240 kcal', g: 6, max: 24 },
+              { n: 'The Proteinest', s: '1 scoop · 118 kcal', g: 24, max: 24, hero: true },
+            ].map((r) => (
+              <div key={r.n} className="ab-row" data-hero={!!r.hero}>
+                <div className="ab-row-top">
+                  <span>
+                    <strong>{r.n}</strong>
+                    <small>{r.s}</small>
+                  </span>
+                  <b>{r.g} g</b>
+                </div>
+                <span className="ab-bar" aria-hidden>
+                  <i style={{ width: `${(r.g / r.max) * 100}%` }} />
+                </span>
+              </div>
+            ))}
+            <p className="ab-compare-foot">Reaching 24 g from dal alone takes about three big bowls and 450+ kcal.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── chapter 02: our answer ── */}
+      <section className="ab-section band band--sage" aria-labelledby="ab-answer">
+        <div className="cx-wrap">
+          <div className="cx-head" data-reveal-stagger="0.1">
+            <span className="ab-chapter ab-chapter--center">
+              <b>02</b> Our answer
+            </span>
+            <h2 id="ab-answer" className="cx-big" data-split>
+              Built <em>differently.</em>
+            </h2>
+            <p className="cx-lead">Four standards every pouch has to meet before it reaches you.</p>
+          </div>
+          <div className="ab-pillars" data-reveal-stagger="0.08">
+            {PILLARS.map((p, i) => (
+              <article key={p.t} className="ab-pillar">
+                <span className="ab-pillar-num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="ab-pillar-icon">{p.icon}</span>
+                <h3>{p.t}</h3>
+                <p>{p.d}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── chapter 03: founder ── */}
+      <section className="ab-section band band--ivory" aria-labelledby="ab-founder">
+        <div className="ab-founder">
+          <div className="ab-founder-glow" aria-hidden />
+          <figure className="ab-founder-photo" data-reveal="left">
+            <img src="/founder-real.jpg" alt="Founder of The Proteinest" loading="lazy" />
+            <figcaption>
+              <strong>Founder</strong>
+              <span>The Proteinest</span>
+            </figcaption>
+          </figure>
+          <div className="ab-founder-copy" data-reveal-stagger="0.08">
+            <span className="ab-chapter ab-chapter--light">
+              <b>03</b> Founder&apos;s note
+            </span>
+            <h2 id="ab-founder" className="ab-founder-title" data-split>
+              Why I created <em>The Proteinest</em>
+            </h2>
+            <p>For years I woke up tired, went to bed tired, and felt like my body was working against me. Everything changed when I fixed one simple thing: my daily protein.</p>
+            <p>Then I noticed almost every Indian home is quietly running low on the nutrient that powers energy, hormones, skin, strength and satiety. I wanted to change that.</p>
+            <blockquote className="editorial">“One scoop a day. A stronger you. And the strongest family.”</blockquote>
+            <p>Today The Proteinest is trusted by working professionals, homemakers, athletes and doctors across the country.</p>
+            <div className="ab-actions">
+              <a href="/shop" className="shop-cta ab-cta">
+                Explore products <Arrow />
+              </a>
+              <a href="/calculator" className="ab-ghost">
+                Calculate your target
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── chapter 04: experts ── */}
+      <section className="ab-section band band--blush" aria-labelledby="ab-experts">
+        <div className="cx-wrap">
+          <div className="cx-head" data-reveal-stagger="0.1">
+            <span className="ab-chapter ab-chapter--center">
+              <b>04</b> The experts
+            </span>
+            <h2 id="ab-experts" className="cx-big" data-split>
+              Recommended by <em>doctors & dieticians.</em>
+            </h2>
+            <p className="cx-lead">Medical professionals who recommend The Proteinest to their patients and clients.</p>
+          </div>
+          <div className="ab-experts" data-reveal-stagger="0.08">
+            {EXPERTS.map((e) => (
+              <figure key={e.name} className="ab-expert">
+                <img src={e.img} alt={e.name} style={{ objectPosition: e.pos }} loading="lazy" />
+                <figcaption>
+                  <strong>{e.name}</strong>
+                  <span>{e.role}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── formulas ── */}
+      <section className="ab-section band band--peach" aria-labelledby="ab-formulas">
+        <div className="cx-wrap">
+          <div className="cx-head" data-reveal-stagger="0.1">
+            <span className="ab-chapter ab-chapter--center">
+              <b>05</b> The formulas
+            </span>
+            <h2 id="ab-formulas" className="cx-big" data-split>
+              Meet the <em>flagship three.</em>
+            </h2>
+            <p className="cx-lead">Made for easy digestion, instant mixing and genuinely good taste.</p>
+          </div>
+          <div className="ab-formulas" data-reveal-stagger="0.1">
+            {FORMULAS.map((f) => (
+              <a key={f.id} href={`/shop#${f.id}`} className="ab-formula" style={{ '--accent': f.accent }}>
+                <span className="ab-formula-img">
+                  <img src={photo(f.id)} alt={f.name} loading="lazy" />
+                </span>
+                <span className="ab-formula-body">
+                  <strong>{f.name}</strong>
+                  <small>{f.note} · 24 g protein</small>
+                  <span className="ab-formula-foot">
+                    <b>From ₹1,499</b>
+                    <em>
+                      Shop <Arrow />
+                    </em>
+                  </span>
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── closing CTA ── */}
+      <section className="ab-section ab-close-wrap" aria-labelledby="ab-close">
+        <div className="ab-close" data-reveal="up">
+          <div className="ab-close-glow" aria-hidden />
+          <h2 id="ab-close" className="ab-close-title" data-split>
+            Start with <em>your number.</em>
+          </h2>
+          <p>Find your daily protein target in under a minute, then pick the flavour that gets you there.</p>
+          <div className="ab-actions ab-actions--center">
+            <a href="/calculator" className="shop-cta ab-cta">
+              Protein calculator <Arrow />
+            </a>
+            <a href="/shop" className="ab-ghost ab-ghost--light">
+              Shop all products
             </a>
           </div>
         </div>

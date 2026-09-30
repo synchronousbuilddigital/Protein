@@ -1,12 +1,74 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import Image from 'next/image';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import gsap from 'gsap';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ScrollReveal from '../components/ScrollReveal';
+import catalog from '@/public/products/manifest.json';
 
-import proteinImg from '../../public/protein.png';
-import kulfiImg from '../../public/badamkhulfi.png';
+const photos = (slug) => catalog[slug]?.images ?? [];
+
+/** Counts to its new value whenever it changes (writes the DOM directly, no re-renders). */
+function AnimatedNumber({ value, className }) {
+  const ref = useRef(null);
+  const shown = useRef(value);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = String(value);
+      shown.current = value;
+      return;
+    }
+    const n = { v: shown.current };
+    const tw = gsap.to(n, {
+      v: value,
+      duration: 0.6,
+      ease: 'power3.out',
+      onUpdate: () => {
+        el.textContent = String(Math.round(n.v));
+      },
+      onComplete: () => {
+        shown.current = value;
+      },
+    });
+    return () => {
+      shown.current = Math.round(n.v);
+      tw.kill();
+    };
+  }, [value]);
+  return (
+    <span ref={ref} className={className}>
+      {value}
+    </span>
+  );
+}
+
+function MaleIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <circle cx="10" cy="14" r="6" />
+      <path d="M14.5 9.5 20 4M15 4h5v5" />
+    </svg>
+  );
+}
+function FemaleIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <circle cx="12" cy="9" r="6" />
+      <path d="M12 15v7M9 19h6" />
+    </svg>
+  );
+}
+
+const FAQS = [
+  { q: 'Will high protein damage my kidneys or liver?', a: 'In healthy individuals, studies consistently show intakes between 1.6 and 2.4 g/kg have no adverse effect on kidney filtration (GFR) or liver enzymes. Drink 3 to 3.5 litres of water a day to support nitrogen clearance.' },
+  { q: 'Does protein powder cause acne or bloating?', a: 'Many market powders contain gums, fillers, thickeners and lactose that upset digestion. The Proteinest is plant-based, free of fillers, and includes a digestive enzyme blend made for Indian gut profiles.' },
+  { q: 'Do women need as much protein as men for fat loss and toning?', a: 'Yes. Women carry slightly less muscle overall, but the need per kilogram during fat loss is almost identical, around 1.8 to 2.2 g/kg. Protein won’t bulk you up; it builds lean tone and curbs cravings.' },
+  { q: 'When is the best time to take The Proteinest?', a: 'Total protein across the day matters most. That said, a scoop within 60–90 minutes after training supports muscle protein synthesis, and a mid-afternoon shake helps curb 4 PM sweet cravings.' },
+  { q: 'Why does the calculator recommend more for vegetarians?', a: 'Plant proteins like dal, beans and grains score lower on PDCAAS and carry less leucine and methionine. An 8–10% buffer makes sure you absorb an optimal amino acid profile.' },
+];
 
 /* ── Inline SVG Icons ─────────────────────────────────────────── */
 function CheckIcon({ className = 'w-4 h-4' }) {
@@ -256,724 +318,411 @@ Calculated at https://theproteinest.com/calculator`;
     setExpandedFaq(expandedFaq === idx ? null : idx);
   };
 
+  const recoPhoto = activeGoal.idealFlavour.startsWith('Kulfi') ? photos('kulfi-mate')[0] : photos('choco-buddy')[0];
+  const rangePct = Math.min(100, Math.max(6, (Number(calculation.perKgRatio) / 3) * 100));
+  const mealNames = ['Breakfast', 'Lunch', 'Pre / post workout', 'Dinner', 'Evening snack'];
+
   return (
-    <div className="min-h-screen bg-[#FBF7F1] text-[#111111] flex flex-col antialiased">
+    <main className="shop calc min-h-screen text-[#141414]">
       <Navbar />
+      <ScrollReveal />
 
-      {/* Main Interactive Calculator Section */}
-      <section className="pt-24 sm:pt-28 pb-12 sm:pb-16">
-        <div className="wrap">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {/* ── hero ── */}
+      <section className="shop-hero" aria-labelledby="calc-title">
+        <div className="shop-hero-glow" aria-hidden />
+        <div className="shop-hero-grain" aria-hidden />
+        <span className="shop-hero-ghost" aria-hidden data-parallax="0.25">
+          {calculation.sweetSpot}G
+        </span>
+        <div className="shop-hero-inner" data-reveal-stagger="0.1">
+          <span className="shop-kicker">
+            <i aria-hidden />
+            Protein calculator
+            <i aria-hidden />
+          </span>
+          <h1 id="calc-title" className="shop-hero-title" data-split>
+            Find your <em>daily number.</em>
+          </h1>
+          <p className="shop-hero-sub">Calibrated for Indian diets, your goal and how you train. Adjust anything and your target updates instantly.</p>
+          <ul className="shop-hero-chips" aria-label="How it works">
+            <li>
+              <TargetIcon className="w-4 h-4" /> Goal-specific ranges
+            </li>
+            <li>
+              <SparklesIcon className="w-4 h-4" /> Vegetarian and vegan buffers
+            </li>
+            <li>
+              <DropletIcon className="w-4 h-4" /> Water and meal split included
+            </li>
+          </ul>
+        </div>
+      </section>
 
-            {/* ── Left Column: Inputs Form ─────────────────────── */}
-            <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-9 shadow-[0_15px_40px_rgba(0,0,0,0.06)] border border-[#111111]/8">
-
-              {/* Top Controls: Unit Switcher */}
-              <div className="flex items-center justify-between pb-6 border-b border-[#111111]/10 mb-6">
-                <div>
-                  <h2 className="font-['Anton'] text-2xl uppercase tracking-wide text-[#111111]">
-                    Your Metrics
-                  </h2>
-                  <p className="text-xs text-[#111111]/60 mt-0.5">Customize your body parameters & plan</p>
-                </div>
-
-                {/* Unit Switcher */}
-                <div className="flex items-center bg-[#FBF7F1] p-1 rounded-full border border-[#111111]/10 text-xs font-semibold">
-                  <button
-                    onClick={() => setUnit('metric')}
-                    className={`px-3.5 py-1.5 rounded-full transition-all duration-200 ${unit === 'metric' ? 'bg-[#EF5A32] text-white shadow-sm' : 'text-[#111111]/60 hover:text-[#111111]'
-                      }`}
-                  >
-                    Metric (kg / cm)
-                  </button>
-                  <button
-                    onClick={() => setUnit('imperial')}
-                    className={`px-3.5 py-1.5 rounded-full transition-all duration-200 ${unit === 'imperial' ? 'bg-[#EF5A32] text-white shadow-sm' : 'text-[#111111]/60 hover:text-[#111111]'
-                      }`}
-                  >
-                    Imperial (lbs / ft)
-                  </button>
-                </div>
+      {/* ── calculator ── */}
+      <section className="cx-section band band--ivory" aria-label="Calculator">
+        <div className="cx-grid">
+          {/* form */}
+          <form className="cx-form" onSubmit={(e) => e.preventDefault()} data-reveal="left">
+            <header className="cx-form-head">
+              <div>
+                <h2 className="cx-h2">Your metrics</h2>
+                <p className="cx-muted">Tell us about you. Everything recalculates live.</p>
               </div>
+              <div className="cx-seg" role="radiogroup" aria-label="Units">
+                <button type="button" role="radio" aria-checked={unit === 'metric'} data-active={unit === 'metric'} onClick={() => setUnit('metric')}>
+                  kg / cm
+                </button>
+                <button type="button" role="radio" aria-checked={unit === 'imperial'} data-active={unit === 'imperial'} onClick={() => setUnit('imperial')}>
+                  lbs / ft
+                </button>
+              </div>
+            </header>
 
-              {/* Step 1: Gender Selector */}
-              <div className="mb-7">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#111111]/70 mb-2.5">
-                  1. Biological Sex
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setGender('male')}
-                    className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden flex items-center justify-between ${gender === 'male'
-                        ? 'border-[#EF5A32] bg-[#EF5A32]/5 ring-2 ring-[#EF5A32]/20'
-                        : 'border-[#111111]/15 hover:border-[#111111]/40 bg-white'
-                      }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${gender === 'male' ? 'bg-[#EF5A32] text-white' : 'bg-[#FBF7F1] text-[#111111]'
-                          }`}
-                      >
-                        ♂
-                      </div>
-                      <div>
-                        <div className="font-bold text-sm text-[#111111]">Male</div>
-                        <div className="text-[11px] text-[#111111]/50">Higher natural lean mass baseline</div>
-                      </div>
-                    </div>
-                    {gender === 'male' && (
-                      <span className="w-5 h-5 rounded-full bg-[#EF5A32] text-white flex items-center justify-center">
-                        <CheckIcon className="w-3 h-3" />
-                      </span>
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setGender('female')}
-                    className={`p-4 rounded-2xl border text-left transition-all duration-200 relative overflow-hidden flex items-center justify-between ${gender === 'female'
-                        ? 'border-[#EF5A32] bg-[#EF5A32]/5 ring-2 ring-[#EF5A32]/20'
-                        : 'border-[#111111]/15 hover:border-[#111111]/40 bg-white'
-                      }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg ${gender === 'female' ? 'bg-[#EF5A32] text-white' : 'bg-[#FBF7F1] text-[#111111]'
-                          }`}
-                      >
-                        ♀
-                      </div>
-                      <div>
-                        <div className="font-bold text-sm text-[#111111]">Female</div>
-                        <div className="text-[11px] text-[#111111]/50">Calibrated for hormonal balance</div>
-                      </div>
-                    </div>
-                    {gender === 'female' && (
-                      <span className="w-5 h-5 rounded-full bg-[#EF5A32] text-white flex items-center justify-center">
-                        <CheckIcon className="w-3 h-3" />
-                      </span>
-                    )}
-                  </button>
-                </div>
-                {gender === 'female' && (
-                  <p className="text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 mt-2.5 flex items-center gap-2">
-                    <span>💡</span>
-                    <span>
-                      <strong>Good to know:</strong> High protein will <em>never</em> make women look bulky — it sculpts
-                      lean muscle tone, burns fat faster, and fortifies hair & skin vitality.
+            {/* 1 */}
+            <fieldset className="cx-step">
+              <legend className="cx-legend">
+                <span>01</span> Biological sex
+              </legend>
+              <div className="cx-two">
+                {[
+                  { id: 'male', label: 'Male', sub: 'Higher lean-mass baseline', glyph: <MaleIcon /> },
+                  { id: 'female', label: 'Female', sub: 'Calibrated for hormonal balance', glyph: <FemaleIcon /> },
+                ].map((g) => (
+                  <button key={g.id} type="button" role="radio" aria-checked={gender === g.id} className="cx-choice" data-active={gender === g.id} onClick={() => setGender(g.id)}>
+                    <span className="cx-choice-icon">{g.glyph}</span>
+                    <span className="cx-choice-text">
+                      <strong>{g.label}</strong>
+                      <small>{g.sub}</small>
                     </span>
-                  </p>
+                    <span className="cx-tick" aria-hidden>
+                      <CheckIcon className="w-3 h-3" />
+                    </span>
+                  </button>
+                ))}
+              </div>
+              {gender === 'female' && (
+                <p className="cx-note">
+                  <SparklesIcon className="w-4 h-4" />
+                  <span>
+                    <strong>Good to know:</strong> high protein won&apos;t make you bulky. It sculpts lean tone, helps burn fat and supports hair and skin.
+                  </span>
+                </p>
+              )}
+            </fieldset>
+
+            {/* 2 */}
+            <fieldset className="cx-step">
+              <legend className="cx-legend">
+                <span>02</span> Body metrics
+              </legend>
+              <div className="cx-three">
+                <label className="cx-field">
+                  <span className="cx-field-label">Age</span>
+                  <span className="cx-field-row">
+                    <input type="number" inputMode="numeric" min="16" max="85" value={age} onChange={(e) => setAge(Math.max(16, Math.min(85, Number(e.target.value) || 16)))} />
+                    <em>yrs</em>
+                  </span>
+                </label>
+                <label className="cx-field">
+                  <span className="cx-field-label">Weight</span>
+                  <span className="cx-field-row">
+                    {unit === 'metric' ? (
+                      <input type="number" inputMode="numeric" min="35" max="160" value={weightKg} onChange={(e) => setWeightKg(Math.max(35, Math.min(160, Number(e.target.value) || 35)))} />
+                    ) : (
+                      <input type="number" inputMode="numeric" min="77" max="350" value={weightLbs} onChange={(e) => handleWeightChangeLbs(Number(e.target.value) || 77)} />
+                    )}
+                    <em>{unit === 'metric' ? 'kg' : 'lbs'}</em>
+                  </span>
+                </label>
+                {unit === 'metric' ? (
+                  <label className="cx-field">
+                    <span className="cx-field-label">Height</span>
+                    <span className="cx-field-row">
+                      <input type="number" inputMode="numeric" min="120" max="220" value={heightCm} onChange={(e) => setHeightCm(Math.max(120, Math.min(220, Number(e.target.value) || 120)))} />
+                      <em>cm</em>
+                    </span>
+                  </label>
+                ) : (
+                  <div className="cx-field">
+                    <span className="cx-field-label">Height</span>
+                    <span className="cx-field-row">
+                      <input aria-label="Height, feet" type="number" inputMode="numeric" min="4" max="7" value={heightFeet} onChange={(e) => handleHeightFeetChange(Number(e.target.value) || 4, heightInches)} className="cx-short" />
+                      <em>ft</em>
+                      <input aria-label="Height, inches" type="number" inputMode="numeric" min="0" max="11" value={heightInches} onChange={(e) => handleHeightFeetChange(heightFeet, Number(e.target.value) || 0)} className="cx-short" />
+                      <em>in</em>
+                    </span>
+                  </div>
                 )}
               </div>
+              <label className="cx-range">
+                <span className="cx-range-top">
+                  <span>Quick weight</span>
+                  <strong>
+                    {weightKg} kg <em>· {weightLbs} lbs</em>
+                  </strong>
+                </span>
+                <input type="range" min="40" max="140" value={weightKg} onChange={(e) => setWeightKg(Number(e.target.value))} style={{ '--p': `${((weightKg - 40) / 100) * 100}%` }} />
+                <span className="cx-range-ends">
+                  <span>40 kg</span>
+                  <span>140 kg</span>
+                </span>
+              </label>
+            </fieldset>
 
-              {/* Step 2: Body Stats (Age, Weight, Height) */}
-              <div className="mb-7">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#111111]/70 mb-2.5">
-                  2. Body Metrics
-                </label>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-
-                  {/* Age */}
-                  <div className="p-3.5 bg-[#FBF7F1] rounded-2xl border border-[#111111]/10">
-                    <div className="text-xs text-[#111111]/60 font-semibold mb-1">Age</div>
-                    <div className="flex items-center justify-between">
-                      <input
-                        type="number"
-                        min="16"
-                        max="85"
-                        value={age}
-                        onChange={(e) => setAge(Math.max(16, Math.min(85, Number(e.target.value) || 16)))}
-                        className="w-20 bg-transparent font-['Anton'] text-2xl text-[#111111] focus:outline-none"
-                      />
-                      <span className="text-xs font-bold text-[#111111]/40 uppercase">Years</span>
-                    </div>
-                  </div>
-
-                  {/* Weight */}
-                  <div className="p-3.5 bg-[#FBF7F1] rounded-2xl border border-[#111111]/10">
-                    <div className="text-xs text-[#111111]/60 font-semibold mb-1">
-                      Weight {unit === 'metric' ? '(kg)' : '(lbs)'}
-                    </div>
-                    <div className="flex items-center justify-between">
-                      {unit === 'metric' ? (
-                        <input
-                          type="number"
-                          min="35"
-                          max="160"
-                          value={weightKg}
-                          onChange={(e) => setWeightKg(Math.max(35, Math.min(160, Number(e.target.value) || 35)))}
-                          className="w-20 bg-transparent font-['Anton'] text-2xl text-[#111111] focus:outline-none"
-                        />
-                      ) : (
-                        <input
-                          type="number"
-                          min="77"
-                          max="350"
-                          value={weightLbs}
-                          onChange={(e) => handleWeightChangeLbs(Number(e.target.value) || 77)}
-                          className="w-20 bg-transparent font-['Anton'] text-2xl text-[#111111] focus:outline-none"
-                        />
-                      )}
-                      <span className="text-xs font-bold text-[#111111]/40 uppercase">
-                        {unit === 'metric' ? 'KG' : 'LBS'}
+            {/* 3 */}
+            <fieldset className="cx-step">
+              <legend className="cx-legend">
+                <span>03</span> Primary goal
+              </legend>
+              <div className="cx-goals" role="radiogroup" aria-label="Primary goal">
+                {GOALS.map((g) => {
+                  const Icon = g.icon;
+                  return (
+                    <button key={g.id} type="button" role="radio" aria-checked={goalId === g.id} className="cx-goal" data-active={goalId === g.id} onClick={() => setGoalId(g.id)}>
+                      <span className="cx-choice-icon">
+                        <Icon className="w-5 h-5" />
                       </span>
-                    </div>
-                  </div>
-
-                  {/* Height */}
-                  <div className="p-3.5 bg-[#FBF7F1] rounded-2xl border border-[#111111]/10">
-                    <div className="text-xs text-[#111111]/60 font-semibold mb-1">
-                      Height {unit === 'metric' ? '(cm)' : '(ft / in)'}
-                    </div>
-                    {unit === 'metric' ? (
-                      <div className="flex items-center justify-between">
-                        <input
-                          type="number"
-                          min="120"
-                          max="220"
-                          value={heightCm}
-                          onChange={(e) => setHeightCm(Math.max(120, Math.min(220, Number(e.target.value) || 120)))}
-                          className="w-20 bg-transparent font-['Anton'] text-2xl text-[#111111] focus:outline-none"
-                        />
-                        <span className="text-xs font-bold text-[#111111]/40 uppercase">CM</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-1">
-                        <input
-                          type="number"
-                          min="4"
-                          max="7"
-                          value={heightFeet}
-                          onChange={(e) => handleHeightFeetChange(Number(e.target.value) || 4, heightInches)}
-                          className="w-8 bg-transparent font-['Anton'] text-2xl text-[#111111] focus:outline-none"
-                        />
-                        <span className="text-xs font-bold text-[#111111]/40 mr-1">FT</span>
-                        <input
-                          type="number"
-                          min="0"
-                          max="11"
-                          value={heightInches}
-                          onChange={(e) => handleHeightFeetChange(heightFeet, Number(e.target.value) || 0)}
-                          className="w-8 bg-transparent font-['Anton'] text-2xl text-[#111111] focus:outline-none"
-                        />
-                        <span className="text-xs font-bold text-[#111111]/40">IN</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Weight Interactive Slider for Quick adjustment */}
-                <div className="mt-3 px-1">
-                  <input
-                    type="range"
-                    min="40"
-                    max="140"
-                    value={weightKg}
-                    onChange={(e) => setWeightKg(Number(e.target.value))}
-                    className="w-full accent-[#EF5A32] cursor-pointer h-1.5 bg-[#111111]/15 rounded-lg"
-                  />
-                  <div className="flex justify-between text-[10px] text-[#111111]/40 mt-1 font-mono">
-                    <span>40 kg (88 lbs)</span>
-                    <span className="font-bold text-[#EF5A32]">Current: {weightKg} kg ({weightLbs} lbs)</span>
-                    <span>140 kg (308 lbs)</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Step 3: Fitness Goal Selection */}
-              <div className="mb-7">
-                <div className="flex items-center justify-between mb-2.5">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#111111]/70">
-                    3. Your Primary Fitness Goal
-                  </label>
-                  <span className="text-[11px] text-[#EF5A32] font-semibold">Select 1 goal</span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {GOALS.map((g) => {
-                    const isSelected = goalId === g.id;
-                    const Icon = g.icon;
-                    return (
-                      <button
-                        key={g.id}
-                        type="button"
-                        onClick={() => setGoalId(g.id)}
-                        className={`p-4 rounded-2xl border text-left transition-all duration-200 relative ${isSelected
-                            ? 'border-[#EF5A32] bg-[#EF5A32]/5 ring-2 ring-[#EF5A32]/20 shadow-sm'
-                            : 'border-[#111111]/10 hover:border-[#111111]/30 bg-white'
-                          }`}
-                      >
-                        <div className="flex items-start gap-3">
-                          <div
-                            className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${isSelected ? 'bg-[#EF5A32] text-white shadow-sm' : 'bg-[#FBF7F1] text-[#111111]'
-                              }`}
-                          >
-                            <Icon className="w-5 h-5" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between">
-                              <span className="font-bold text-sm text-[#111111]">{g.title}</span>
-                              {isSelected && <CheckIcon className="w-4 h-4 text-[#EF5A32] shrink-0" />}
-                            </div>
-                            <p className="text-[11px] text-[#111111]/60 mt-1 leading-snug">{g.tagline}</p>
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Step 4: Activity Level & Exercise Frequency */}
-              <div className="mb-7">
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#111111]/70 mb-2.5">
-                  4. Current Physical Activity Level
-                </label>
-
-                <div className="space-y-2">
-                  {ACTIVITY_LEVELS.map((act) => {
-                    const isSelected = activityId === act.id;
-                    return (
-                      <button
-                        key={act.id}
-                        type="button"
-                        onClick={() => setActivityId(act.id)}
-                        className={`w-full p-3 rounded-xl border text-left flex items-center justify-between transition-all duration-150 ${isSelected
-                            ? 'border-[#EF5A32] bg-[#EF5A32]/5 font-medium'
-                            : 'border-[#111111]/10 hover:bg-[#FBF7F1]'
-                          }`}
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <span
-                            className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${isSelected ? 'border-[#EF5A32] bg-[#EF5A32]' : 'border-[#111111]/30'
-                              }`}
-                          >
-                            {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
-                          </span>
-                          <div>
-                            <span className="text-xs font-bold text-[#111111]">{act.label}</span>
-                            <span className="text-[11px] text-[#111111]/50 ml-2">— {act.desc}</span>
-                          </div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Step 5: Dietary Preference */}
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#111111]/70 mb-2.5">
-                  5. Dietary Style (Indian Calibrated)
-                </label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {DIET_TYPES.map((dt) => {
-                    const isSelected = dietId === dt.id;
-                    return (
-                      <button
-                        key={dt.id}
-                        type="button"
-                        onClick={() => setDietId(dt.id)}
-                        className={`p-3 rounded-xl border text-center transition-all duration-200 ${isSelected
-                            ? 'border-[#EF5A32] bg-[#EF5A32] text-white font-bold shadow-sm'
-                            : 'border-[#111111]/10 bg-[#FBF7F1] text-[#111111] hover:border-[#111111]/30 font-semibold'
-                          }`}
-                      >
-                        <div className="text-xs">{dt.label}</div>
-                      </button>
-                    );
-                  })}
-                </div>
-                <div className="mt-2 text-[11px] text-[#111111]/60 italic">
-                  💡 {DIET_TYPES.find((d) => d.id === dietId)?.note}
-                </div>
-              </div>
-
-            </div>
-
-            {/* ── Right Column: Live Results Panel ──────────────── */}
-            <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
-
-              {/* Primary Target Card */}
-              <div className="bg-[#111111] text-white rounded-3xl p-7 shadow-2xl relative overflow-hidden border border-white/10">
-                {/* Background decorative watermark */}
-                <div className="absolute top-2 right-4 font-['Anton'] text-7xl text-white/[0.04] select-none pointer-events-none">
-                  TARGET
-                </div>
-
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="px-3 py-1 rounded-full bg-[#EF5A32]/20 border border-[#EF5A32]/30 text-[#EF5A32] text-[11px] font-bold uppercase tracking-wider">
-                      Your Daily Prescription
-                    </span>
-                    <button
-                      onClick={copyResults}
-                      className="flex items-center gap-1.5 text-xs text-white/70 hover:text-white bg-white/10 hover:bg-white/15 px-2.5 py-1 rounded-lg transition-colors"
-                      title="Copy plan to clipboard"
-                    >
-                      <CopyIcon className="w-3.5 h-3.5" />
-                      <span>{copied ? 'Copied!' : 'Share / Copy'}</span>
+                      <span className="cx-choice-text">
+                        <strong>{g.title}</strong>
+                        <small>{g.tagline}</small>
+                      </span>
+                      <span className="cx-tick" aria-hidden>
+                        <CheckIcon className="w-3 h-3" />
+                      </span>
                     </button>
-                  </div>
+                  );
+                })}
+              </div>
+            </fieldset>
 
-                  {/* Target Hero Metric */}
-                  <div className="flex items-baseline gap-3 mb-2">
-                    <span className="font-['Anton'] text-6xl sm:text-7xl text-white tracking-tight leading-none">
-                      {calculation.sweetSpot}
+            {/* 4 */}
+            <fieldset className="cx-step">
+              <legend className="cx-legend">
+                <span>04</span> Activity level
+              </legend>
+              <div className="cx-activity" role="radiogroup" aria-label="Activity level">
+                {ACTIVITY_LEVELS.map((act, i) => (
+                  <button key={act.id} type="button" role="radio" aria-checked={activityId === act.id} className="cx-act" data-active={activityId === act.id} onClick={() => setActivityId(act.id)}>
+                    <span className="cx-bars" aria-hidden>
+                      {[0, 1, 2, 3, 4].map((b) => (
+                        <i key={b} data-on={b <= i} />
+                      ))}
                     </span>
-                    <div>
-                      <span className="font-['Anton'] text-2xl text-[#EF5A32]">GRAMS</span>
-                      <span className="block text-xs text-white/60 font-sans -mt-1">per day</span>
-                    </div>
-                  </div>
-
-                  {/* Range and Ratio Pills */}
-                  <div className="flex flex-wrap items-center gap-2 mb-6">
-                    <div className="bg-white/10 px-3 py-1 rounded-full text-xs font-semibold text-white/90">
-                      Target Range: <strong className="text-white">{calculation.minTarget}g – {calculation.maxTarget}g</strong>
-                    </div>
-                    <div className="bg-white/10 px-3 py-1 rounded-full text-xs font-semibold text-[#EF5A32]">
-                      {calculation.perKgRatio} g / kg
-                    </div>
-                  </div>
-
-                  {/* Rationale explanation */}
-                  <div className="p-3.5 rounded-2xl bg-white/[0.06] border border-white/10 text-xs text-white/80 leading-relaxed mb-6">
-                    <strong className="text-white block mb-1">Why this amount for {activeGoal.title}:</strong>
-                    {activeGoal.rationale}
-                  </div>
-
-                  {/* Secondary Metrics Grid */}
-                  <div className="grid grid-cols-2 gap-3 pt-4 border-t border-white/10">
-                    <div className="p-3 rounded-xl bg-white/[0.04]">
-                      <div className="text-[11px] text-white/50 font-medium">Daily Water Target</div>
-                      <div className="text-lg font-bold text-white mt-0.5 flex items-center gap-1.5">
-                        <DropletIcon className="w-4 h-4 text-sky-400" />
-                        <span>{calculation.waterLitres} L</span>
-                      </div>
-                      <div className="text-[10px] text-white/40 mt-0.5">Supports nitrogen clearance</div>
-                    </div>
-
-                    <div className="p-3 rounded-xl bg-white/[0.04]">
-                      <div className="text-[11px] text-white/50 font-medium">Calorie Contribution</div>
-                      <div className="text-lg font-bold text-white mt-0.5 flex items-center gap-1.5">
-                        <FlameIcon className="w-4 h-4 text-[#EF5A32]" />
-                        <span>{calculation.proteinCalories} kcal</span>
-                      </div>
-                      <div className="text-[10px] text-white/40 mt-0.5">High thermic effect (TEF)</div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              {/* Meal Distribution Breakdown Card */}
-              <div className="bg-white rounded-3xl p-6 shadow-sm border border-[#111111]/8">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="font-['Anton'] text-lg uppercase tracking-wide text-[#111111]">
-                      Meal Distribution
-                    </h3>
-                    <p className="text-[11px] text-[#111111]/60">Hit the 3g leucine threshold every meal</p>
-                  </div>
-
-                  {/* Meal count selector */}
-                  <div className="flex items-center bg-[#FBF7F1] p-1 rounded-full border border-[#111111]/10 text-xs font-bold">
-                    {[3, 4, 5].map((count) => (
-                      <button
-                        key={count}
-                        onClick={() => setMealCount(count)}
-                        className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${mealCount === count ? 'bg-[#111111] text-white shadow-sm' : 'text-[#111111]/60 hover:text-[#111111]'
-                          }`}
-                      >
-                        {count}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Meals Visual Breakdown */}
-                <div className="space-y-2.5">
-                  {Array.from({ length: mealCount }).map((_, idx) => {
-                    const mealNames = [
-                      'Breakfast',
-                      'Lunch',
-                      'Pre / Post Workout Snack',
-                      'Dinner',
-                      'Evening / Bedtime Snack',
-                    ];
-                    const name = mealNames[idx] || `Meal ${idx + 1}`;
-                    return (
-                      <div
-                        key={idx}
-                        className="flex items-center justify-between p-3 rounded-xl bg-[#FBF7F1] border border-[#111111]/5"
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <span className="w-5 h-5 rounded-full bg-[#EF5A32]/10 text-[#EF5A32] text-[10px] font-bold flex items-center justify-center">
-                            {idx + 1}
-                          </span>
-                          <span className="text-xs font-bold text-[#111111]">{name}</span>
-                        </div>
-                        <div className="text-right">
-                          <span className="font-['Anton'] text-base text-[#EF5A32]">~{calculation.perMeal}g</span>
-                          <span className="text-[10px] text-[#111111]/40 ml-1">protein</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Recommended The Proteinest Match Card */}
-              <div className="bg-gradient-to-br from-[#EF5A32] to-[#C8441F] text-white rounded-3xl p-6 shadow-xl relative overflow-hidden">
-                <div className="relative z-10">
-                  <div className="inline-block px-2.5 py-1 rounded-full bg-white/20 text-[10px] font-bold uppercase tracking-wider mb-3">
-                    Personalized Supplement Match
-                  </div>
-
-                  <h3 className="font-['Anton'] text-2xl uppercase tracking-wide leading-tight mb-2">
-                    Close Your Gap With {calculation.recommendedScoops} Scoop{calculation.recommendedScoops > 1 ? 's' : ''} Daily
-                  </h3>
-
-                  <p className="text-xs text-white/90 leading-relaxed mb-4">
-                    The average Indian diet falls 40–50g short of optimal protein. 1 scoop of The Proteinest gives you{' '}
-                    <strong>25g clean whey</strong> with zero digestive bloat, tested by NABL accredited labs.
-                  </p>
-
-                  <div className="flex items-center gap-4 bg-white/10 p-3.5 rounded-2xl backdrop-blur-sm mb-4 border border-white/20">
-                    <div className="w-16 h-16 relative shrink-0 bg-white/10 rounded-xl overflow-hidden flex items-center justify-center">
-                      <Image
-                        src={activeGoal.id === 'muscle_gain' ? kulfiImg : proteinImg}
-                        alt="The Proteinest"
-                        className="w-14 h-14 object-contain"
-                      />
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-white uppercase tracking-wider">
-                        Recommended: {activeGoal.idealFlavour}
-                      </div>
-                      <div className="text-[11px] text-white/80 mt-0.5">
-                        25g Protein · 5.5g BCAA · Digestive Enzymes
-                      </div>
-                      <div className="text-sm font-['Anton'] text-white mt-1">₹2,499 / 1kg tub</div>
-                    </div>
-                  </div>
-
-                  <a
-                    href="/shop"
-                    style={{ color: '#111111', backgroundColor: '#FFFFFF' }}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-full font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-md hover:bg-[#FBE3DC] hover:shadow-lg active:scale-[0.98] cursor-pointer !text-[#111111]"
-                  >
-                    <span>Shop Recommended Formula</span>
-                    <span className="text-sm font-black">→</span>
-                  </a>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ── Food Blueprint: How to Hit Your Target on an Indian Diet ── */}
-      <section className="py-14 sm:py-20 bg-white border-y border-[#111111]/10">
-        <div className="wrap">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#EF5A32] block mb-2">
-              Indian Whole Food Cheat-Sheet
-            </span>
-            <h2 className="font-['Anton'] text-3xl sm:text-5xl uppercase tracking-tight text-[#111111]">
-              How To Hit {calculation.sweetSpot}g Daily
-            </h2>
-            <p className="text-sm text-[#111111]/60 mt-2">
-              Compare protein density across popular Indian food choices and see how seamlessly 1-2 scoops of The Proteinest fits in.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-
-            {/* The Proteinest Scoop (Featured) */}
-            <div className="p-4 rounded-2xl bg-gradient-to-b from-[#EF5A32]/10 to-[#EF5A32]/5 border-2 border-[#EF5A32] text-center flex flex-col justify-between relative shadow-sm">
-              <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-[#EF5A32] text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full whitespace-nowrap">
-                Easiest
-              </span>
-              <div>
-                <div className="text-xs font-bold text-[#111111] mt-1">The Proteinest</div>
-                <div className="text-[10px] text-[#111111]/50">1 Scoop (33g)</div>
-              </div>
-              <div className="my-3">
-                <span className="font-['Anton'] text-3xl text-[#EF5A32]">25g</span>
-                <span className="block text-[10px] text-[#111111]/60 font-semibold">Protein · 118 kcal</span>
-              </div>
-              <span className="text-[10px] text-emerald-700 bg-emerald-100 rounded-md py-0.5 font-bold">
-                100% Bioavailable
-              </span>
-            </div>
-
-            {/* Soya Chunks */}
-            <div className="p-4 rounded-2xl bg-[#FBF7F1] border border-[#111111]/10 text-center flex flex-col justify-between">
-              <div>
-                <div className="text-xs font-bold text-[#111111]">Soya Chunks</div>
-                <div className="text-[10px] text-[#111111]/50">50g (Raw)</div>
-              </div>
-              <div className="my-3">
-                <span className="font-['Anton'] text-3xl text-[#111111]">26g</span>
-                <span className="block text-[10px] text-[#111111]/60 font-semibold">Protein · 170 kcal</span>
-              </div>
-              <span className="text-[10px] text-[#111111]/60 bg-white rounded-md py-0.5 border border-[#111111]/10">
-                Plant Source
-              </span>
-            </div>
-
-            {/* Low-Fat Paneer */}
-            <div className="p-4 rounded-2xl bg-[#FBF7F1] border border-[#111111]/10 text-center flex flex-col justify-between">
-              <div>
-                <div className="text-xs font-bold text-[#111111]">Low Fat Paneer</div>
-                <div className="text-[10px] text-[#111111]/50">100g</div>
-              </div>
-              <div className="my-3">
-                <span className="font-['Anton'] text-3xl text-[#111111]">18g</span>
-                <span className="block text-[10px] text-[#111111]/60 font-semibold">Protein · 200 kcal</span>
-              </div>
-              <span className="text-[10px] text-[#111111]/60 bg-white rounded-md py-0.5 border border-[#111111]/10">
-                Dairy Source
-              </span>
-            </div>
-
-            {/* Whole Eggs */}
-            <div className="p-4 rounded-2xl bg-[#FBF7F1] border border-[#111111]/10 text-center flex flex-col justify-between">
-              <div>
-                <div className="text-xs font-bold text-[#111111]">Whole Eggs</div>
-                <div className="text-[10px] text-[#111111]/50">3 Large Eggs</div>
-              </div>
-              <div className="my-3">
-                <span className="font-['Anton'] text-3xl text-[#111111]">18g</span>
-                <span className="block text-[10px] text-[#111111]/60 font-semibold">Protein · 210 kcal</span>
-              </div>
-              <span className="text-[10px] text-[#111111]/60 bg-white rounded-md py-0.5 border border-[#111111]/10">
-                Complete Amino
-              </span>
-            </div>
-
-            {/* Greek Yogurt */}
-            <div className="p-4 rounded-2xl bg-[#FBF7F1] border border-[#111111]/10 text-center flex flex-col justify-between">
-              <div>
-                <div className="text-xs font-bold text-[#111111]">Greek Yogurt / Hung Curd</div>
-                <div className="text-[10px] text-[#111111]/50">150g</div>
-              </div>
-              <div className="my-3">
-                <span className="font-['Anton'] text-3xl text-[#111111]">15g</span>
-                <span className="block text-[10px] text-[#111111]/60 font-semibold">Protein · 130 kcal</span>
-              </div>
-              <span className="text-[10px] text-[#111111]/60 bg-white rounded-md py-0.5 border border-[#111111]/10">
-                Gut Friendly
-              </span>
-            </div>
-
-            {/* Cooked Moong Dal */}
-            <div className="p-4 rounded-2xl bg-[#FBF7F1] border border-[#111111]/10 text-center flex flex-col justify-between">
-              <div>
-                <div className="text-xs font-bold text-[#111111]">Cooked Dal</div>
-                <div className="text-[10px] text-[#111111]/50">1 Big Katori (180g)</div>
-              </div>
-              <div className="my-3">
-                <span className="font-['Anton'] text-3xl text-[#111111]">9g</span>
-                <span className="block text-[10px] text-[#111111]/60 font-semibold">Protein · 160 kcal</span>
-              </div>
-              <span className="text-[10px] text-[#111111]/60 bg-white rounded-md py-0.5 border border-[#111111]/10">
-                High Carb Base
-              </span>
-            </div>
-
-          </div>
-
-          <div className="mt-8 p-4 rounded-2xl bg-[#FBF7F1] border border-[#111111]/10 text-center max-w-xl mx-auto text-xs text-[#111111]/70">
-            <strong>Why Dal Alone Isn&apos;t Enough:</strong> To get 25g of protein from dal, you would need to consume 3 large bowls
-            with 450+ calories and 60g carbohydrates. Adding 1 scoop of The Proteinest gives you 25g pure protein with only 118 calories.
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ & Science Section ─────────────────────────────────── */}
-      <section className="py-14 sm:py-20 bg-[#FBF7F1]">
-        <div className="wrap max-w-3xl">
-          <div className="text-center mb-12">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#EF5A32] block mb-2">
-              Evidence-Based Insights
-            </span>
-            <h2 className="font-['Anton'] text-3xl sm:text-4xl uppercase tracking-tight text-[#111111]">
-              Frequently Asked Questions
-            </h2>
-          </div>
-
-          <div className="space-y-3">
-            {[
-              {
-                q: 'Will high protein damage my kidneys or liver?',
-                a: 'In healthy individuals, scientific studies consistently show that protein intakes between 1.6g to 2.4g/kg have zero adverse effects on kidney filtration (GFR) or liver enzymes. Remember to drink 3 to 3.5 litres of water daily to maintain peak nitrogen clearance.',
-              },
-              {
-                q: 'Does whey protein cause acne or bloating?',
-                a: 'Standard market wheys often contain cheap gums, fillers, artificial thickeners, and excessive lactose that trigger gastrointestinal distress. The Proteinest is formulated with a multi-enzyme digestive blend specifically for Indian gut profiles, ensuring zero bloating.',
-              },
-              {
-                q: 'Do women need as much protein as men for fat loss and toning?',
-                a: 'Yes! While women generally have slightly lower absolute muscle mass, their relative protein need per kilogram of body weight during fat loss is almost identical (1.8g – 2.2g/kg). Protein will not bulk you up; it sculpts lean tone and curbs cravings.',
-              },
-              {
-                q: 'What is the best time to take The Proteinest?',
-                a: 'Total daily protein intake across 24 hours is the primary driver of results. However, taking 1 scoop within 60-90 minutes post-workout maximizes muscle protein synthesis, and having it as a mid-day snack curbs 4 PM sweet cravings.',
-              },
-              {
-                q: 'Why does the calculator recommend more protein for vegetarians?',
-                a: 'Plant-based proteins (dal, beans, grains) have lower PDCAAS (Protein Digestibility-Corrected Amino Acid Scores) and lower concentrations of essential amino acids like Leucine and Methionine. A 8-10% buffer ensures your body absorbs the optimal amino profile.',
-              },
-            ].map((faq, idx) => {
-              const isOpen = expandedFaq === idx;
-              return (
-                <div
-                  key={idx}
-                  className="bg-white rounded-2xl border border-[#111111]/10 overflow-hidden transition-all"
-                >
-                  <button
-                    onClick={() => toggleFaq(idx)}
-                    className="w-full px-5 py-4 text-left flex items-center justify-between font-bold text-sm text-[#111111] hover:text-[#EF5A32] transition-colors"
-                  >
-                    <span>{faq.q}</span>
-                    <span className={`transform transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#EF5A32]' : 'text-[#111111]/40'}`}>
-                      <ChevronDownIcon className="w-4 h-4" />
+                    <span className="cx-act-text">
+                      <strong>{act.label}</strong>
+                      <small>{act.desc}</small>
                     </span>
                   </button>
-                  {isOpen && (
-                    <div className="px-5 pb-5 text-xs text-[#111111]/70 leading-relaxed border-t border-[#111111]/5 pt-3">
-                      {faq.a}
-                    </div>
-                  )}
+                ))}
+              </div>
+            </fieldset>
+
+            {/* 5 */}
+            <fieldset className="cx-step cx-step--last">
+              <legend className="cx-legend">
+                <span>05</span> Dietary style
+              </legend>
+              <div className="cx-seg cx-seg--wide" role="radiogroup" aria-label="Dietary style">
+                {DIET_TYPES.map((dt) => (
+                  <button key={dt.id} type="button" role="radio" aria-checked={dietId === dt.id} data-active={dietId === dt.id} onClick={() => setDietId(dt.id)}>
+                    {dt.label}
+                  </button>
+                ))}
+              </div>
+              <p className="cx-hint">
+                <SparklesIcon className="w-3.5 h-3.5" /> {DIET_TYPES.find((d) => d.id === dietId)?.note}
+              </p>
+            </fieldset>
+          </form>
+
+          {/* results */}
+          <aside className="cx-results" aria-live="polite" data-reveal="right">
+            <div className="cx-target">
+              <div className="cx-target-glow" aria-hidden />
+              <div className="cx-target-top">
+                <span className="cx-pill">Your daily target</span>
+                <button type="button" className="cx-copy" onClick={copyResults}>
+                  <CopyIcon className="w-3.5 h-3.5" /> {copied ? 'Copied' : 'Copy plan'}
+                </button>
+              </div>
+              <div className="cx-hero-num">
+                <svg className="cx-ring" viewBox="0 0 120 120" aria-hidden>
+                  <circle cx="60" cy="60" r="52" />
+                  <circle cx="60" cy="60" r="52" className="cx-ring-fill" style={{ strokeDashoffset: `${327 - (327 * rangePct) / 100}` }} />
+                </svg>
+                <div className="cx-num-wrap">
+                  <AnimatedNumber value={calculation.sweetSpot} className="cx-num" />
+                  <span className="cx-unit">grams / day</span>
                 </div>
+              </div>
+              <div className="cx-chips">
+                <span>
+                  Range <strong>{calculation.minTarget}–{calculation.maxTarget} g</strong>
+                </span>
+                <span className="cx-chip-accent">{calculation.perKgRatio} g / kg</span>
+              </div>
+              <p className="cx-why">
+                <strong>Why this for {activeGoal.title.toLowerCase()}:</strong> {activeGoal.rationale}
+              </p>
+              <div className="cx-mini">
+                <div>
+                  <DropletIcon className="w-4 h-4" />
+                  <strong>{calculation.waterLitres} L</strong>
+                  <small>water a day</small>
+                </div>
+                <div>
+                  <FlameIcon className="w-4 h-4" />
+                  <strong>{calculation.proteinCalories.toLocaleString('en-IN')} kcal</strong>
+                  <small>from protein</small>
+                </div>
+              </div>
+            </div>
+
+            <div className="cx-card">
+              <div className="cx-card-head">
+                <div>
+                  <h3 className="cx-h3">Meal split</h3>
+                  <p className="cx-muted">Hit the ~3 g leucine threshold every meal</p>
+                </div>
+                <div className="cx-seg cx-seg--sm" role="radiogroup" aria-label="Meals per day">
+                  {[3, 4, 5].map((c) => (
+                    <button key={c} type="button" role="radio" aria-checked={mealCount === c} data-active={mealCount === c} onClick={() => setMealCount(c)}>
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="cx-split" aria-hidden>
+                {Array.from({ length: mealCount }).map((_, i) => (
+                  <i key={i} style={{ '--d': `${i * 60}ms` }} />
+                ))}
+              </div>
+              <ol className="cx-meals">
+                {Array.from({ length: mealCount }).map((_, i) => (
+                  <li key={i}>
+                    <span className="cx-meal-num">{i + 1}</span>
+                    <span className="cx-meal-name">{mealNames[i] || `Meal ${i + 1}`}</span>
+                    <strong>~{calculation.perMeal} g</strong>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <div className="cx-reco">
+              <span className="cx-pill cx-pill--light">Your match</span>
+              <h3 className="cx-reco-title">
+                Close the gap with {calculation.recommendedScoops} scoop{calculation.recommendedScoops > 1 ? 's' : ''} a day
+              </h3>
+              <p className="cx-reco-copy">The average Indian diet falls 40–50 g short. One scoop adds 24 g of clean plant protein with zero bloat, lab tested every batch.</p>
+              <div className="cx-reco-product">
+                <img src={recoPhoto} alt="" loading="lazy" />
+                <div>
+                  <strong>{activeGoal.idealFlavour}</strong>
+                  <small>24 g protein · 5.5 g BCAA · digestive enzymes</small>
+                  <span>From ₹1,499 / 1 kg</span>
+                </div>
+              </div>
+              <a href="/shop" className="cx-reco-cta">
+                Shop your formula <span aria-hidden>→</span>
+              </a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      {/* ── food cheat-sheet ── */}
+      <section className="cx-section band band--sage" aria-labelledby="food-title">
+        <div className="cx-wrap">
+          <div className="cx-head" data-reveal-stagger="0.1">
+            <span className="shop-kicker cx-kicker-dark">
+              <i aria-hidden />
+              Indian whole-food cheat-sheet
+              <i aria-hidden />
+            </span>
+            <h2 id="food-title" className="cx-big" data-split>
+              How to hit <em>{calculation.sweetSpot} g</em> daily
+            </h2>
+            <p className="cx-lead">Protein per serving across everyday Indian foods, and where one scoop fits in.</p>
+          </div>
+          <div className="cx-foods" data-reveal-stagger="0.07">
+            {[
+              { name: 'The Proteinest', serve: '1 scoop (33 g)', g: 24, kcal: 118, tag: 'Easiest', featured: true },
+              { name: 'Soya chunks', serve: '50 g raw', g: 26, kcal: 170, tag: 'Plant source' },
+              { name: 'Low-fat paneer', serve: '100 g', g: 18, kcal: 200, tag: 'Dairy' },
+              { name: 'Whole eggs', serve: '3 large', g: 18, kcal: 210, tag: 'Complete amino' },
+              { name: 'Hung curd', serve: '150 g', g: 15, kcal: 130, tag: 'Gut friendly' },
+              { name: 'Cooked dal', serve: '1 big katori', g: 9, kcal: 160, tag: 'High carb' },
+            ].map((f) => (
+              <div key={f.name} className="cx-food" data-featured={!!f.featured}>
+                {f.featured && <span className="cx-food-badge">{f.tag}</span>}
+                <strong className="cx-food-name">{f.name}</strong>
+                <small>{f.serve}</small>
+                <span className="cx-food-g">
+                  {f.g}
+                  <em>g</em>
+                </span>
+                <span className="cx-food-bar" aria-hidden>
+                  <i style={{ width: `${(f.g / 26) * 100}%` }} />
+                </span>
+                <small className="cx-food-meta">
+                  {f.kcal} kcal{!f.featured && ` · ${f.tag}`}
+                </small>
+              </div>
+            ))}
+          </div>
+          <p className="cx-callout" data-reveal="up">
+            <strong>Why dal alone isn&apos;t enough:</strong> reaching 24 g from dal takes about three big bowls, 450+ kcal and 60 g of carbs. One scoop gets you there in 118 kcal.
+          </p>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="cx-section band band--blush" aria-labelledby="calc-faq-title">
+        <div className="cx-wrap cx-wrap--narrow">
+          <div className="cx-head" data-reveal-stagger="0.1">
+            <span className="shop-kicker cx-kicker-dark">
+              <i aria-hidden />
+              Evidence-based answers
+              <i aria-hidden />
+            </span>
+            <h2 id="calc-faq-title" className="cx-big" data-split>
+              Questions, <em>answered.</em>
+            </h2>
+          </div>
+          <div className="faq-list" data-reveal-stagger="0.07">
+            {FAQS.map((faq, idx) => {
+              const isOpen = expandedFaq === idx;
+              return (
+                <article key={faq.q} className="faq-item" data-open={isOpen}>
+                  <button type="button" className="faq-q" onClick={() => toggleFaq(idx)} aria-expanded={isOpen} aria-controls={`cfaq-${idx}`}>
+                    <span className="faq-num">{String(idx + 1).padStart(2, '0')}</span>
+                    <span className="faq-q-body">
+                      <span className="faq-q-text">{faq.q}</span>
+                    </span>
+                    <span className="faq-icon" aria-hidden>
+                      <i />
+                      <i />
+                    </span>
+                  </button>
+                  <div className="faq-a" id={`cfaq-${idx}`} role="region">
+                    <div className="faq-a-inner">
+                      <p>{faq.a}</p>
+                    </div>
+                  </div>
+                </article>
               );
             })}
           </div>
-
-          {/* Bottom CTA */}
-          <div className="text-center mt-12">
-            <p className="text-xs text-[#111111]/60 mb-4">
-              Ready to fuel your daily targets with the cleanest protein in India?
-            </p>
-            <a
-              href="/shop"
-              style={{ color: '#FFFFFF' }}
-              className="inline-block px-8 py-4 rounded-full bg-[#EF5A32] hover:bg-[#C8441F] !text-white font-bold text-xs uppercase tracking-wider transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer"
-            >
-              Explore Products & Bundles →
+          <div className="cx-end" data-reveal="up">
+            <p className="cx-muted">Ready to hit your number with the cleanest plant protein in India?</p>
+            <a href="/shop" className="shop-cta cx-end-cta">
+              Explore products <span aria-hidden>→</span>
             </a>
           </div>
         </div>
       </section>
 
       <Footer />
-    </div>
+    </main>
   );
 }

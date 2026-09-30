@@ -4,7 +4,8 @@ export default function SectionDivider() {
   return (
     <div
       className="w-full relative py-6 sm:py-8 flex items-center justify-center overflow-hidden select-none"
-      style={{ background: '#F8F6F2' }}
+      data-reveal="fade"
+      style={{ background: 'transparent' }}
       aria-hidden="true"
     >
       {/* Ambient soft glow */}

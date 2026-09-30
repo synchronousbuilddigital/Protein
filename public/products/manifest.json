@@ -1,0 +1,53 @@
+{
+  "coffee-crew": {
+    "title": "Coffee Crew  Plant-Based Protein | Made from Arabica",
+    "images": [
+      "/products/coffee-crew-pack.jpg",
+      "/products/coffee-crew.webp",
+      "/products/coffee-crew-2.webp",
+      "/products/coffee-crew-3.webp",
+      "/products/coffee-crew-4.webp",
+      "/products/coffee-crew-5.webp"
+    ],
+    "pack": "/products/coffee-crew-pack.jpg"
+  },
+  "choco-buddy": {
+    "title": "Plant Protein Powder Chocolate | Choco Buddy",
+    "images": [
+      "/products/choco-buddy.webp",
+      "/products/choco-buddy-2.webp",
+      "/products/choco-buddy-3.webp",
+      "/products/choco-buddy-4.webp",
+      "/products/choco-buddy-5.webp",
+      "/products/choco-buddy-6.webp",
+      "/products/choco-buddy-7.webp",
+      "/products/choco-buddy-8.webp"
+    ],
+    "pack": "/products/choco-buddy.webp"
+  },
+  "kulfi-mate": {
+    "title": "Kulfi Mate Plant-Based Protein | Badam Kesar Nutrition",
+    "images": [
+      "/products/kulfi-mate-pack.jpg",
+      "/products/kulfi-mate.jpg",
+      "/products/kulfi-mate-2.jpg",
+      "/products/kulfi-mate-3.jpg",
+      "/products/kulfi-mate-4.jpg",
+      "/products/kulfi-mate-5.jpg",
+      "/products/kulfi-mate-6.jpg",
+      "/products/kulfi-mate-7.png",
+      "/products/kulfi-mate-8.jpg"
+    ],
+    "pack": "/products/kulfi-mate-pack.jpg"
+  },
+  "steel-shaker": {
+    "title": "Steel Shaker | Durable Protein Shaker Bottle",
+    "images": [
+      "/products/steel-shaker.jpg",
+      "/products/steel-shaker-2.jpg",
+      "/products/steel-shaker-3.jpg",
+      "/products/steel-shaker-4.jpg",
+      "/products/steel-shaker-5.jpg"
+    ]
+  }
+}

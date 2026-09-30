@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useSyncExternalStore } from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession } from '@/lib/auth-client';
 
@@ -38,20 +39,35 @@ const NAV_LINKS = [
   { href: '/blog', label: 'Blog' },
 ];
 
+const noopSubscribe = () => () => {};
+
 export default function Navbar() {
-  const [mounted, setMounted] = useState(false);
+  // true after hydration (the session-dependent login button only renders client-side)
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const { data: session, isPending } = useSession();
 
+  // while the mobile sheet is open: freeze page scroll (Lenis + native) and close on Escape
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (!mobileOpen) return;
+    const lenis = window.__lenis;
+    lenis?.stop();
+    const prev = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+    const onKey = (e) => e.key === 'Escape' && setMobileOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      lenis?.start();
+      document.documentElement.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [mobileOpen]);
 
   return (
     <>
       {/* ── Floating Split Glassmorphic Navbar — Wide & Clean Layout ──────────────── */}
-      <header className="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 md:px-8 lg:px-12 w-full flex items-center justify-between pointer-events-none">
+      <header className="hidden sm:flex fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 md:px-8 lg:px-12 w-full items-center justify-between pointer-events-none">
 
         {/* LEFT PILL — Brand Logo & Navigation Links */}
         <nav
@@ -66,13 +82,13 @@ export default function Navbar() {
           aria-label="Main navigation"
         >
           {/* Brand Logo */}
-          <a
+          <Link
             href="/"
-            className="relative z-10 text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight hover:opacity-90 transition-opacity pr-2"
+            className="relative z-10 text-base sm:text-lg md:text-xl font-extrabold text-white tracking-tight hover:opacity-90 transition-opacity pr-2 whitespace-nowrap"
             style={{ fontFamily: 'var(--font-fira-sans)' }}
           >
             The Proteinest
-          </a>
+          </Link>
 
           {/* Desktop Nav Links */}
           <div className="hidden sm:flex items-center gap-2 sm:gap-3 md:gap-4">
@@ -146,58 +162,65 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ── Mobile Dropdown Drawer ───────────────────────────── */}
-      <div
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ease-out ${
-          mobileOpen ? 'translate-y-0 opacity-100 pointer-events-auto' : '-translate-y-4 opacity-0 pointer-events-none'
-        }`}
-        style={{ paddingTop: '88px' }}
-      >
-        <div
-          className="mx-6 rounded-3xl p-5 border border-white/15 shadow-2xl"
-          style={{
-            background: 'rgba(14, 32, 22, 0.92)',
-            backdropFilter: 'blur(24px) saturate(180%)',
-            WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-          }}
-        >
-          <div className="flex flex-col gap-3">
-            {NAV_LINKS.map(({ href, label }) => {
-              const isActive = pathname === href;
-              return (
-                <a
-                  key={href}
-                  href={href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-                    isActive ? 'bg-white/20 text-white font-bold' : 'text-white/90 hover:bg-white/10'
-                  }`}
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  {label}
+      {/* ── Mobile: one dark-glass bar + full-screen menu sheet (styles: "Mobile nav" in globals.css) ── */}
+      <header className={`m-nav sm:hidden${mobileOpen ? ' is-open' : ''}`}>
+        <div className="m-nav-bar">
+          <Link href="/" className="m-nav-brand" style={{ fontFamily: 'var(--font-fira-sans)' }}>
+            The Proteinest
+          </Link>
+          <div className="m-nav-actions">
+            <a href="/shop" aria-label="Cart" className="m-nav-icon">
+              <CartIcon />
+            </a>
+            {!mobileOpen &&
+              (mounted && !isPending && session?.user ? (
+                <a href="/account" className="m-nav-login">
+                  {session.user.name?.split(' ')[0] || 'Account'}
                 </a>
-              );
-            })}
-            <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
-              <a
-                href="/login"
-                onClick={() => setMobileOpen(false)}
-                className="w-full py-2.5 text-center text-xs sm:text-sm font-bold bg-white text-[#0E2016] rounded-full hover:bg-[#F8F6F2] transition-all shadow-sm"
-              >
-                Login
-              </a>
-            </div>
+              ) : (
+                <a href="/login" className="m-nav-login">
+                  Login
+                </a>
+              ))}
+            <button type="button" className="m-nav-icon m-nav-toggle" onClick={() => setMobileOpen((o) => !o)} aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen} aria-controls="m-nav-sheet">
+              <MenuIcon open={mobileOpen} />
+            </button>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Mobile Backdrop Overlay */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm"
-          onClick={() => setMobileOpen(false)}
-        />
-      )}
+      <div id="m-nav-sheet" className={`m-sheet sm:hidden${mobileOpen ? ' is-open' : ''}`} aria-hidden={!mobileOpen} inert={!mobileOpen}>
+        <div className="m-sheet-glow" aria-hidden />
+        <nav className="m-sheet-links" aria-label="Mobile navigation">
+          {[{ href: '/', label: 'Home' }, ...NAV_LINKS].map(({ href, label }, i) => {
+            const isActive = pathname === href;
+            return (
+              <a key={href} href={href} onClick={() => setMobileOpen(false)} className="m-sheet-link" aria-current={isActive ? 'page' : undefined} style={{ '--i': i }}>
+                <span className="m-sheet-num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="m-sheet-label">{label}</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            );
+          })}
+        </nav>
+        <div className="m-sheet-foot" style={{ '--i': 6 }}>
+          {mounted && !isPending && session?.user ? (
+            <a href="/account" onClick={() => setMobileOpen(false)} className="m-sheet-cta">
+              My account
+            </a>
+          ) : (
+            <a href="/login" onClick={() => setMobileOpen(false)} className="m-sheet-cta">
+              Login / Create account
+            </a>
+          )}
+          <a href="/shop" onClick={() => setMobileOpen(false)} className="m-sheet-cta m-sheet-cta--ghost">
+            Shop all products
+          </a>
+          <p>24 g plant protein · 0 g added sugar · NABL lab tested</p>
+        </div>
+      </div>
     </>
   );
 }

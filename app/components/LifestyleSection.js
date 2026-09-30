@@ -1,166 +1,178 @@
 'use client';
 
-import { useState } from 'react';
+/**
+ * "Protein for every place you perform" — an expanding gallery.
+ * Four photo panels share one row; the active panel opens wide and shows its copy, the rest
+ * collapse into slim strips. Hover (pointer) or tap (touch) switches, and it auto-advances
+ * with a progress bar unless hovered or reduced motion is set. On phones the row becomes a
+ * vertical accordion. Styles: "Lifestyle gallery" in globals.css.
+ */
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+const SCENES = [
+  {
+    id: 'outdoors',
+    badge: 'Outdoors',
+    title: 'Trail days and long runs',
+    info: 'Fast-dissolving plant protein built for mountain trails and endurance runs.',
+    tags: ['24g Protein', 'Electrolytes'],
+    image: '/lifestyle-outdoors.png',
+    pos: '50% 40%',
+  },
+  {
+    id: 'at-work',
+    badge: 'At Work',
+    title: 'Steady energy at your desk',
+    info: 'Beat the 3 PM sugar crash with steady, focused desk energy.',
+    tags: ['No Sugar Crash', 'Focus'],
+    image: '/lifestyle-at-work.png',
+    pos: '50% 30%',
+  },
+  {
+    id: 'on-the-go',
+    badge: 'On the Go',
+    title: 'Airports, commutes, everywhere',
+    info: 'Pocket-ready single sachets for airports, commutes and busy schedules.',
+    tags: ['Instant Shake', 'Portable'],
+    image: '/lifestyle-on-the-go.png',
+    pos: '50% 30%',
+  },
+  {
+    id: 'in-the-kitchen',
+    badge: 'In the Kitchen',
+    title: 'Blends into breakfast',
+    info: 'Heat-stable formula that blends effortlessly into pancakes and oats.',
+    tags: ['Bake Stable', 'Creamy'],
+    image: '/lifestyle-in-the-kitchen.png',
+    pos: '50% 40%',
+  },
+];
+
+const AUTO_MS = 4800;
+const pad = (n) => String(n).padStart(2, '0');
+
+function ArrowIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export default function LifestyleSection() {
-  const [activeCardId, setActiveCardId] = useState(null);
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [autoplay, setAutoplay] = useState(true);
+  const hoverable = useRef(false);
 
-  const cards = [
-    {
-      id: 'outdoors',
-      badge: 'Outdoors',
-      image: '/lifestyle-outdoors.png',
-      shortInfo: 'Fast-dissolving plant protein built for mountain trails & endurance runs.',
-      tag: '25g Protein • Electrolytes',
-    },
-    {
-      id: 'at-work',
-      badge: 'At Work',
-      image: '/lifestyle-at-work.png',
-      shortInfo: 'Beat the 3 PM sugar crash with steady, focused desk energy.',
-      tag: 'No Sugar Crash • Focus',
-    },
-    {
-      id: 'on-the-go',
-      badge: 'On the Go',
-      image: '/lifestyle-on-the-go.png',
-      shortInfo: 'Pocket-ready single sachets for airports, commutes & busy schedules.',
-      tag: 'Instant Shake • Portable',
-    },
-    {
-      id: 'in-the-kitchen',
-      badge: 'In the Kitchen',
-      image: '/lifestyle-in-the-kitchen.png',
-      shortInfo: 'Heat-stable formula that blends effortlessly into pancakes & oats.',
-      tag: 'Bake Stable • Creamy',
-    },
-  ];
+  useEffect(() => {
+    hoverable.current = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const apply = () => setAutoplay(!mq.matches);
+    apply();
+    mq.addEventListener('change', apply);
+    return () => mq.removeEventListener('change', apply);
+  }, []);
+
+  useEffect(() => {
+    if (!autoplay || paused) return;
+    const t = setInterval(() => setActive((a) => (a + 1) % SCENES.length), AUTO_MS);
+    return () => clearInterval(t);
+  }, [autoplay, paused, active]);
+
+  const onEnterCard = useCallback((i) => {
+    if (hoverable.current) setActive(i);
+  }, []);
 
   return (
-    <section className="pt-16 sm:pt-24 pb-8 sm:pb-12 px-6 sm:px-10 lg:px-14 relative overflow-hidden border-t border-black/5" style={{ background: '#F8F6F2' }}>
-      <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-        {/* Left Column: Heading & Copy (4 cols) */}
-        <div className="lg:col-span-4 flex flex-col items-start pr-0 lg:pr-6">
-          <span
-            className="text-[11px] font-bold uppercase tracking-[0.2em] mb-3"
-            style={{ fontFamily: 'var(--font-fira-sans)', color: '#4A4642' }}
-          >
+    <section className="life band band--sand" aria-labelledby="life-title">
+      <div className="life-wrap">
+        {/* ── copy ── */}
+        <div className="life-copy" data-reveal-stagger="0.1">
+          <span className="life-kicker">
+            <i aria-hidden />
             Built for real life
           </span>
-
-          <h2
-            className="text-4xl sm:text-5xl lg:text-6xl uppercase tracking-tight leading-[1.05] mb-5"
-            style={{ fontFamily: 'var(--font-fira-sans)', fontWeight: 800, color: '#141414' }}
-          >
-            Protein for every place you perform
+          <h2 id="life-title" className="life-title" data-split>
+            Protein for <em>every place</em> you perform
           </h2>
-
-          <p
-            className="text-sm sm:text-base leading-relaxed mb-8 max-w-md"
-            style={{ fontFamily: 'var(--font-inter)', fontWeight: 300, color: '#4A4642', lineHeight: '1.65' }}
-          >
+          <p className="life-lead">
             At your desk, on the trail, in the kitchen — The Proteinest integrates into the life you already live. No ritual required.
           </p>
-
-          <a
-            href="/shop"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 shadow-sm hover:shadow-md hover:scale-105"
-            style={{ fontFamily: 'var(--font-fira-sans)', border: '2px solid #FF683F', color: '#FF683F', background: 'transparent' }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#FF683F'; e.currentTarget.style.color = '#F8F6F2'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#FF683F'; }}
-          >
-            <span>Shop Protein Now</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
+          <a href="/shop" className="life-cta">
+            Shop Protein Now <ArrowIcon />
           </a>
+
+          <p className="life-note editorial" data-parallax="-0.12">
+            Same goals.
+            <br />
+            A cleaner standard.
+          </p>
         </div>
 
-        {/* Middle Column: 4 Vertical Lifestyle Cards (6 cols) */}
-        <div className="lg:col-span-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 items-start">
-            {cards.map((card) => {
-              const isActive = activeCardId === card.id;
+        {/* ── expanding gallery ── */}
+        <div
+          className="life-gallery"
+          data-reveal="right"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          role="tablist"
+          aria-label="Where you use The Proteinest"
+        >
+          {SCENES.map((s, i) => {
+            const isActive = i === active;
+            return (
+              <button
+                key={s.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                aria-controls={`life-panel-${s.id}`}
+                className="life-card"
+                data-active={isActive}
+                onMouseEnter={() => onEnterCard(i)}
+                onFocus={() => setActive(i)}
+                onClick={() => setActive(i)}
+              >
+                <img src={s.image} alt="" className="life-card-img" style={{ objectPosition: s.pos }} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+                <span className="life-card-shade" aria-hidden />
 
-              return (
-                <div key={card.id} className="flex flex-col w-full">
-                  {/* Image Card Container */}
-                  <button
-                    onClick={() => setActiveCardId(isActive ? null : card.id)}
-                    className={`group relative w-full aspect-[3/4.2] rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-200 border transition-all duration-300 text-left focus:outline-none cursor-pointer ${isActive
-                        ? 'ring-4 ring-[#FF683F] ring-offset-2 border-[#FF683F] shadow-xl scale-[1.02]'
-                        : 'border-black/5 shadow-md hover:shadow-xl hover:scale-[1.01]'
-                      }`}
-                    aria-label={`View ${card.badge} details`}
-                  >
-                    <img
-                      src={card.image}
-                      alt={card.badge}
-                      className={`w-full h-full object-cover object-center transition-transform duration-500 ${isActive ? 'scale-105' : 'group-hover:scale-105'
-                        }`}
-                    />
+                {/* collapsed strip */}
+                <span className="life-strip" aria-hidden={isActive}>
+                  <span className="life-strip-num">{pad(i + 1)}</span>
+                  <span className="life-strip-label">{s.badge}</span>
+                </span>
 
-                    {/* Gradient Overlay for visual quality */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-
-                    {/* Overlay Badge inside image */}
-                    <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between z-10 pointer-events-none">
-                      <span
-                        className={`text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-sm transition-all duration-300 ${isActive
-                            ? 'bg-[#FF683F] text-white shadow-md'
-                            : 'bg-white/90 backdrop-blur-md text-[#141414] group-hover:bg-white'
-                          }`}
-                      >
-                        {card.badge}
-                      </span>
-                      <div
-                        className={`w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300 ${isActive
-                            ? 'bg-white text-[#FF683F] rotate-180'
-                            : 'bg-black/30 backdrop-blur-md text-white group-hover:bg-black/50'
-                          }`}
-                      >
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </div>
-                    </div>
-                  </button>
-
-                  {/* Exact Width Compact Info Dropdown directly below this image */}
-                  {isActive && (
-                    <div className="mt-2.5 w-full bg-white rounded-xl sm:rounded-2xl p-3 border border-[#FF683F]/30 shadow-md transition-all duration-300 animate-fadeIn">
-                      <p className="text-[11px] sm:text-xs text-[#4A4642] leading-snug font-normal">
-                        {card.shortInfo}
-                      </p>
-                      <div className="mt-2 pt-2 border-t border-stone-100 flex items-center justify-between">
-                        <span className="text-[10px] font-bold text-[#FF683F] tracking-tight">
-                          {card.tag}
+                {/* expanded content */}
+                <span id={`life-panel-${s.id}`} className="life-panel" aria-hidden={!isActive}>
+                  <span className="life-panel-top">
+                    <span className="life-badge">{s.badge}</span>
+                    <span className="life-count">
+                      {pad(i + 1)} <span>/ {pad(SCENES.length)}</span>
+                    </span>
+                  </span>
+                  <span className="life-panel-bottom">
+                    <span className="life-panel-title">{s.title}</span>
+                    <span className="life-panel-info">{s.info}</span>
+                    <span className="life-tags">
+                      {s.tags.map((t) => (
+                        <span key={t} className="life-tag">
+                          {t}
                         </span>
-                      </div>
-                    </div>
+                      ))}
+                    </span>
+                  </span>
+                  {isActive && autoplay && (
+                    <span key={active} className="life-progress" data-paused={paused} aria-hidden>
+                      <span style={{ animationDuration: `${AUTO_MS}ms` }} />
+                    </span>
                   )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Right Column: Editorial Italic Note (2 cols) */}
-        <div className="lg:col-span-2 flex items-center justify-start lg:justify-center pt-2 lg:pt-0 pl-2 lg:pl-4">
-          <div className="transform rotate-[-3deg] lg:rotate-[6deg] select-none">
-            <span
-              className="text-2xl sm:text-3xl block tracking-wide opacity-85 leading-tight"
-              style={{ fontFamily: 'var(--font-playfair)', fontStyle: 'italic', fontWeight: 400, color: '#1A4030' }}
-            >
-              Same goals.<br />
-              A cleaner<br />
-              standard.
-            </span>
-          </div>
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
-
-
